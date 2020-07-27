@@ -1,0 +1,25 @@
+{
+  "name": "lantern-notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "serve ./public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HimaniBhaisare/lantern-notes.git"
+  },
+  "keywords": [
+    "markdown",
+    "editor",
+    "notes"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^11.3.2",
+    "showdown": "^1.9.1"
+  }
+}
