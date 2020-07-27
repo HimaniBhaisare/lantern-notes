@@ -1,15 +1,29 @@
+html, body {
+    height: 100%;
+}
+
 body {
+    margin: 0px;
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
     background-color: #9266ac;
 }
 
-html, body {
-    height: 100%;
+.navbar {
+    padding: 15px;
+    background: #212122;
+}
+
+.navbar-brand, .navbar-brand:hover, .navbar-brand:focus, .navbar-brand:active {
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 25px;
+    text-decoration: none;
 }
 
 .main-content {
+    margin: 8px;
     display: flex;
     height: 100%;
 }
