@@ -4,8 +4,6 @@ html, body {
 
 body {
     margin: 0px;
-    font-size: 18px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
     background-color: #9266ac;
 }
@@ -54,4 +52,6 @@ body {
     padding: 0 50px;
     background: #2d2d2d;
     color: #f3f3f3;
+    font-size: 18px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
