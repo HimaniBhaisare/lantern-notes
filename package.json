@@ -19,7 +19,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "serve": "^11.3.2",
-    "showdown": "^1.9.1"
+    "serve": "^11.3.2"
   }
 }

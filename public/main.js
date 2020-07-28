@@ -1,23 +1,44 @@
 const textEditor = document.querySelector('.text-editor');
 const preview = document.querySelector('.preview');
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({
+    strikethrough: true,
+    tables: true,
+    tasklists: true,
+    smoothLivePreview: true,
+    parseImgDimensions: true,
+    ghMentions: true,
+    simpleLineBreaks: true,
+    simplifiedAutoLink: true,
+    literalMidWordUnderscores: true
+});
 
 const renderPreview = value => {
     const html = converter.makeHtml(value);
     preview.innerHTML = html;
 }
 
-textEditor.addEventListener('keyup', e => {
-    const {value} = e.target;
-
-    window.localStorage.setItem("markdown", value);
-
-    renderPreview(value);
+// Handling tab key press
+textEditor.addEventListener('keydown', e => {
+    if (e.keyCode == 9) {
+        const mdText = e.target.value;
+        const start = textEditor.selectionStart;
+        const end = textEditor.selectionEnd;
+        e.target.value = mdText.substring(0, start) + "\t" + mdText.substring(end);
+        textEditor.selectionStart = textEditor.selectionEnd = start + 1;
+        e.preventDefault();
+    }
 });
 
-const storedMarkdown = window.localStorage.getItem("markdown");
+//  Rendering markdown preview from textArea on keyup event
+textEditor.addEventListener('input', e => {
+    const mdText = e.target.value;
+    window.localStorage.setItem("markdown", mdText);
+    renderPreview(mdText);
+});
 
-if(storedMarkdown) {
+//  Loading stored markdown
+const storedMarkdown = window.localStorage.getItem("markdown");
+if (storedMarkdown) {
     textEditor.value = storedMarkdown;
     renderPreview(storedMarkdown);
 }

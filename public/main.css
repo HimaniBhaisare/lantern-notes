@@ -8,6 +8,14 @@ body {
     background-color: #9266ac;
 }
 
+a, a:active {
+    color: #afe4d2;
+}
+
+a:hover {
+    color: #c6ecdf;
+}
+
 .navbar {
     padding: 15px;
     height: fit-content;
@@ -52,6 +60,66 @@ body {
     padding: 0 50px;
     background: #2d2d2d;
     color: #f3f3f3;
-    font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Markdown specific styling properties */
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: fit-content;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+th {
+    border-bottom: 2px solid #ddd;
+    background-color: #1f1f1f;
+}
+
+tr:hover {
+    background-color:#616161;
+}
+
+/* Text formattings */
+p {
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 18px;
+}
+
+h6 {
+    margin: 30.06px 0px;
+    font-size: 18px;
+    color: #a1a1a1;
+}
+
+/* Checklist formatting */
+.task-list-item {
+    margin: 14px 0px;
+    font-size: 14px;
 }
