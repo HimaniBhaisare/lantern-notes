@@ -12,7 +12,9 @@ body {
 
 .navbar {
     padding: 15px;
+    height: fit-content;
     background: #212122;
+    box-sizing: border-box;
 }
 
 .navbar-brand, .navbar-brand:hover, .navbar-brand:focus, .navbar-brand:active {
@@ -23,9 +25,10 @@ body {
 }
 
 .main-content {
-    margin: 8px;
+    padding: 8px;
     display: flex;
-    height: 100%;
+    height: 88.5%;
+    box-sizing: border-box;
 }
 
 .text-editor {
