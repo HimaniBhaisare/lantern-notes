@@ -63,6 +63,18 @@ a:hover {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #525252;
+     border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #575757;
+}
 /* Markdown specific styling properties */
 
 /* Tables */
@@ -88,7 +100,7 @@ tr:hover {
 
 /* Text formattings */
 p {
-    line-height: 1.5;
+    line-height: 1.8;
     font-size: 14px;
 }
 
@@ -122,4 +134,13 @@ h6 {
 .task-list-item {
     margin: 14px 0px;
     font-size: 14px;
+}
+
+pre {
+    font-family: Monaco, monospace;
+    font-size: 14px;
+    background-color: #707070;
+    padding: 10px;
+    word-break: normal;
+    border-radius: 5px;
 }

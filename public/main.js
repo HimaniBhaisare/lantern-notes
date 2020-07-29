@@ -30,7 +30,7 @@ textEditor.addEventListener('keydown', e => {
 });
 
 //  Rendering markdown preview from textArea on keyup event
-textEditor.addEventListener('input', e => {
+textEditor.addEventListener('keyup', e => {
     const mdText = e.target.value;
     window.localStorage.setItem("markdown", mdText);
     renderPreview(mdText);
