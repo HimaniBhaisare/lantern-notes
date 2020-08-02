@@ -15,6 +15,10 @@ const converter = new showdown.Converter({
 const renderPreview = value => {
     const html = converter.makeHtml(value);
     preview.innerHTML = html;
+    // highlightjs syntax highlighting for code blocks
+    preview.querySelectorAll('pre code').forEach(block => {
+        hljs.highlightBlock(block);
+    });
 }
 
 // Handling tab key press

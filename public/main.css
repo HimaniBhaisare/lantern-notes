@@ -75,6 +75,7 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: #575757;
 }
+
 /* Markdown specific styling properties */
 
 /* Tables */
@@ -136,11 +137,11 @@ h6 {
     font-size: 14px;
 }
 
-pre {
-    font-family: Monaco, monospace;
-    font-size: 14px;
-    background-color: #0a0202;
+/* Codeblocks formatting highlightjs class */
+.hljs {
     padding: 10px;
-    word-break: normal;
     border-radius: 5px;
+    background-color: #1d1d1d;
+    font-size: 14px;
+    line-height: 1.5;
 }
