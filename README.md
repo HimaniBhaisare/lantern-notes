@@ -1,2 +1,2 @@
 # lantern-notes
-A modern note taking markdown editor for developers!
+##### Modern in-browser note taking markdown editor for developers!
