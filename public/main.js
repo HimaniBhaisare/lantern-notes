@@ -46,3 +46,11 @@ if (storedMarkdown) {
     textEditor.value = storedMarkdown;
     renderPreview(storedMarkdown);
 }
+
+function toggleView() {
+    if(textEditor.style.display === "none") {
+        textEditor.style.display = "inline";
+    } else {
+        textEditor.style.display = "none";
+    }
+}
