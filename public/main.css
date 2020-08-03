@@ -53,8 +53,8 @@ a:hover {
 .text-editor:focus {
     overflow: auto;
     outline: none !important;
-    border:1px solid #433949;
-    box-shadow: 0 0 10px #39034b;
+    border:1px solid #2e2633;
+    box-shadow: 0 0 10px #2d033b;
 }
 
 .preview {
@@ -64,6 +64,43 @@ a:hover {
     background: #2d2d2d;
     color: #f3f3f3;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.quick-toolbar {
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5px;
+    background: #2d2d2d;
+}
+
+.quick-button {
+    display: block;
+    background: none;
+    border: none;
+    border-radius: 2px;
+    outline: none;
+}
+
+.quick-button:hover {
+    background-color: #505050;
+}
+
+.editMode-button {
+    font-size: 1.1em;
+    color: #a7a7a7;
+    padding: 4px 4px 4px 6px;
+}
+
+.splitMode-button {
+    font-size: 1.1em;
+    color: #e0bdfd;
+    padding: 5px 6.5px 2px 5.5px;
+}
+
+.readMode-button {
+    font-size: 1em;
+    color: #a7a7a7;
+    padding: 5px 6px 3px 6px;
 }
 
 ::-webkit-scrollbar {

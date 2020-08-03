@@ -6,6 +6,7 @@
     <title>Lantern</title>
     <link rel="icon" type="image/png" href="./assets/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 
@@ -13,9 +14,13 @@
     <nav class="navbar">
         <a class="navbar-brand" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="50"/></a>
     </nav>
-    <button onclick="toggleView()">Change View</button>
     <div class="main-content">
         <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
+        <div class="quick-toolbar">
+            <button onclick="toggleEditMode(this)" class="quick-button editMode-button"><i class="fas fa-edit"></i></button>
+            <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button"><i class="fas fa-columns"></i></button>
+            <button onclick="toggleReadMode(this)" class="quick-button readMode-button"><i class="far fa-eye"></i></button>
+        </div>
         <div class="preview"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>

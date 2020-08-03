@@ -47,10 +47,41 @@ if (storedMarkdown) {
     renderPreview(storedMarkdown);
 }
 
-function toggleView() {
-    if(textEditor.style.display === "none") {
-        textEditor.style.display = "inline";
-    } else {
-        textEditor.style.display = "none";
+// Switch view buttons
+function toggleEditMode(btn) {
+    let splitBtn = btn.parentNode.querySelector('.splitMode-button');
+    let readBtn = btn.parentNode.querySelector('.readMode-button');
+    readBtn.style.color = splitBtn.style.color = "#a7a7a7";
+    btn.style.color = "#e0bdfd";
+
+    preview.style.display = "none";
+    if(textEditor.style.display == "none") {
+        textEditor.style.display = "block";
+    }
+}
+
+function toggleSplitMode(btn) {
+    let editBtn = btn.parentNode.querySelector('.editMode-button');
+    let readBtn = btn.parentNode.querySelector('.readMode-button');
+    readBtn.style.color = editBtn.style.color = "#a7a7a7";
+    btn.style.color = "#e0bdfd";
+    
+    if(textEditor.style.display == "none") {
+        textEditor.style.display = "block";
+    }
+    if(preview.style.display == "none") {
+        preview.style.display = "block";
+    }
+}
+
+function toggleReadMode(btn) {
+    let editBtn = btn.parentNode.querySelector('.editMode-button');
+    let splitBtn = btn.parentNode.querySelector('.splitMode-button');
+    splitBtn.style.color = editBtn.style.color = "#a7a7a7";
+    btn.style.color = "#e0bdfd";
+
+    textEditor.style.display = "none";
+    if(preview.style.display == "none") {
+        preview.style.display = "block";
     }
 }
