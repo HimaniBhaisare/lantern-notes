@@ -2,7 +2,7 @@ function loadingScreen() {
     setTimeout(() => {
         document.getElementById("loading-screen").style.display = "none";
         document.getElementById("main-page").style.display = "block";
-    }, 2000);
+    }, 2500);
 }
 
 const textEditor = document.querySelector('.text-editor');
