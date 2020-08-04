@@ -1,3 +1,10 @@
+function loadingScreen() {
+    setTimeout(() => {
+        document.getElementById("loading-screen").style.display = "none";
+        document.getElementById("main-page").style.display = "block";
+    }, 2000);
+}
+
 const textEditor = document.querySelector('.text-editor');
 const preview = document.querySelector('.preview');
 const converter = new showdown.Converter({
