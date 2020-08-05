@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lantern</title>
     <link rel="icon" type="image/png" href="./assets/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter&family=Montserrat:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 
 <body onload="loadingScreen()">
-    <div id="loading-screen"></div>
+    <div id="loading-screen">
+        <div id="loader-logo">
+            <img src="./assets/LogoLoading.gif" alt="loading gif" width="300px" height="100px">
+            <br>
+            <p id="loader-text">A markdown note taking app for programmers!</p>
+        </div>
+    </div>
     <div id="main-page" style="display: none;">
         <nav class="navbar">
             <a class="navbar-brand" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="50"/></a>
