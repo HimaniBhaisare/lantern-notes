@@ -92,3 +92,15 @@ function toggleReadMode(btn) {
         preview.style.display = "block";
     }
 }
+
+function downloadHtml(){
+    let downloadhtml =  window.localStorage.getItem("markdown");
+    let htmlobject = converter.makeHtml(downloadhtml);
+    let FileAsBlob = new Blob([htmlobject], {type:'text/html'});
+    let downloadLink = document.createElement("a");
+    downloadLink.download = "trial.html";
+    downloadLink.href = window.webkitURL.createObjectURL(FileAsBlob);
+    downloadLink.click();
+    
+
+}
