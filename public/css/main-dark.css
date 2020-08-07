@@ -58,6 +58,18 @@ a:hover {
     text-decoration: none;
 }
 
+.navbar-button {
+    background: none;
+    border: none;
+    border-radius: 2px;
+    outline: none;
+}
+
+.theme-selector {
+    font-size: 1.25em;
+    color: white;
+}
+
 .main-content {
     padding: 8px;
     display: flex;
@@ -85,7 +97,7 @@ a:hover {
 .preview {
     overflow: auto;
     flex: 1;
-    padding: 0px 30px;
+    padding: 20px 30px 20px 30px;
     background: #2d2d2d;
     color: #f3f3f3;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -119,7 +131,7 @@ a:hover {
 .splitMode-button {
     font-size: 1.1em;
     color: #e0bdfd;
-    padding: 5px 6.5px 2px 5.5px;
+    padding: 5px 6.65px 2px 5.5px;
 }
 
 .readMode-button {
@@ -131,7 +143,7 @@ a:hover {
 .downloadHtml-button {
     font-size: 1.1em;
     color: #a7a7a7;
-    padding: 4px 4px 4px 6px;
+    padding: 4px 6.45px 4px 6px;
 }
 
 ::-webkit-scrollbar {

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lantern</title>
-    <link rel="icon" type="image/png" href="./assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Bitter&family=Montserrat:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css">
+    <link rel="icon" href="./assets/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter&family=Montserrat:ital,wght@0,300;1,200&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css" id="syntax-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <link rel="stylesheet" href="./css/main-light.css" type="text/css" media="screen" id="theme-css">
 </head>
 
-<body onload="loadingScreen()">
+<body onload="loadingScreen(2000)">
     <div id="loading-screen">
         <div id="loader-logo">
             <img src="./assets/LogoLoading.gif" alt="loading gif" width="300px" height="100px">
@@ -22,6 +22,7 @@
     <div id="main-page" style="display: none;">
         <nav class="navbar">
             <a class="navbar-brand" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="50"/></a>
+            <button onclick="switchTheme(this)" class="navbar-button theme-selector" style="float: right;"><i class="far fa-moon"></i></button>
         </nav>
         <div class="main-content">
             <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
@@ -30,7 +31,6 @@
                 <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button"><i class="fas fa-columns"></i></button>
                 <button onclick="toggleReadMode(this)" class="quick-button readMode-button"><i class="far fa-eye"></i></button>
                 <button onclick="downloadHtml()" class="quick-button downloadHtml-button" ><i class="fa fa-download"></i></button>
-                   
             </div>
             <div class="preview"></div>
         </div>

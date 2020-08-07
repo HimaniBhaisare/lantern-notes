@@ -1,8 +1,31 @@
-function loadingScreen() {
+function switchTheme(btn) {
+    loadingScreen(1000);
+    btn.firstChild.classList.toggle("fa-sun");
+    btn.firstChild.classList.toggle("fa-moon");
+    btn.firstChild.classList.toggle("fas");
+    btn.firstChild.classList.toggle("far");
+    let theme = document.querySelector('#theme-css');
+    let codeTheme = document.querySelector('#syntax-theme');
+
+    if(theme.getAttribute('href') == "./css/main-light.css") {
+        theme.href = "./css/main-dark.css";
+        codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css"
+    }
+    else {
+        theme.href = "./css/main-light.css";
+        codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css"
+    }
+}
+
+function loadingScreen(t) {
+    let mainPage = document.getElementById("main-page");
+    let loadingScreen = document.getElementById("loading-screen");
+    loadingScreen.style.display = "grid";
+    mainPage.style.display = "none";
     setTimeout(() => {
-        document.getElementById("loading-screen").style.display = "none";
-        document.getElementById("main-page").style.display = "block";
-    }, 2500);
+        loadingScreen.style.display = "none";
+        mainPage.style.display = "block";
+    }, t);
 }
 
 const textEditor = document.querySelector('.text-editor');
@@ -58,11 +81,11 @@ if (storedMarkdown) {
 function toggleEditMode(btn) {
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
-    readBtn.style.color = splitBtn.style.color = "#a7a7a7";
-    btn.style.color = "#e0bdfd";
+    readBtn.style.color = splitBtn.style.color = "#686868";
+    btn.style.color = "#9266ac";
 
     preview.style.display = "none";
-    if(textEditor.style.display == "none") {
+    if (textEditor.style.display == "none") {
         textEditor.style.display = "block";
     }
 }
@@ -70,13 +93,13 @@ function toggleEditMode(btn) {
 function toggleSplitMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
-    readBtn.style.color = editBtn.style.color = "#a7a7a7";
-    btn.style.color = "#e0bdfd";
-    
-    if(textEditor.style.display == "none") {
+    readBtn.style.color = editBtn.style.color = "#686868";
+    btn.style.color = "#9266ac";
+
+    if (textEditor.style.display == "none") {
         textEditor.style.display = "block";
     }
-    if(preview.style.display == "none") {
+    if (preview.style.display == "none") {
         preview.style.display = "block";
     }
 }
@@ -84,23 +107,41 @@ function toggleSplitMode(btn) {
 function toggleReadMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
-    splitBtn.style.color = editBtn.style.color = "#a7a7a7";
-    btn.style.color = "#e0bdfd";
+    splitBtn.style.color = editBtn.style.color = "#686868";
+    btn.style.color = "#9266ac";
 
     textEditor.style.display = "none";
-    if(preview.style.display == "none") {
+    if (preview.style.display == "none") {
         preview.style.display = "block";
     }
 }
 
-function downloadHtml(){
-    let downloadhtml =  window.localStorage.getItem("markdown");
-    let htmlobject = converter.makeHtml(downloadhtml);
-    let FileAsBlob = new Blob([htmlobject], {type:'text/html'});
-    let downloadLink = document.createElement("a");
-    downloadLink.download = "trial.html";
-    downloadLink.href = window.webkitURL.createObjectURL(FileAsBlob);
-    downloadLink.click();
-    
+function downloadHtml() {
+    let title = "Lantern MD";
+    hTag = preview.querySelector('h1') || preview.querySelector('h2') || preview.querySelector('h3');
+    if (hTag) title = hTag.textContent;
+    let htmlDoc = document.implementation.createHTMLDocument(title);
 
+    htmlDoc.head.innerHTML = document.head.innerHTML;
+    htmlDoc.head.querySelector('title').textContent = title;
+    htmlDoc.head.querySelectorAll('link').forEach(link => {
+        if (link.rel == "icon") {
+            link.remove();
+        }
+    });
+
+    htmlDoc.body.innerHTML = preview.innerHTML;
+    htmlDoc.body.setAttribute('class', "preview");
+    htmlDoc.body.style.padding = "60px 100px";
+    document.body.querySelectorAll('script').forEach(script => {
+        htmlDoc.body.append(script);
+    });
+
+    let fileAsBlob = new Blob([htmlDoc.documentElement.innerHTML], { type: 'text/html' });
+    let downloadLink = document.createElement("a");
+    downloadLink.download = title + ".html";
+    // This is specific to chrome. Will have to modify when backend is integrated
+    // Firefox uses window.URL.createObjectURL
+    downloadLink.href = window.webkitURL.createObjectURL(fileAsBlob);
+    downloadLink.click();
 }
