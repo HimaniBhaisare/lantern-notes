@@ -21,8 +21,14 @@
     </div>
     <div id="main-page" style="display: none;">
         <nav class="navbar">
-            <a class="navbar-brand" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="50"/></a>
-            <button onclick="switchTheme(this)" class="navbar-button theme-selector" style="float: right;"><i class="far fa-moon"></i></button>
+            <div class="navbar-header">
+                <a id="logo" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="35"/></a>
+            </div>
+            <div class="navbar-content">
+                <ul class="navbar-items navbar-right">
+                    <li><button onclick="switchTheme(this)" class="navbar-button theme-selector"><i class="far fa-moon"></i></button></li>
+                </ul>
+            </div>
         </nav>
         <div class="main-content">
             <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>

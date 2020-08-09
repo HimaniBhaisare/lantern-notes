@@ -1,9 +1,8 @@
 function switchTheme(btn) {
     loadingScreen(1000);
-    btn.firstChild.classList.toggle("fa-sun");
-    btn.firstChild.classList.toggle("fa-moon");
-    btn.firstChild.classList.toggle("fas");
-    btn.firstChild.classList.toggle("far");
+    let icon = btn.querySelector('i');
+    icon.classList.toggle("fa-moon");
+    icon.classList.toggle("fa-sun");
     let theme = document.querySelector('#theme-css');
     let codeTheme = document.querySelector('#syntax-theme');
 
