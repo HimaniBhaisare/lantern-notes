@@ -129,7 +129,7 @@ a:hover {
     overflow: auto;
     flex: 1;
     padding: 20px 30px 20px 30px;
-    background: #2d2d2d;
+    background: #2c2c2c;
     color: #f3f3f3;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -138,7 +138,7 @@ a:hover {
     flex-grow: 0;
     flex-shrink: 0;
     padding: 5px;
-    background: #2d2d2d;
+    background: #2c2c2c;
 }
 
 .quick-button {
