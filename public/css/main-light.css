@@ -88,6 +88,7 @@ a:hover {
     border: none;
     border-radius: 0.75rem;
     outline: none;
+    cursor: pointer;
 }
 
 .theme-selector {
@@ -138,7 +139,7 @@ a:hover {
     flex-grow: 0;
     flex-shrink: 0;
     padding: 5px;
-    background: #f1eaf3;
+    background: #efebf0;
 }
 
 .quick-button {
@@ -147,6 +148,7 @@ a:hover {
     border: none;
     border-radius: 2px;
     outline: none;
+    cursor: pointer;
 }
 
 .quick-button:hover {
