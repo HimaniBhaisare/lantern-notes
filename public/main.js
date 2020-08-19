@@ -1,5 +1,6 @@
 function switchTheme(btn) {
     $("#loading-screen").css("display", "flex");
+    loadingFade();
 
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
@@ -15,8 +16,6 @@ function switchTheme(btn) {
         theme.href = "./css/main-light.css";
         codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css"
     }
-
-    loadingFade();
 }
 
 function loadingFade() {
