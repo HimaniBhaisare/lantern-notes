@@ -1,4 +1,6 @@
 function switchTheme(btn) {
+    $("#loading-screen").css("display", "flex");
+
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
     icon.classList.toggle("fa-sun");
@@ -13,15 +15,15 @@ function switchTheme(btn) {
         theme.href = "./css/main-light.css";
         codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css"
     }
-    $("#loading-screen").css("display", "flex");
+
+    loadingFade();
+}
+
+function loadingFade() {
     setTimeout(() => {
         $("#loading-screen").fadeOut(0);
     }, 2000);
 }
-
-$(window).on("load", function () {
-    $("#loading-screen").fadeOut(0);
-});
 
 const textEditor = document.querySelector('.text-editor');
 const preview = document.querySelector('.preview');
@@ -77,7 +79,7 @@ function toggleEditMode(btn) {
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
     readBtn.style.color = splitBtn.style.color = "#808080";
-    btn.style.color = "#9266ac";
+    btn.style.color = "#a972c9";
 
     preview.style.display = "none";
     if (textEditor.style.display == "none") {
@@ -89,7 +91,7 @@ function toggleSplitMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
     readBtn.style.color = editBtn.style.color = "#808080";
-    btn.style.color = "#9266ac";
+    btn.style.color = "#a972c9";
 
     if (textEditor.style.display == "none") {
         textEditor.style.display = "block";
@@ -103,7 +105,7 @@ function toggleReadMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
     splitBtn.style.color = editBtn.style.color = "#808080";
-    btn.style.color = "#9266ac";
+    btn.style.color = "#a972c9";
 
     textEditor.style.display = "none";
     if (preview.style.display == "none") {
