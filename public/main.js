@@ -1,12 +1,11 @@
 function switchTheme(btn) {
-    loadingScreen(1000);
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
     icon.classList.toggle("fa-sun");
     let theme = document.querySelector('#theme-css');
     let codeTheme = document.querySelector('#syntax-theme');
 
-    if(theme.getAttribute('href') == "./css/main-light.css") {
+    if (theme.getAttribute('href') == "./css/main-light.css") {
         theme.href = "./css/main-dark.css";
         codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css"
     }
@@ -14,18 +13,15 @@ function switchTheme(btn) {
         theme.href = "./css/main-light.css";
         codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css"
     }
+    $("#loading-screen").css("display", "flex");
+    setTimeout(() => {
+        $("#loading-screen").fadeOut(0);
+    }, 2000);
 }
 
-function loadingScreen(t) {
-    let mainPage = document.getElementById("main-page");
-    let loadingScreen = document.getElementById("loading-screen");
-    loadingScreen.style.display = "grid";
-    mainPage.style.display = "none";
-    setTimeout(() => {
-        loadingScreen.style.display = "none";
-        mainPage.style.display = "block";
-    }, t);
-}
+$(window).on("load", function () {
+    $("#loading-screen").fadeOut(0);
+});
 
 const textEditor = document.querySelector('.text-editor');
 const preview = document.querySelector('.preview');
@@ -80,7 +76,7 @@ if (storedMarkdown) {
 function toggleEditMode(btn) {
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
-    readBtn.style.color = splitBtn.style.color = "#686868";
+    readBtn.style.color = splitBtn.style.color = "#808080";
     btn.style.color = "#9266ac";
 
     preview.style.display = "none";
@@ -92,7 +88,7 @@ function toggleEditMode(btn) {
 function toggleSplitMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let readBtn = btn.parentNode.querySelector('.readMode-button');
-    readBtn.style.color = editBtn.style.color = "#686868";
+    readBtn.style.color = editBtn.style.color = "#808080";
     btn.style.color = "#9266ac";
 
     if (textEditor.style.display == "none") {
@@ -106,7 +102,7 @@ function toggleSplitMode(btn) {
 function toggleReadMode(btn) {
     let editBtn = btn.parentNode.querySelector('.editMode-button');
     let splitBtn = btn.parentNode.querySelector('.splitMode-button');
-    splitBtn.style.color = editBtn.style.color = "#686868";
+    splitBtn.style.color = editBtn.style.color = "#808080";
     btn.style.color = "#9266ac";
 
     textEditor.style.display = "none";
