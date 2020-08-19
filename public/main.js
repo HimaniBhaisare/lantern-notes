@@ -1,5 +1,5 @@
 function switchTheme(btn) {
-    $("#loading-screen").css("display", "flex");
+    $("#loading-screen").css("visibility", "visible");
     loadingFade();
 
     let icon = btn.querySelector('i');
@@ -20,7 +20,7 @@ function switchTheme(btn) {
 
 function loadingFade() {
     setTimeout(() => {
-        $("#loading-screen").fadeOut(0);
+        $("#loading-screen").css("visibility", "hidden");
     }, 2000);
 }
 
