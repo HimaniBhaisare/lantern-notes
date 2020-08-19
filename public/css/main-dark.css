@@ -148,6 +148,7 @@ a:hover {
     border: none;
     border-radius: 2px;
     outline: none;
+    cursor: pointer;
 }
 
 .quick-button:hover {
