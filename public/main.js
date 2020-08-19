@@ -1,26 +1,13 @@
 function switchTheme(btn) {
-    $("#loading-screen").css("visibility", "visible");
-    loadingFade();
-
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
     icon.classList.toggle("fa-sun");
-    let theme = document.querySelector('#theme-css');
-    let codeTheme = document.querySelector('#syntax-theme');
-
-    if (theme.getAttribute('href') == "./css/main-light.css") {
-        theme.href = "./css/main-dark.css";
-        codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-dark.min.css"
-    }
-    else {
-        theme.href = "./css/main-light.css";
-        codeTheme.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css"
-    }
+    document.body.classList.toggle("dark-theme");
 }
 
 function loadingFade() {
     setTimeout(() => {
-        $("#loading-screen").css("visibility", "hidden");
+        $("#loading-screen").fadeOut(0);
     }, 2000);
 }
 
