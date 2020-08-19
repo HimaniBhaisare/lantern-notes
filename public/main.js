@@ -1,5 +1,5 @@
 function switchTheme(btn) {
-    loadingScreen(1000);
+    // loadingScreen(1000);
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
     icon.classList.toggle("fa-sun");
