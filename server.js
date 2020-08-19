@@ -1,5 +1,5 @@
 const express = require('express');
-const lanternApp = express();
+const app = express();
 
-lanternApp.listen(5000, () => console.log("Listening in 5000"));
-lanternApp.use(express.static('public'));
+app.listen(5000, () => console.log("Listening in 5000"));
+app.use(express.static('public'));

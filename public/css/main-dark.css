@@ -88,6 +88,7 @@ a:hover {
     border: none;
     border-radius: 0.75rem;
     outline: none;
+    cursor: pointer;
 }
 
 .theme-selector {
