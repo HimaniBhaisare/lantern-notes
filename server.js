@@ -20,7 +20,7 @@ const db = admin.firestore();
 
 data = {
     name: "Himani",
-    animal: "Monkey"
+    animal: "Donkey"
 };
 
 db.collection('sampleDocs').doc('animals').update(data).then(() => {
@@ -28,6 +28,6 @@ db.collection('sampleDocs').doc('animals').update(data).then(() => {
 });
 
 const app = express();
-
-app.listen(5000, () => console.log("Listening in 5000"));
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`Listening at ${port}`));
 app.use(express.static('public'));
