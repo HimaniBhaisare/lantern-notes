@@ -19,7 +19,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "firebase-admin": "^9.1.0",
     "serve": "^11.3.2"
   }
 }
