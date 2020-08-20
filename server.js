@@ -19,15 +19,12 @@ admin.initializeApp({
 const db = admin.firestore();
 
 data = {
-    name: "Himani",
+    name: "Kuku",
     animal: "Monkey"
 };
 
-db.collection('sampleDocs').doc('animals').update(data).then(() => {
-    console.log('data added');
-}).catch(() => {
-    console.log("Error Occurred!");
-});
+const docref = db.collection('sampleDocs').doc('animals');
+docref.update(data);
 
 const app = express();
 const port = process.env.PORT || 5000;
