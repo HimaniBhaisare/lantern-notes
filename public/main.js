@@ -1,16 +1,3 @@
-function switchTheme(btn) {
-    let icon = btn.querySelector('i');
-    icon.classList.toggle("fa-moon");
-    icon.classList.toggle("fa-sun");
-    document.body.classList.toggle("dark-theme");
-}
-
-function loadingFade() {
-    setTimeout(() => {
-        $("#loading-screen").fadeOut(0);
-    }, 2000);
-}
-
 const textEditor = document.querySelector('.text-editor');
 const preview = document.querySelector('.preview');
 const converter = new showdown.Converter({
@@ -25,8 +12,45 @@ const converter = new showdown.Converter({
     literalMidWordUnderscores: true
 });
 
-const renderPreview = value => {
-    const html = converter.makeHtml(value);
+function switchTheme(btn) {
+    let icon = btn.querySelector('i');
+    icon.classList.toggle("fa-moon");
+    icon.classList.toggle("fa-sun");
+    document.body.classList.toggle("dark-theme");
+}
+
+function syncNotes(btn) {
+    let icon = btn.querySelector('i');
+    icon.classList.toggle("fa-spin");
+
+    let mdText = textEditor.value;
+    const data = {
+        "name": "Kuku",
+        "content": mdText,
+        "folder_id": "412342"
+    };
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    fetch('/notes', options)
+        .then(res => {
+            setTimeout(() => icon.classList.toggle("fa-spin"), 2000);
+        })
+        .catch(err => console.log(err));
+}
+
+function loadingFade() {
+    setTimeout(() => {
+        $("#loading-screen").fadeOut(0);
+    }, 2000);
+}
+
+function renderPreview(mdText) {
+    const html = converter.makeHtml(mdText);
     preview.innerHTML = html;
     // highlightjs syntax highlighting for code blocks
     preview.querySelectorAll('pre code').forEach(block => {

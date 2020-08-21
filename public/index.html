@@ -26,10 +26,19 @@
             </div>
             <div class="navbar-content">
                 <ul class="navbar-items navbar-right">
-                    <li><button onclick="switchTheme(this)" class="navbar-button theme-selector"><i class="far fa-moon"></i></button></li>
+                    <li><button onclick="userAuth(this)" class="navbar-button user-auth"><i class="fa fa-sign-in-alt"></i></button></li>
+                    <!-- <li><button onclick="syncNotes(this)" class="navbar-button sync-notes"><i class="fa fa-sync-alt"></i></button></li> -->
+                    <!-- <li><button onclick="switchTheme(this)" class="navbar-button theme-selector"><i class="far fa-moon"></i></button></li> -->
                 </ul>
             </div>
         </nav>
+        <div>
+            <input id="email" type="email">
+            <input id="pass" type="passsword">
+            <button id="login">Login</button>
+            <button id="signup">Sign Up</button>
+            <button id="signout">Sign Out</button>
+        </div>
         <div class="main-content">
             <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
             <div class="quick-toolbar">
@@ -41,6 +50,79 @@
             <div class="preview"></div>
         </div>
     </div>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAaddWAT8DhMqJKKutVPJixRO1blsG_l28",
+        authDomain: "lantern-notes-18e80.firebaseapp.com",
+        databaseURL: "https://lantern-notes-18e80.firebaseio.com",
+        projectId: "lantern-notes-18e80",
+        storageBucket: "lantern-notes-18e80.appspot.com",
+        messagingSenderId: "758697682218",
+        appId: "1:758697682218:web:1a591eb94706fb5e2eea53",
+        measurementId: "G-8P5E87BCRY"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    const email = document.getElementById("email");
+    const pass = document.getElementById("pass");
+    const login = document.getElementById("login");
+    const signup = document.getElementById("signup");
+    const signout = document.getElementById("signout");
+
+    login.addEventListener("click", e => {
+        let emailVal = email.value;
+        let passVal = pass.value;
+        let auth = firebase.auth();
+
+        let promise = auth.signInWithEmailAndPassword(emailVal, passVal);
+        promise.catch(e => console.log(e.message));
+    });
+
+    signup.addEventListener("click", e => {
+        let emailVal = email.value;
+        let passVal = pass.value;
+        let auth = firebase.auth();
+
+        let promise = auth.createUserWithEmailAndPassword(emailVal, passVal);
+        promise.catch(e => console.log(e.message));
+    });
+
+    signout.addEventListener("click", e => {
+        firebase.auth().signOut();
+    });
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if(firebaseUser) {
+            console.log("logged in!");
+
+            let options = {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"email" : firebaseUser.email, "userid" : firebaseUser.uid})
+            }
+            fetch('/user', options)
+                .then(res => res.json())
+                .then(value => console.log(value))
+                .catch(err => console.log(err));
+        }
+        else {
+            console.log("logged out");
+        }
+    })
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

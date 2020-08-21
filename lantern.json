@@ -1,0 +1,27 @@
+[
+    { 
+        "user46728": {
+            "name" : "aravind",
+            "email" : "aravind@gmail.com",
+            "folders" : [
+                "412342",
+                "241343"
+            ],
+            "notes" : {
+                "note_id234" : {
+                    "note name" : "c++",
+                    "folder_id" : "241343",
+                    "content" : "dsafskdhf"
+                }
+            }
+        },
+        "user53643": {
+            "name" : "aravind",
+            "email" : "aravind@gmail.com",
+            "folders" : [
+                "412342",
+                "241343"
+            ]
+        }
+    }
+]

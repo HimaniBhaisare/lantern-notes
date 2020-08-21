@@ -16,6 +16,8 @@ body {
     --loading-text: #000000;
     --theme-selector-color: #ffffff;
     --theme-selector-active: #2e2e2e;
+    --sync-notes-color: #ffffff;
+    --sync-notes-active: #2e2e2e;
     --text-editor-color: #fffaff;
     --text-editor-text: #524f4f;
     --preview-color: #efebf0;
@@ -44,6 +46,8 @@ body.dark-theme {
     --loading-text: #ffffff;
     --theme-selector-color: white;
     --theme-selector-active: #2e2e2e;
+    --sync-notes-color: white;
+    --sync-notes-active: #2e2e2e;
     --text-editor-color:#333333;
     --text-editor-text: #ffffff;
     --preview-color: #2c2c2c;
@@ -80,6 +84,7 @@ a:hover {
     top: 0;
     left: 0;
     display: flex;
+    z-index: 1000;
     justify-content: center;
     align-items: center;
     background-color: var(--loading-bkg);
@@ -159,6 +164,24 @@ a:hover {
 
 .theme-selector:active {
     background-color: var(--theme-selector-active);
+}
+
+.sync-notes {
+    font-size: 1.25em;
+    color: var(--sync-notes-color);
+}
+
+.sync-notes:hover {
+    background-color: var(--sync-notes-active);
+}
+
+.user-auth {
+    font-size: 1.25em;
+    color: var(--sync-notes-color);
+}
+
+.user-auth:hover {
+    background-color: var(--sync-notes-active);
 }
 
 .main-content {
