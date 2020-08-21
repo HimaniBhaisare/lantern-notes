@@ -14,10 +14,8 @@ body {
     --link-hover: #691c64;
     --loading-bkg: #fffaff;
     --loading-text: #000000;
-    --theme-selector-color: #ffffff;
-    --theme-selector-active: #2e2e2e;
-    --sync-notes-color: #ffffff;
-    --sync-notes-active: #2e2e2e;
+    --nav-button-color: #ffffff;
+    --nav-button-active: #2e2e2e;
     --text-editor-color: #fffaff;
     --text-editor-text: #524f4f;
     --preview-color: #efebf0;
@@ -44,10 +42,8 @@ body.dark-theme {
     --link-hover : #c6ecdf;
     --loading-bkg: #212122;
     --loading-text: #ffffff;
-    --theme-selector-color: white;
-    --theme-selector-active: #2e2e2e;
-    --sync-notes-color: white;
-    --sync-notes-active: #2e2e2e;
+    --nav-button-color: white;
+    --nav-button-active: #2e2e2e;
     --text-editor-color:#333333;
     --text-editor-text: #ffffff;
     --preview-color: #2c2c2c;
@@ -138,6 +134,7 @@ a:hover {
 }
 
 .navbar-items {
+    display: inline-flex;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -159,29 +156,29 @@ a:hover {
 
 .theme-selector {
     font-size: 1.25em;
-    color: var(--theme-selector-color);
+    color: var(--nav-button-color);
 }
 
 .theme-selector:active {
-    background-color: var(--theme-selector-active);
+    background-color: var(--nav-button-active);
 }
 
 .sync-notes {
     font-size: 1.25em;
-    color: var(--sync-notes-color);
+    color: var(--nav-button-color);
 }
 
-.sync-notes:hover {
-    background-color: var(--sync-notes-active);
+.sync-notes:active {
+    background-color: var(--nav-button-active);
 }
 
 .user-auth {
     font-size: 1.25em;
-    color: var(--sync-notes-color);
+    color: var(--nav-button-color);
 }
 
-.user-auth:hover {
-    background-color: var(--sync-notes-active);
+.user-auth:active {
+    background-color: var(--nav-button-active);
 }
 
 .auth-form {
