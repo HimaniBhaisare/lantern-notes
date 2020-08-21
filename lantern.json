@@ -4,8 +4,10 @@
             "name" : "aravind",
             "email" : "aravind@gmail.com",
             "folders" : [
-                "412342",
-                "241343"
+                {
+                    "folder_name" : "Default",
+                    "folder_id" : "241343"
+                }
             ],
             "notes" : {
                 "note_id234" : {

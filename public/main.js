@@ -19,13 +19,24 @@ function switchTheme(btn) {
     document.body.classList.toggle("dark-theme");
 }
 
+function userAuth(btn) {
+    let authForm = document.getElementById("authForm");
+    if(authForm.style.display == "none")
+        authForm.style.display = "flex";
+    else
+        authForm.style.display = "none";
+}
+
 function syncNotes(btn) {
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-spin");
 
+    const userDetails = firebase.auth().currentUser;
+    const userid = userDetails.uid;
+
     let mdText = textEditor.value;
     const data = {
-        "name": "Kuku",
+        "name": "C++ notes",
         "content": mdText,
         "folder_id": "412342"
     };

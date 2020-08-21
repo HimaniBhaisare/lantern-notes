@@ -184,6 +184,21 @@ a:hover {
     background-color: var(--sync-notes-active);
 }
 
+.auth-form {
+    flex-direction: column;
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    right: 50%;
+    margin: -200px -200px 0 0;
+    z-index: 2000;
+    padding: 0.5rem;
+    background-color: #000000;
+    opacity: 80%;
+    color: #ffffff;
+}
+
 .main-content {
     padding: 0.5rem;
     padding-bottom: 0.575rem;
