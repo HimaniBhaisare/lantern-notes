@@ -17,7 +17,7 @@ const converter = new showdown.Converter({
 });
 
 function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
@@ -34,7 +34,7 @@ function switchTheme(btn) {
 function openModalContainer() {
     modalContainer.style.display = "block";
     window.onclick = (e) => {
-        if(e.target == modalContainer) {
+        if (e.target == modalContainer) {
             modalContainer.style.display = "none";
         }
     }
@@ -58,23 +58,51 @@ function openSignupWindow() {
 }
 
 function openNotesList(btn) {
-    fetchNotes();
     openModalContainer();
     loginWindow.style.display = "none";
     signupWindow.style.display = "none";
     notesListWindow.style.display = "flex";
 }
 
+function switchNotes(userId, noteId) {
+    syncNotes(document.getElementById("syncButton"));
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "userId" : userId, "noteId" : noteId })
+    }
+    fetch('/switchNotes', options)
+        .then(res => res.json())
+        .then(note => {
+            let currentNote = {
+                "userId": userId,
+                "noteId": noteId,
+                "folderId": note.folderId,
+                "noteName": "Welcome note",
+                "folderName": "Default",
+                "content": note.content
+            }
+            window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
+            textEditor.value = note.content;
+            renderPreview(note.content);
+        })
+        .catch(err => console.log(err));
+}
+
+window.onload(() => fetchNotes());
 function fetchNotes() {
     let currentUser = firebase.auth().currentUser;
     let notesListContent = document.getElementById("notesListContent");
+    notesListContent.innerHTML = '';
 
     const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId : currentUser.uid })
+        body: JSON.stringify({ userId: currentUser.uid })
     }
     fetch('/notesList', options)
         .then(res => res.json())
@@ -83,12 +111,8 @@ function fetchNotes() {
             keys.forEach(key => {
                 let noteListItem = document.createElement("li");
                 noteListItem.setAttribute("class", "notes-list-item");
-                noteListItem.textContent = notes[key].note_name;
-                noteListItem.addEventListener("click", e => {
-                    syncNotes(document.getElementById("syncButton"));
-                    textEditor.value = notes[key].content;
-                    renderPreview(notes[key].content);
-                });
+                noteListItem.textContent = notes[key].noteName;
+                noteListItem.addEventListener("click", e => switchNotes(currentUser.uid, key));
                 notesListContent.appendChild(noteListItem);
             });
         })
@@ -97,10 +121,10 @@ function fetchNotes() {
 
 function syncNotes(btn) {
     let currentUser = firebase.auth().currentUser;
-    if(currentUser && currentUser.emailVerified) {
+    if (currentUser && currentUser.emailVerified) {
         let icon = btn.querySelector('i');
         icon.classList.toggle("fa-spin");
-        if(!getLocalStorage()) {
+        if (!getLocalStorage()) {
             setLocalStorage();
         }
         let currentNote = getLocalStorage();
@@ -120,7 +144,7 @@ function syncNotes(btn) {
             })
             .catch(err => console.log(err));
     }
-    else if(!currentUser) {
+    else if (!currentUser) {
         alert("Login first to sync notes!")
     }
     else {
@@ -144,19 +168,19 @@ function renderPreview(mdText) {
     });
 }
 
-function setLocalStorage () {
+function setLocalStorage() {
     let currentNote = window.localStorage.getItem("currentNote");
     let mdText = textEditor.value;
-    if(!currentNote) {
+    if (!currentNote) {
         let noteId = "note-" + uuidv4();
         let folderId = defaultFolderId;
         currentNote = {
             "userId": null,
-            "noteId" : noteId,
-            "folderId" : folderId,
-            "noteName" : "Welcome note",
-            "folderName":"Default",
-            "content" : mdText
+            "noteId": noteId,
+            "folderId": folderId,
+            "noteName": "Welcome note",
+            "folderName": "Default",
+            "content": mdText
         }
         window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
     }
@@ -167,7 +191,7 @@ function setLocalStorage () {
     }
 }
 
-function getLocalStorage () {
+function getLocalStorage() {
     return JSON.parse(window.localStorage.getItem("currentNote"));
 }
 

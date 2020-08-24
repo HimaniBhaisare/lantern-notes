@@ -58,9 +58,7 @@ signupButton.addEventListener("click", e => {
             .then(userCredential => {
                 let user = userCredential.user;
                 user.sendEmailVerification()
-                    .then(() => {
-                        alert("Verify email to sync notes to your account.")
-                    });
+                    .catch(err => console.log(err));
                 user.updateProfile({ displayName: name })
                     .catch((e) => console.log(e.message));
 

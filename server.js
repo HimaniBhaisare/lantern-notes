@@ -31,9 +31,9 @@ app.post('/notes', (req, res) => {
         .collection('notes')
         .doc(req.body.noteId)
         .set({
-            "note_name": req.body.noteName,
+            "noteName": req.body.noteName,
             "content": req.body.content,
-            "folder_id": req.body.folderId
+            "folderId": req.body.folderId
         });
 
     res.json({
@@ -52,6 +52,18 @@ app.post('/user', (req, res) => {
         message: "Database ready"
     });
 });
+
+app.post('/switchNotes', (req, res) => {
+    db.collection('User List')
+        .doc(req.body.userId)
+        .collection('notes')
+        .doc(req.body.noteId)
+        .get()
+        .then(note => {
+            res.json(note.data());
+        })
+        .catch(err => console.log(err));
+})
 
 app.post('/notesList', (req, res) => {
     let notes = {};
