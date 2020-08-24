@@ -1,34 +1,40 @@
+require('dotenv').config();
 const express = require('express');
 const admin = require('firebase-admin');
-require('dotenv').config();
 
+//  Express setup
 const app = express();
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening at localhost:${port}`));
 app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
 
+//  Firestore setup
 admin.initializeApp({
     credential: admin.credential.cert(
-        JSON.parse(Buffer.from(process.env.GOOGLE_FIREBASE_AUTH, 'base64').toString('utf-8')))
+        JSON.parse(Buffer.from(process.env.GOOGLE_FIREBASE_AUTH, 'base64').toString('utf-8'))
+    )
 });
-
 const db = admin.firestore();
 
 app.post('/notes', (req, res) => {
     db.collection('User List')
-        .doc('aravind@email.com')
+        .doc(req.body.userId)
+        .collection('folders')
+        .doc(req.body.folderId)
         .set({
-            "email": "aravind@gmail.com",
-            "folders": ["412342", "241343"],
-            "name": "chutiyaa"
-        });
+            "folder_name" : req.body.folderName
+        })
 
     db.collection('User List')
-        .doc('aravind@email.com')
+        .doc(req.body.userId)
         .collection('notes')
-        .doc('note_id')
-        .set(req.body);
+        .doc(req.body.noteId)
+        .set({
+            "note_name" : req.body.noteName,
+            "content" : req.body.content,
+            "folder_id" : req.body.folderId
+        });
 
     res.json({
         message: "Updated Database"
@@ -37,13 +43,12 @@ app.post('/notes', (req, res) => {
 
 app.post('/user', (req, res) => {
     db.collection('User List')
-        .doc(req.body.userid)
+        .doc(req.body.userId)
         .set({
-            "email": req.body.email,
-            "folders": [],
-            "name": "Kuku"
+            "name": req.body.name,
+            "email": req.body.email
         });
     res.json({
-        message: "User Created"
+        message: "Database ready"
     });
 });

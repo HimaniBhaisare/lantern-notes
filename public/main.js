@@ -12,6 +12,14 @@ const converter = new showdown.Converter({
     literalMidWordUnderscores: true
 });
 
+function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
+const defaultFolderId = "folder-0099a9be-11e0-4429-afc3-ef50e3a43668";
+
 function switchTheme(btn) {
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
@@ -19,45 +27,69 @@ function switchTheme(btn) {
     document.body.classList.toggle("dark-theme");
 }
 
-function userAuth(btn) {
-    let authForm = document.getElementById("authForm");
-    if(authForm.style.display == "none")
-        authForm.style.display = "flex";
+function userLoginSignup(btn) {
+    let modalContainer = document.getElementById("modalContainer");
+    if(modalContainer.style.display == "none")
+        modalContainer.style.display = "block";
     else
-        authForm.style.display = "none";
+        modalContainer.style.display = "none";
+    openLoginWindow();
+    window.onclick = (e) => {
+        if(e.target == modalContainer) {
+            modalContainer.style.display = "none";
+        }
+    }
+}
+
+function openLoginWindow() {
+    let loginWindow = document.getElementById("loginWindow");
+    let signupWindow = document.getElementById("signupWindow");
+    signupWindow.style.display = "none";
+    loginWindow.style.display = "flex";
+}
+
+function openSignupWindow() {
+    let loginWindow = document.getElementById("loginWindow");
+    let signupWindow = document.getElementById("signupWindow")
+    loginWindow.style.display = "none";
+    signupWindow.style.display = "flex";
 }
 
 function syncNotes(btn) {
-    let icon = btn.querySelector('i');
-    icon.classList.toggle("fa-spin");
+    let currentUser = firebase.auth().currentUser;
+    if(currentUser && currentUser.emailVerified) {
+        let icon = btn.querySelector('i');
+        icon.classList.toggle("fa-spin");
+        let currentNote = getLocalStorage();
+        currentNote.userId = currentUser.uid;
+        window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
 
-    const userDetails = firebase.auth().currentUser;
-    const userid = userDetails.uid;
-
-    let mdText = textEditor.value;
-    const data = {
-        "name": "C++ notes",
-        "content": mdText,
-        "folder_id": "412342"
-    };
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
-    fetch('/notes', options)
-        .then(res => {
-            setTimeout(() => icon.classList.toggle("fa-spin"), 2000);
-        })
-        .catch(err => console.log(err));
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(currentNote)
+        };
+        fetch('/notes', options)
+            .then(res => {
+                setTimeout(() => icon.classList.toggle("fa-spin"), 2000);
+            })
+            .catch(err => console.log(err));
+    }
+    else if(!currentUser) {
+        alert("Login first to sync notes!")
+    }
+    else {
+        alert("Verify email to sync notes to your account.")
+    }
 }
 
+// Hide loading screen after 2 secs
 function loadingFade() {
     setTimeout(() => {
         $("#loading-screen").fadeOut(0);
-    }, 2000);
+    }, 1000);
 }
 
 function renderPreview(mdText) {
@@ -69,12 +101,39 @@ function renderPreview(mdText) {
     });
 }
 
+function setLocalStorage () {
+    let currentNote = window.localStorage.getItem("currentNote");
+    let mdText = textEditor.value;
+    if(!currentNote) {
+        let noteId = "note-" + uuidv4();
+        let folderId = defaultFolderId;
+        currentNote = {
+            "userId": null,
+            "noteId" : noteId,
+            "folderId" : folderId,
+            "noteName" : "Welcome note",
+            "folderName":"Default",
+            "content" : mdText
+        }
+        window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
+    }
+    else {
+        currentNote = JSON.parse(currentNote);
+        currentNote.content = mdText;
+        window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
+    }
+}
+
+function getLocalStorage () {
+    return JSON.parse(window.localStorage.getItem("currentNote"));
+}
+
 // Handling tab key press
 textEditor.addEventListener('keydown', e => {
     if (e.keyCode == 9) {
-        const mdText = e.target.value;
-        const start = textEditor.selectionStart;
-        const end = textEditor.selectionEnd;
+        let mdText = e.target.value;
+        let start = textEditor.selectionStart;
+        let end = textEditor.selectionEnd;
         e.target.value = mdText.substring(0, start) + "\t" + mdText.substring(end);
         textEditor.selectionStart = textEditor.selectionEnd = start + 1;
         e.preventDefault();
@@ -83,16 +142,16 @@ textEditor.addEventListener('keydown', e => {
 
 //  Rendering markdown preview from textArea on keyup event
 textEditor.addEventListener('keyup', e => {
-    const mdText = e.target.value;
-    window.localStorage.setItem("markdown", mdText);
-    renderPreview(mdText);
+    setLocalStorage();
+    let currentNote = getLocalStorage();
+    renderPreview(currentNote.content);
 });
 
 //  Loading stored markdown
-const storedMarkdown = window.localStorage.getItem("markdown");
-if (storedMarkdown) {
-    textEditor.value = storedMarkdown;
-    renderPreview(storedMarkdown);
+let currentNote = getLocalStorage();
+if (currentNote) {
+    textEditor.value = currentNote.content;
+    renderPreview(currentNote.content);
 }
 
 // Switch view buttons

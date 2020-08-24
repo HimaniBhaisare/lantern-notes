@@ -13,8 +13,8 @@
 
 <body onload="loadingFade()">
     <div id="loading-screen">
-        <div id="loader-logo">
-            <img src="./assets/LogoLoading.gif" alt="loading gif" width="300px" height="100px">
+        <div id="loader-brand">
+            <img src="./assets/LogoLoading.gif" id="loader-logo" alt="loading gif" width="300" height="100">
             <br>
             <p id="loader-text">A markdown note taking app for programmers!</p>
         </div>
@@ -22,25 +22,61 @@
     <div id="main-page">
         <nav class="navbar">
             <div class="navbar-header">
-                <a id="logo" href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" width="150" height="35"/></a>
+                <a href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" id="lanternLogo" width="150" height="35"/></a>
             </div>
             <div class="navbar-content">
                 <ul class="navbar-items navbar-right">
-                    <li><button onclick="syncNotes(this)" class="navbar-button sync-notes"><i class="fa fa-sync-alt"></i></button></li>
-                    <li><button onclick="switchTheme(this)" class="navbar-button theme-selector"><i class="far fa-moon"></i></button></li>
-                    <li><button onclick="userAuth(this)" class="navbar-button user-auth"><i class="far fa-user"></i></button></li>
+                    <li><button onclick="syncNotes(this)" class="navbar-button" id="syncButton"><i class="fa fa-sync-alt"></i></button></li>
+                    <li><button onclick="switchTheme(this)" class="navbar-button"><i class="far fa-moon"></i></button></li>
+                    <li><button onclick="userLoginSignup(this)" class="navbar-button"><i class="far fa-user"></i></button></li>
                 </ul>
             </div>
         </nav>
-        <div class="auth-form" id="authForm" style="display : none;">
-            <label for="email">Email</label>
-            <input id="email" type="email" name="email" placeholder="Enter Email">
-            <label for="password">Password</label>
-            <input id="pass" type="password" name="password" placeholder="Enter Password">
-            <button id="login">Login</button>
-            <button id="signup">Sign Up</button>
-            <button id="signout">Sign Out</button>
+        <!-- Login/Signup modal window -->
+        <div class="modal-container" id="modalContainer" style="display: none;">
+            <!-- Login window -->
+            <div class="login-window animate-modal" id="loginWindow" style="display: none;">
+                <div style="padding: 0.25rem 0.5rem;">
+                    <span id="loginError"></span>
+                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <div class="form-content">
+                    <label for="login-email">Email</label>
+                    <input id="loginEmail" type="email" name="login-email" placeholder="Enter Email" autofocus>
+                    <label for="login-password">Password</label>
+                    <input id="loginPassword" type="password" name="login-password" placeholder="Enter Password">
+                    <span id="forgotPassSpan"><a href="#" id="forgotPassword">Forgot password?</a></span>
+                    <button id="loginButton">Login</button>
+                    <span id="createAccSpan">New user? <a href="#" onclick="openSignupWindow()" id="createAccount">Create an account</a></span>
+                </div>
+                <div style="padding: 0.5rem; text-align: center;">
+                    <hr class="form-divider" style="border-color: #ffffff; width: 40%; margin: 0; margin-bottom: 3px;">
+                    <span style="margin: 0px 5px;" class="form-divider">(or)</span>
+                    <hr class="form-divider" style="border-color: #ffffff; width: 40%; margin: 0; margin-bottom: 3px;">
+                </div>
+                <div style="padding: 2rem;"></div>
+            </div>
+            <!-- Signup window -->
+            <div class="signup-window animate-modal" id="signupWindow" style="display: none;">
+                <div style="padding: 0.25rem 0.5rem;">
+                    <span id="signupError"></span>
+                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <div class="form-content">
+                    <label for="signup-displayname">Display name</label>
+                    <input id="signupDisplayname" type="text" name="signup-displayname" placeholder="Enter display name" autofocus>
+                    <label for="signup-email">Email</label>
+                    <input id="signupEmail" type="email" name="signup-email" placeholder="Enter email">
+                    <label for="signup-password">Password</label>
+                    <input id="signupPassword" type="password" name="signup-password" placeholder="Enter password">
+                    <label for="signup-cnfPassword">Confirm Password</label>
+                    <input id="signupCnfPassword" type="password" name="signup-cnfPassword" placeholder="Re-type password">
+                    <button id="signupButton">Sign up</button>
+                    <span id="loginLinkSpan">Already a user? <a href="#" onclick="openLoginWindow()" id="loginLink">Login here</a></span>
+                </div>
+            </div>
         </div>
+        <!-- Text editor/Preview Section -->
         <div class="main-content">
             <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
             <div class="quick-toolbar">
@@ -53,15 +89,12 @@
         </div>
     </div>
 
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="main.js"></script>
-    <script src="auth.js"></script>
+    <script src="userAuth.js"></script>
 </body>
 </html>

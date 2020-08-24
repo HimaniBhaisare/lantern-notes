@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    width: 100%;
 }
 
 body {
@@ -16,6 +17,7 @@ body {
     --loading-text: #000000;
     --nav-button-color: #ffffff;
     --nav-button-active: #2e2e2e;
+    --auth-window-color: #000000c7;
     --text-editor-color: #fffaff;
     --text-editor-text: #524f4f;
     --preview-color: #efebf0;
@@ -44,6 +46,7 @@ body.dark-theme {
     --loading-text: #ffffff;
     --nav-button-color: white;
     --nav-button-active: #2e2e2e;
+    --auth-window-color: #000000c7;
     --text-editor-color:#333333;
     --text-editor-text: #ffffff;
     --preview-color: #2c2c2c;
@@ -86,7 +89,7 @@ a:hover {
     background-color: var(--loading-bkg);
 }
 
-#loader-logo {
+#loader-brand {
     display: inline-block;
     position: relative;
     margin: auto;
@@ -94,7 +97,7 @@ a:hover {
 }
 
 #loader-text {
-    font-size: 1em;
+    font-size: 0.9em;
     font-family: 'Bitter', serif;
     font-family: 'Montserrat', sans-serif;
     color: var(--loading-text);
@@ -122,19 +125,21 @@ a:hover {
     height: 100%;
 }
 
-#logo {
-    display: block;
-    overflow: hidden;
-    position: relative;
+#lanternLogo {
+    width: auto;
+    height: 80%;
 }
 
 .navbar-content {
     flex: 1 0;
     height: 100%;
+    width: 100%;
 }
 
 .navbar-items {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
+    height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -152,48 +157,209 @@ a:hover {
     border-radius: 0.75rem;
     outline: none;
     cursor: pointer;
-}
-
-.theme-selector {
     font-size: 1.25em;
     color: var(--nav-button-color);
 }
 
-.theme-selector:active {
+.navbar-button:active {
     background-color: var(--nav-button-active);
 }
 
-.sync-notes {
-    font-size: 1.25em;
-    color: var(--nav-button-color);
+@media screen and (max-height: 550px) {
+    .navbar-button {
+        padding: 0 0.4rem;
+        font-size: 1em;
+    }
 }
 
-.sync-notes:active {
-    background-color: var(--nav-button-active);
+/* Modal Login/Signup page */
+.modal-container {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 10%;
+    width: 100%;
+    height: 90%;
+    background-color: #00000050;
 }
 
-.user-auth {
-    font-size: 1.25em;
-    color: var(--nav-button-color);
-}
-
-.user-auth:active {
-    background-color: var(--nav-button-active);
-}
-
-.auth-form {
+.login-window {
     flex-direction: column;
     position: absolute;
-    width: 400px;
-    height: 400px;
-    top: 50%;
-    right: 50%;
-    margin: -200px -200px 0 0;
-    z-index: 2000;
-    padding: 0.5rem;
-    background-color: #000000;
-    opacity: 80%;
+    width: 30%;
+    height: fit-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 1rem;
+    background-color: var(--auth-window-color);
     color: #ffffff;
+}
+
+.signup-window {
+    flex-direction: column;
+    position: absolute;
+    width: 30%;
+    height: fit-content;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 1rem;
+    background-color: var(--auth-window-color);
+    color: #ffffff;
+}
+
+#loginError, #signupError {
+    font-size: 0.8em;
+    color: #fc637d;
+}
+
+.close {
+    float: right;
+    color: #ffffff;
+    right: 25px;
+    top: 0;
+    margin-left: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    line-height: 0.5;
+}
+  
+.close:hover,
+.close:focus {
+    color: #fc637d;
+    cursor: pointer;
+}
+
+.form-content {
+    padding: 0.5rem;
+    font-size: 0.8em;
+    font-family: Helvetica;
+    letter-spacing: 0.1em;
+}
+
+input[type=email], input[type=password], input[type=text] {
+    width: 100%;
+    display: inline-block;
+    padding: 0.75rem;
+    margin: 0.5rem 0 0.75rem 0;
+    border: 1px #8a8a8a;
+    border-style: solid;
+    color: #8a8a8a;
+    box-sizing: border-box;
+    background-color: #000000c7;
+    color: #ffffff;
+    opacity: 100%;
+}
+
+#forgotPassSpan {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+
+#forgotPassword, #forgotPassword:hover {
+    color: #da8fd5;
+}
+
+#forgotPassword:active {
+    color: #a972c9;
+}
+
+#loginButton, #loginButton:hover, #loginButton:focus, #loginButton:visited {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    outline: none;
+    margin: 0.5rem 0;
+    background-color: #ffc8fc;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-family: Helvetica;
+    letter-spacing: 0.05em;
+    color: #110116;
+}
+
+#loginButton:active {
+    background-color: #ebbbe7;
+}
+
+#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    outline: none;
+    margin: 0.5rem 0;
+    background-color: #ffc8fc;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-family: Helvetica;
+    letter-spacing: 0.05em;
+    color: #110116;
+}
+
+#signupButton:active {
+    background-color: #ebbbe7;
+}
+
+#createAccSpan {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+#createAccount, #createAccount:hover {
+    color: #da8fd5;
+}
+
+#createAccount:active {
+    color: #a972c9;
+}
+
+#loginLinkSpan {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+#loginLink, #loginLink:hover {
+    color: #da8fd5;
+}
+
+#loginLink:active {
+    color: #a972c9;
+}
+
+.form-divider {
+    display: inline-block;
+}
+
+/* Add Zoom Animation */
+.animate-modal {
+    -webkit-animation: animatezoom 0.5s;
+    animation: animatezoom 0.5s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+@media screen and (max-width: 1024px) {
+    .login-window, .signup-window {
+        width: 70%;
+    }
 }
 
 .main-content {

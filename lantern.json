@@ -3,12 +3,11 @@
         "user46728": {
             "name" : "aravind",
             "email" : "aravind@gmail.com",
-            "folders" : [
-                {
-                    "folder_name" : "Default",
-                    "folder_id" : "241343"
+            "folders" : {
+                "241343" : {
+                    "folder_name" : "Default"
                 }
-            ],
+            },
             "notes" : {
                 "note_id234" : {
                     "note name" : "c++",
