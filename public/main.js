@@ -58,6 +58,7 @@ function openSignupWindow() {
 }
 
 function openNotesList(btn) {
+    fetchNotes();
     openModalContainer();
     loginWindow.style.display = "none";
     signupWindow.style.display = "none";
