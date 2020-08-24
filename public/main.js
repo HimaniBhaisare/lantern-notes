@@ -91,7 +91,6 @@ function switchNotes(userId, noteId) {
         .catch(err => console.log(err));
 }
 
-window.onload(() => fetchNotes());
 function fetchNotes() {
     let currentUser = firebase.auth().currentUser;
     let notesListContent = document.getElementById("notesListContent");
@@ -140,6 +139,7 @@ function syncNotes(btn) {
         };
         fetch('/notes', options)
             .then(res => {
+                fetchNotes();
                 setTimeout(() => icon.classList.toggle("fa-spin"), 2000);
             })
             .catch(err => console.log(err));

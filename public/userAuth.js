@@ -104,7 +104,6 @@ signupButton.addEventListener("click", e => {
 auth.onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
         console.log("logged in!");
-        fetchNotes();
         syncNotes(document.getElementById("syncButton"));
     }
     else {
