@@ -17,7 +17,16 @@ body {
     --loading-text: #000000;
     --nav-button-color: #ffffff;
     --nav-button-active: #2e2e2e;
+    --modal-container: #00000050;
     --auth-window-color: #000000c7;
+    --auth-window-text-color: #ffffff;
+    --auth-window-close: #ffffff;
+    --auth-window-input: #000000c7;
+    --auth-window-input-text-color: #ffffff;
+    --auth-window-link: #da8fd5;
+    --auth-window-link-hover: #a972c9;
+    --auth-window-button: #ffc8fc;
+    --auth-window-button-active: #ebbbe7;
     --text-editor-color: #fffaff;
     --text-editor-text: #524f4f;
     --preview-color: #efebf0;
@@ -37,6 +46,7 @@ body {
     --tr-hover-color: #d5d2d6;
     --hr-color: #000000;
     --hljs-background: #e3dfe6;
+
 }
 
 body.dark-theme {
@@ -46,7 +56,16 @@ body.dark-theme {
     --loading-text: #ffffff;
     --nav-button-color: white;
     --nav-button-active: #2e2e2e;
+    --modal-container: #3d3d3d50;
     --auth-window-color: #000000c7;
+    --auth-window-text-color: #ffffff;
+    --auth-window-close: #ffffff;
+    --auth-window-input: #000000c7;
+    --auth-window-input-text-color: #ffffff;
+    --auth-window-link: #da8fd5;
+    --auth-window-link-hover: #a972c9;
+    --auth-window-button: #ffc8fc;
+    --auth-window-button-active: #ebbbe7;   
     --text-editor-color:#333333;
     --text-editor-text: #ffffff;
     --preview-color: #2c2c2c;
@@ -146,6 +165,10 @@ a:hover {
     list-style: none;
 }
 
+.navbar-left {
+    float: left;
+}
+
 .navbar-right {
     float: right;
 }
@@ -180,13 +203,14 @@ a:hover {
     top: 10%;
     width: 100%;
     height: 90%;
-    background-color: #00000050;
+    background-color: var(--modal-container);
 }
 
-.login-window {
+.notes-list-window {
     flex-direction: column;
     position: absolute;
     width: 30%;
+    max-height: 60%;
     height: fit-content;
     top: 0;
     bottom: 0;
@@ -195,9 +219,33 @@ a:hover {
     margin: auto;
     padding: 1rem;
     background-color: var(--auth-window-color);
-    color: #ffffff;
+    color: var(--auth-window-text-color);
 }
 
+.notes-list-content {
+    padding: 0.5rem;
+    font-size: 0.8em;
+    font-family: Helvetica;
+    letter-spacing: 0.1em;
+    overflow: auto;
+}
+
+.notes-list-item {
+    width: 100%;
+    display: inline-block;
+    font-size: 1.125em;
+    padding: 0.75rem;
+    margin: 0.35rem 0;
+    box-sizing: border-box;
+    background-color: #000000c7;
+    cursor: pointer;
+}
+
+.notes-list-item:hover {
+    background-color: #1a1a1ac7;
+}
+
+.login-window,
 .signup-window {
     flex-direction: column;
     position: absolute;
@@ -210,7 +258,7 @@ a:hover {
     margin: auto;
     padding: 1rem;
     background-color: var(--auth-window-color);
-    color: #ffffff;
+    color: var(--auth-window-text-color);
 }
 
 #loginError, #signupError {
@@ -220,7 +268,7 @@ a:hover {
 
 .close {
     float: right;
-    color: #ffffff;
+    color: var(--auth-window-close);
     right: 25px;
     top: 0;
     margin-left: 10px;
@@ -251,8 +299,8 @@ input[type=email], input[type=password], input[type=text] {
     border-style: solid;
     color: #8a8a8a;
     box-sizing: border-box;
-    background-color: #000000c7;
-    color: #ffffff;
+    background-color: var(--auth-window-input);
+    color: var(--auth-window-input-text-color);
     opacity: 100%;
 }
 
@@ -262,63 +310,11 @@ input[type=email], input[type=password], input[type=text] {
     text-align: right;
 }
 
-#forgotPassword, #forgotPassword:hover {
-    color: #da8fd5;
-}
-
-#forgotPassword:active {
-    color: #a972c9;
-}
-
-#loginButton, #loginButton:hover, #loginButton:focus, #loginButton:visited {
-    width: 100%;
-    padding: 0.75rem;
-    border: none;
-    outline: none;
-    margin: 0.5rem 0;
-    background-color: #ffc8fc;
-    cursor: pointer;
-    font-size: 1.2em;
-    font-family: Helvetica;
-    letter-spacing: 0.05em;
-    color: #110116;
-}
-
-#loginButton:active {
-    background-color: #ebbbe7;
-}
-
-#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited {
-    width: 100%;
-    padding: 0.75rem;
-    border: none;
-    outline: none;
-    margin: 0.5rem 0;
-    background-color: #ffc8fc;
-    cursor: pointer;
-    font-size: 1.2em;
-    font-family: Helvetica;
-    letter-spacing: 0.05em;
-    color: #110116;
-}
-
-#signupButton:active {
-    background-color: #ebbbe7;
-}
-
 #createAccSpan {
     display: inline-block;
     width: 100%;
     text-align: center;
     margin: 0.5rem 0;
-}
-
-#createAccount, #createAccount:hover {
-    color: #da8fd5;
-}
-
-#createAccount:active {
-    color: #a972c9;
 }
 
 #loginLinkSpan {
@@ -328,12 +324,36 @@ input[type=email], input[type=password], input[type=text] {
     margin: 0.5rem 0;
 }
 
+#forgotPassword, #forgotPassword:hover,
+#createAccount, #createAccount:hover,
 #loginLink, #loginLink:hover {
-    color: #da8fd5;
+    color: var(--auth-window-link);
 }
 
+#forgotPassword:active,
+#createAccount:active,
 #loginLink:active {
-    color: #a972c9;
+    color: var(--auth-window-link-hover);
+}
+
+#loginButton, #loginButton:hover, #loginButton:focus, #loginButton:visited,
+#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    outline: none;
+    margin: 0.5rem 0;
+    background-color: var(--auth-window-button);
+    cursor: pointer;
+    font-size: 1.2em;
+    font-family: Helvetica;
+    letter-spacing: 0.05em;
+    color: #110116;
+}
+
+#loginButton:active,
+#signupButton:active {
+    background-color: var(--auth-window-button-active);
 }
 
 .form-divider {

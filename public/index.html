@@ -25,6 +25,10 @@
                 <a href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" id="lanternLogo" width="150" height="35"/></a>
             </div>
             <div class="navbar-content">
+                <ul class="navbar-items navbar-left">
+                    <li><button onclick="openNotesList(this)" class="navbar-button"><i class="far fa-folder"></i></button></li>
+                    <li><button onclick="createNewNote(this)" class="navbar-button"><i class="fa fa-plus"></i></button></li>
+                </ul>
                 <ul class="navbar-items navbar-right">
                     <li><button onclick="syncNotes(this)" class="navbar-button" id="syncButton"><i class="fa fa-sync-alt"></i></button></li>
                     <li><button onclick="switchTheme(this)" class="navbar-button"><i class="far fa-moon"></i></button></li>
@@ -34,6 +38,14 @@
         </nav>
         <!-- Login/Signup modal window -->
         <div class="modal-container" id="modalContainer" style="display: none;">
+            <!-- Notes list -->
+            <div class="notes-list-window animate-modal" id="notesListWindow" style="display: none;">
+                <div style="padding: 0.25rem 0.5rem;">
+                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <ul class="notes-list-content" id="notesListContent">
+                </ul>
+            </div>
             <!-- Login window -->
             <div class="login-window animate-modal" id="loginWindow" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
@@ -67,7 +79,7 @@
                     <input id="signupDisplayname" type="text" name="signup-displayname" placeholder="Enter display name" autofocus>
                     <label for="signup-email">Email</label>
                     <input id="signupEmail" type="email" name="signup-email" placeholder="Enter email">
-                    <label for="signup-password">Password</label>
+                    <label for="signup-password">Pa""ssword</label>
                     <input id="signupPassword" type="password" name="signup-password" placeholder="Enter password">
                     <label for="signup-cnfPassword">Confirm Password</label>
                     <input id="signupCnfPassword" type="password" name="signup-cnfPassword" placeholder="Re-type password">
@@ -78,14 +90,14 @@
         </div>
         <!-- Text editor/Preview Section -->
         <div class="main-content">
-            <textarea class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
+            <textarea class="text-editor" id="textEditor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
             <div class="quick-toolbar">
                 <button onclick="toggleEditMode(this)" class="quick-button editMode-button"><i class="fas fa-edit"></i></button>
                 <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button"><i class="fas fa-columns"></i></button>
                 <button onclick="toggleReadMode(this)" class="quick-button readMode-button"><i class="far fa-eye"></i></button>
                 <button onclick="downloadHtml()" class="quick-button downloadHtml-button" ><i class="fa fa-download"></i></button>
             </div>
-            <div class="preview"></div>
+            <div class="preview" id="preview"></div>
         </div>
     </div>
 

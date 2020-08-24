@@ -23,7 +23,7 @@ app.post('/notes', (req, res) => {
         .collection('folders')
         .doc(req.body.folderId)
         .set({
-            "folder_name" : req.body.folderName
+            "folder_name": req.body.folderName
         })
 
     db.collection('User List')
@@ -31,9 +31,9 @@ app.post('/notes', (req, res) => {
         .collection('notes')
         .doc(req.body.noteId)
         .set({
-            "note_name" : req.body.noteName,
-            "content" : req.body.content,
-            "folder_id" : req.body.folderId
+            "note_name": req.body.noteName,
+            "content": req.body.content,
+            "folder_id": req.body.folderId
         });
 
     res.json({
@@ -51,4 +51,19 @@ app.post('/user', (req, res) => {
     res.json({
         message: "Database ready"
     });
+});
+
+app.post('/notesList', (req, res) => {
+    let notes = {};
+    db.collection('User List')
+        .doc(req.body.userId)
+        .collection('notes')
+        .get()
+        .then(snapshot => {
+            snapshot.forEach(note => {
+                notes[note.id] = note.data();
+            });
+            res.json(notes);
+        })
+        .catch(err => console.log(err)); 
 });

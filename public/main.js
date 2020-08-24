@@ -1,5 +1,9 @@
-const textEditor = document.querySelector('.text-editor');
-const preview = document.querySelector('.preview');
+const textEditor = document.getElementById('textEditor');
+const preview = document.getElementById('preview');
+const modalContainer = document.getElementById("modalContainer");
+const loginWindow = document.getElementById("loginWindow");
+const signupWindow = document.getElementById("signupWindow");
+const notesListWindow = document.getElementById("notesListWindow");
 const converter = new showdown.Converter({
     strikethrough: true,
     tables: true,
@@ -27,13 +31,8 @@ function switchTheme(btn) {
     document.body.classList.toggle("dark-theme");
 }
 
-function userLoginSignup(btn) {
-    let modalContainer = document.getElementById("modalContainer");
-    if(modalContainer.style.display == "none")
-        modalContainer.style.display = "block";
-    else
-        modalContainer.style.display = "none";
-    openLoginWindow();
+function openModalContainer() {
+    modalContainer.style.display = "block";
     window.onclick = (e) => {
         if(e.target == modalContainer) {
             modalContainer.style.display = "none";
@@ -41,18 +40,58 @@ function userLoginSignup(btn) {
     }
 }
 
+function userLoginSignup(btn) {
+    openModalContainer();
+    openLoginWindow();
+}
+
 function openLoginWindow() {
-    let loginWindow = document.getElementById("loginWindow");
-    let signupWindow = document.getElementById("signupWindow");
+    notesListWindow.style.display = "none";
     signupWindow.style.display = "none";
     loginWindow.style.display = "flex";
 }
 
 function openSignupWindow() {
-    let loginWindow = document.getElementById("loginWindow");
-    let signupWindow = document.getElementById("signupWindow")
+    notesListWindow.style.display = "none";
     loginWindow.style.display = "none";
     signupWindow.style.display = "flex";
+}
+
+function openNotesList(btn) {
+    openModalContainer();
+    loginWindow.style.display = "none";
+    signupWindow.style.display = "none";
+    notesListWindow.style.display = "flex";
+}
+
+function fetchNotes() {
+    let currentUser = firebase.auth().currentUser;
+    let notesListContent = document.getElementById("notesListContent");
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId : currentUser.uid })
+    }
+    fetch('/notesList', options)
+        .then(res => res.json())
+        .then(notes => {
+            let keys = Object.keys(notes);
+            keys.forEach(key => {
+                let noteListItem = document.createElement("li");
+                noteListItem.setAttribute("class", "notes-list-item");
+                noteListItem.textContent = notes[key].note_name;
+                noteListItem.addEventListener("click", e => {
+                    syncNotes(document.getElementById("syncButton"));
+                    textEditor.value = notes[key].content;
+                    renderPreview(notes[key].content);
+                });
+                notesListContent.appendChild(noteListItem);
+            });
+        })
+        .catch(err => console.log(err));
 }
 
 function syncNotes(btn) {
@@ -60,6 +99,9 @@ function syncNotes(btn) {
     if(currentUser && currentUser.emailVerified) {
         let icon = btn.querySelector('i');
         icon.classList.toggle("fa-spin");
+        if(!getLocalStorage()) {
+            setLocalStorage();
+        }
         let currentNote = getLocalStorage();
         currentNote.userId = currentUser.uid;
         window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
