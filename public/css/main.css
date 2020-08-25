@@ -188,6 +188,43 @@ a:hover {
     background-color: var(--nav-button-active);
 }
 
+.note-name-box {
+    padding: 0.625rem;
+    margin-left: 0.75rem;
+    height: 100%;
+    background: #0000003b;
+    border: none;
+    border-radius: 0.3rem;
+    outline: none;
+    resize: none;
+    white-space: nowrap;
+    font-size: 1.25em;
+    font-weight: bold;
+    font-family: Helvetica;
+    color: white;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    cursor: default;
+}
+
+.note-name-box:hover {
+    background: #0000005b;
+}
+
+.note-name-box:focus {
+    background: #474747;
+}
+
+.note-name-box::-webkit-scrollbar {
+    height: 6px;
+}
+
+.note-name-box::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 5px;
+}
+
+
 @media screen and (max-height: 550px) {
     .navbar-button {
         padding: 0 0.4rem;
