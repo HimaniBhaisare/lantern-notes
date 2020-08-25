@@ -27,7 +27,7 @@ function uuidv4() {
 }
 
 const defaultFolderId = "folder-0099a9be-11e0-4429-afc3-ef50e3a43668";
-let currentNoteName = "Welcome note";
+let currentNoteName;
 
 function switchTheme(btn) {
     let icon = btn.querySelector('i');
@@ -103,12 +103,11 @@ function createNewNote(btn) {
     let noteId = "note-" + uuidv4();
     syncNotes(document.getElementById("syncButton"))
     .then(() => {
-            currentNoteName = "Welcome note";
             let currentNote = {
                 "userId": currentUser.uid,
                 "noteId": noteId,
                 "folderId": defaultFolderId,
-                "noteName": currentNoteName,
+                "noteName": "Welcome note",
                 "folderName": "Default",
                 "content": textEditor.textContent
             }
@@ -197,7 +196,7 @@ async function syncNotes(btn) {
         }
         let currentNote = getLocalStorage();
         currentNote.userId = currentUser.uid;
-        currentNote.noteName = currentNoteName;
+        currentNote.noteName = noteNameBox.value;
         console.log("Sync notes => ", currentNote);
         window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
 
@@ -250,7 +249,7 @@ function setLocalStorage() {
             "userId": null,
             "noteId": noteId,
             "folderId": folderId,
-            "noteName": currentNoteName,
+            "noteName": "Welcome note",
             "folderName": "Default",
             "content": mdText
         }
