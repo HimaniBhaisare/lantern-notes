@@ -5,6 +5,8 @@ const loginWindow = document.getElementById("loginWindow");
 const signupWindow = document.getElementById("signupWindow");
 const loggedinWindow = document.getElementById("loggedinWindow");
 const notesListWindow = document.getElementById("notesListWindow");
+const notesListContent = document.getElementById("notesListContent");
+
 const converter = new showdown.Converter({
     strikethrough: true,
     tables: true,
@@ -43,7 +45,7 @@ function openModalContainer() {
 
 function userLoginSignup(btn) {
     openModalContainer();
-    if(firebase.auth().currentUser)
+    if (firebase.auth().currentUser)
         openLoggedinWindow();
     else
         openLoginWindow();
@@ -78,61 +80,92 @@ function openNotesList(btn) {
     notesListWindow.style.display = "flex";
 }
 
-function switchNotes(userId, noteId) {
-    syncNotes(document.getElementById("syncButton"));
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ "userId" : userId, "noteId" : noteId })
-    }
-    fetch('/switchNotes', options)
-        .then(res => res.json())
-        .then(note => {
+function createNewNote(btn) {
+    let currentUser = firebase.auth().currentUser;
+    let noteId = "note-" + uuidv4();
+    syncNotes(document.getElementById("syncButton"))
+        .then(() => {
             let currentNote = {
-                "userId": userId,
+                "userId": currentUser.uid,
                 "noteId": noteId,
-                "folderId": note.folderId,
+                "folderId": defaultFolderId,
                 "noteName": "Welcome note",
                 "folderName": "Default",
-                "content": note.content
+                "content": textEditor.textContent
             }
             window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
-            textEditor.value = note.content;
-            renderPreview(note.content);
+            textEditor.value = textEditor.textContent;
+            renderPreview(textEditor.textContent);
+            syncNotes(document.getElementById("syncButton"));
+        })
+        .catch(err => console.log(err));
+}
+
+function switchNotes(userId, noteId) {
+    syncNotes(document.getElementById("syncButton"))
+        .then(() => {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ "userId": userId, "noteId": noteId })
+            }
+            fetch('/switchNotes', options)
+                .then(res => res.json())
+                .then(note => {
+                    let currentNote = {
+                        "userId": userId,
+                        "noteId": noteId,
+                        "folderId": note.folderId,
+                        "noteName": "Welcome note",
+                        "folderName": "Default",
+                        "content": note.content
+                    }
+                    window.localStorage.setItem("currentNote", JSON.stringify(currentNote));
+                    textEditor.value = note.content;
+                    renderPreview(note.content);
+                })
+                .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
 }
 
 function fetchNotes() {
     let currentUser = firebase.auth().currentUser;
-    let notesListContent = document.getElementById("notesListContent");
     notesListContent.innerHTML = '';
 
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userId: currentUser.uid })
+    if(!currentUser) {
+        let emptyListSpan = document.createElement("span"); // Notes list when not logged in or verified.
+        emptyListSpan.setAttribute("class", "empty-list-span");
+        emptyListSpan.textContent = "Login or Verify email to view your notes";
+        notesListContent.appendChild(emptyListSpan);
     }
-    fetch('/notesList', options)
-        .then(res => res.json())
-        .then(notes => {
-            let keys = Object.keys(notes);
-            keys.forEach(key => {
-                let noteListItem = document.createElement("li");
-                noteListItem.setAttribute("class", "notes-list-item");
-                noteListItem.textContent = notes[key].noteName;
-                noteListItem.addEventListener("click", e => switchNotes(currentUser.uid, key));
-                notesListContent.appendChild(noteListItem);
-            });
-        })
-        .catch(err => console.log(err));
+    else {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: currentUser.uid })
+        }
+        fetch('/notesList', options)
+            .then(res => res.json())
+            .then(notes => {
+                let keys = Object.keys(notes);
+                keys.forEach(key => {
+                    let noteListItem = document.createElement("li");
+                    noteListItem.setAttribute("class", "notes-list-item");
+                    noteListItem.textContent = notes[key].noteName;
+                    noteListItem.addEventListener("click", e => switchNotes(currentUser.uid, key));
+                    notesListContent.appendChild(noteListItem);
+                });
+            })
+            .catch(err => console.log(err));
+    }
 }
 
-function syncNotes(btn) {
+async function syncNotes(btn) {
     let currentUser = firebase.auth().currentUser;
     if (currentUser && currentUser.emailVerified) {
         let icon = btn.querySelector('i');
@@ -151,19 +184,20 @@ function syncNotes(btn) {
             },
             body: JSON.stringify(currentNote)
         };
-        fetch('/notes', options)
+        await fetch('/notes', options)
             .then(res => {
                 fetchNotes();
                 setTimeout(() => icon.classList.toggle("fa-spin"), 2000);
             })
             .catch(err => console.log(err));
     }
+    else if (currentUser && !currentUser.emailVerified) {
+        alert("Verify email to sync notes to your account.")
+    }
     else if (!currentUser) {
         alert("Login first to sync notes!")
     }
-    else {
-        alert("Verify email to sync notes to your account.")
-    }
+    return;
 }
 
 // Hide loading screen after 2 secs

@@ -17,48 +17,52 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-app.post('/notes', (req, res) => {
-    db.collection('User List')
-        .doc(req.body.userId)
-        .collection('folders')
-        .doc(req.body.folderId)
-        .set({
-            "folder_name": req.body.folderName
-        })
-
-    db.collection('User List')
-        .doc(req.body.userId)
-        .collection('notes')
-        .doc(req.body.noteId)
-        .set({
-            "noteName": req.body.noteName,
-            "content": req.body.content,
-            "folderId": req.body.folderId
-        });
-
-    res.json({
-        message: "Updated Database"
+async function createFolder(user) {
+    let folderRef = db.collection('users').doc(user.userId)
+        .collection('folders').doc(user.folderId);
+    await folderRef.set({ "folderName": user.folderName });
+    let notesRef = db.collection('users').doc(user.userId)
+        .collection('notes').doc(user.noteId);
+    await notesRef.set({
+        "noteName": user.noteName,
+        "content": user.content,
+        "folderId": user.folderId
     });
+    return;
+}
+
+async function updateUserProfile(user) {
+    let userRef = db.collection('users').doc(user.userId);
+    await userRef.set({
+        "name": user.name,
+        "email": user.email
+    });
+    return;
+}
+
+app.post('/notes', (req, res) => {
+    createFolder(req.body)
+        .then(() => {
+            res.json({
+                message: "Updated Database"
+            });
+        })
+        .catch(err => console.log(err));
 });
 
 app.post('/user', (req, res) => {
-    db.collection('User List')
-        .doc(req.body.userId)
-        .set({
-            "name": req.body.name,
-            "email": req.body.email
-        });
-    res.json({
-        message: "Database ready"
-    });
+    updateUserProfile(req.body)
+        .then(() => {
+            res.json({
+                message: "Profile ready"
+            });
+        })
+        .catch(err => console.log(err));
 });
 
 app.post('/switchNotes', (req, res) => {
-    db.collection('User List')
-        .doc(req.body.userId)
-        .collection('notes')
-        .doc(req.body.noteId)
-        .get()
+    db.collection('users').doc(req.body.userId)
+        .collection('notes').doc(req.body.noteId).get()
         .then(note => {
             res.json(note.data());
         })
@@ -67,15 +71,13 @@ app.post('/switchNotes', (req, res) => {
 
 app.post('/notesList', (req, res) => {
     let notes = {};
-    db.collection('User List')
-        .doc(req.body.userId)
-        .collection('notes')
-        .get()
+    db.collection('users').doc(req.body.userId)
+        .collection('notes').get()
         .then(snapshot => {
             snapshot.forEach(note => {
                 notes[note.id] = note.data();
             });
             res.json(notes);
         })
-        .catch(err => console.log(err)); 
+        .catch(err => console.log(err));
 });

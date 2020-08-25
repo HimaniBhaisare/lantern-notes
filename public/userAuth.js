@@ -103,11 +103,16 @@ signoutButton.addEventListener("click", e => {
 
 auth.onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        document.getElementById("loggedinMessageSpan").textContent = "Welcome, " + firebaseUser.displayName + "!";
+        if(firebaseUser.displayName)
+            document.getElementById("loggedinMessageSpan").textContent = "Welcome back, " + firebaseUser.displayName + "!";
+        else {
+            document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
+        }
         openLoggedinWindow();
         syncNotes(document.getElementById("syncButton"));
     }
     else {
+        fetchNotes();
         document.getElementById("loggedinMessageSpan").textContent = "Successfully signed out!";
         setTimeout(() => openLoginWindow(), 1000);
     }

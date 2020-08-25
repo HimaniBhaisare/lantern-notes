@@ -246,6 +246,12 @@ a:hover {
     background-color: #1a1a1ac7;
 }
 
+.empty-list-span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
 .login-window,
 .signup-window,
 .loggedin-window {
