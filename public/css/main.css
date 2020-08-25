@@ -224,6 +224,7 @@ a:hover {
 
 .notes-list-content {
     padding: 0.5rem;
+    margin: 0;
     font-size: 0.8em;
     font-family: Helvetica;
     letter-spacing: 0.1em;
@@ -246,7 +247,8 @@ a:hover {
 }
 
 .login-window,
-.signup-window {
+.signup-window,
+.loggedin-window {
     flex-direction: column;
     position: absolute;
     width: 30%;
@@ -283,7 +285,8 @@ a:hover {
     cursor: pointer;
 }
 
-.form-content {
+.form-content,
+.loggedin-window-content {
     padding: 0.5rem;
     font-size: 0.8em;
     font-family: Helvetica;
@@ -324,6 +327,13 @@ input[type=email], input[type=password], input[type=text] {
     margin: 0.5rem 0;
 }
 
+#loggedinMessageSpan {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    margin: 1rem 0;
+}
+
 #forgotPassword, #forgotPassword:hover,
 #createAccount, #createAccount:hover,
 #loginLink, #loginLink:hover {
@@ -337,7 +347,8 @@ input[type=email], input[type=password], input[type=text] {
 }
 
 #loginButton, #loginButton:hover, #loginButton:focus, #loginButton:visited,
-#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited {
+#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited,
+#signoutButton, #signoutButton:hover, #signoutButton:focus, #signoutButton:visited {
     width: 100%;
     padding: 0.75rem;
     border: none;
@@ -346,18 +357,29 @@ input[type=email], input[type=password], input[type=text] {
     background-color: var(--auth-window-button);
     cursor: pointer;
     font-size: 1.2em;
-    font-family: Helvetica;
     letter-spacing: 0.05em;
     color: #110116;
 }
 
 #loginButton:active,
-#signupButton:active {
+#signupButton:active,
+#signoutButton:active {
     background-color: var(--auth-window-button-active);
 }
 
 .form-divider {
     display: inline-block;
+}
+
+.dp-container {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
 }
 
 /* Add Zoom Animation */

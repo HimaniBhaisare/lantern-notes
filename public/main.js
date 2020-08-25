@@ -3,6 +3,7 @@ const preview = document.getElementById('preview');
 const modalContainer = document.getElementById("modalContainer");
 const loginWindow = document.getElementById("loginWindow");
 const signupWindow = document.getElementById("signupWindow");
+const loggedinWindow = document.getElementById("loggedinWindow");
 const notesListWindow = document.getElementById("notesListWindow");
 const converter = new showdown.Converter({
     strikethrough: true,
@@ -42,23 +43,36 @@ function openModalContainer() {
 
 function userLoginSignup(btn) {
     openModalContainer();
-    openLoginWindow();
+    if(firebase.auth().currentUser)
+        openLoggedinWindow();
+    else
+        openLoginWindow();
+}
+
+function openLoggedinWindow() {
+    notesListWindow.style.display = "none";
+    signupWindow.style.display = "none";
+    loginWindow.style.display = "none";
+    loggedinWindow.style.display = "flex";
 }
 
 function openLoginWindow() {
     notesListWindow.style.display = "none";
+    loggedinWindow.style.display = "none";
     signupWindow.style.display = "none";
     loginWindow.style.display = "flex";
 }
 
 function openSignupWindow() {
     notesListWindow.style.display = "none";
+    loggedinWindow.style.display = "none";
     loginWindow.style.display = "none";
     signupWindow.style.display = "flex";
 }
 
 function openNotesList(btn) {
     openModalContainer();
+    loggedinWindow.style.display = "none";
     loginWindow.style.display = "none";
     signupWindow.style.display = "none";
     notesListWindow.style.display = "flex";

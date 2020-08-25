@@ -97,16 +97,18 @@ signupButton.addEventListener("click", e => {
     }
 });
 
-// signout.addEventListener("click", e => {
-//     auth.signOut();
-// });
+signoutButton.addEventListener("click", e => {
+    auth.signOut();
+});
 
 auth.onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        console.log("logged in!");
+        document.getElementById("loggedinMessageSpan").textContent = "Welcome, " + firebaseUser.displayName + "!";
+        openLoggedinWindow();
         syncNotes(document.getElementById("syncButton"));
     }
     else {
-        console.log("logged out");
+        document.getElementById("loggedinMessageSpan").textContent = "Successfully signed out!";
+        setTimeout(() => openLoginWindow(), 1000);
     }
 });
