@@ -87,6 +87,19 @@
                     <span id="loginLinkSpan">Already a user? <a href="#" onclick="openLoginWindow()" id="loginLink">Login here</a></span>
                 </div>
             </div>
+            <!-- Logged in window -->
+            <div class="loggedin-window animate-modal" id="loggedinWindow" style="display: none;">
+                <div style="padding: 0.25rem 0.5rem;">
+                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <div class="dp-container">
+                    <img src="assets/userAvatar.png" alt="display picture" class="avatar">
+                </div>
+                <div class="loggedin-window-content">
+                    <span id="loggedinMessageSpan"></span>
+                    <button id="signoutButton">Sign out</button>
+                </div>
+            </div>
         </div>
         <!-- Text editor/Preview Section -->
         <div class="main-content">
