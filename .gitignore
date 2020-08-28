@@ -4,3 +4,4 @@ node_modules/*
 *.psd
 firebase-config.json
 .env
+lantern.json
