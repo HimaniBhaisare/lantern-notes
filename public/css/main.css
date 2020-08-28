@@ -116,9 +116,10 @@ a:hover {
 }
 
 #loader-text {
-    font-size: 0.9em;
-    font-family: 'Bitter', serif;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: lighter;
+    letter-spacing: 0.1em;
     color: var(--loading-text);
     text-align: center;
 }
