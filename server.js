@@ -1,13 +1,24 @@
 require('dotenv').config();
 const express = require('express');
 const admin = require('firebase-admin');
+const socket = require('socket.io');
 
 //  Express setup
 const app = express();
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Listening at localhost:${port}`));
+const server = app.listen(port, () => console.log(`Listening at localhost:${port}`));
 app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
+
+const io = socket(server);
+
+io.on('connection', (socket) => {
+    socket.on('userSession', (userSession) => {
+        let userId = userSession.userId;
+        socket.join(userId);
+        socket.to(userId).emit('userSession', userSession);
+    });
+});
 
 //  Firestore setup
 admin.initializeApp({
@@ -17,18 +28,19 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-async function createFolder(user) {
-    let folderRef = db.collection('users').doc(user.userId)
-        .collection('folders').doc(user.folderId);
-    await folderRef.set({ "folderName": user.folderName });
-    let notesRef = db.collection('users').doc(user.userId)
-        .collection('notes').doc(user.noteId);
+async function updateNotes(userId, note) {
+    let folderRef = db.collection('users').doc(userId)
+        .collection('folders').doc(note.folderId);
+    //  Folder name can be later set from folderMetadata if adding a folder feature
+    await folderRef.set({ "folderName": "Default" });
+
+    let notesRef = db.collection('users').doc(userId)
+        .collection('notes').doc(note.noteId);
     await notesRef.set({
-        "noteName": user.noteName,
-        "content": user.content,
-        "folderId": user.folderId
+        "noteName": note.noteName,
+        "content": note.content,
+        "folderId": note.folderId
     });
-    return;
 }
 
 async function updateUserProfile(user) {
@@ -37,37 +49,19 @@ async function updateUserProfile(user) {
         "name": user.name,
         "email": user.email
     });
-    return;
 }
 
 app.post('/notes', (req, res) => {
-    createFolder(req.body)
-        .then(() => {
-            res.json({
-                message: "Updated Database"
-            });
-        })
+    updateNotes(req.body.userId, req.body.note)
+        .then(() => res.json({ message: "Database updated" }))
         .catch(err => console.log(err));
 });
 
-app.post('/user', (req, res) => {
+app.post('/users', (req, res) => {
     updateUserProfile(req.body)
-        .then(() => {
-            res.json({
-                message: "Profile ready"
-            });
-        })
+        .then(() => res.json({ message: "profile updated" }))
         .catch(err => console.log(err));
 });
-
-app.post('/switchNotes', (req, res) => {
-    db.collection('users').doc(req.body.userId)
-        .collection('notes').doc(req.body.noteId).get()
-        .then(note => {
-            res.json(note.data());
-        })
-        .catch(err => console.log(err));
-})
 
 app.post('/notesList', (req, res) => {
     let notes = {};

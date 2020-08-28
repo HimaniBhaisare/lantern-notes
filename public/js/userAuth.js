@@ -11,10 +11,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-const loginButton = document.getElementById("loginButton");
-const signupButton = document.getElementById("signupButton");
-// const signoutButton = document.getElementById("signoutButton");
-
 loginButton.addEventListener("click", e => {
     let email = document.getElementById("loginEmail").value;
     let password = document.getElementById("loginPassword").value;
@@ -38,9 +34,24 @@ loginButton.addEventListener("click", e => {
             else {
                 loginError.textContent = "*An error occured. Try again later!";
             }
-
         });
 });
+
+async function storeUserDetails(user, name) {
+    let options = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "name": name,
+            "email": user.email,
+            "userId": user.uid
+        })
+    };
+    await user.updateProfile({ displayName: name });
+    await fetch('/users', options);
+}
 
 signupButton.addEventListener("click", e => {
     let name = document.getElementById("signupDisplayname").value;
@@ -48,6 +59,7 @@ signupButton.addEventListener("click", e => {
     let password = document.getElementById("signupPassword").value;
     let cnfPassword = document.getElementById("signupCnfPassword").value;
     let signupError = document.getElementById("signupError");
+
     if (password != cnfPassword) {
         signupError.textContent = "*Passwords do not match!";
         signupPassword.value = "";
@@ -57,27 +69,9 @@ signupButton.addEventListener("click", e => {
         auth.createUserWithEmailAndPassword(email, password)
             .then(userCredential => {
                 let user = userCredential.user;
-                user.sendEmailVerification()
-                    .catch(err => console.log(err));
-                user.updateProfile({ displayName: name })
-                    .catch((e) => console.log(e.message));
-
-                let options = {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "name": name,
-                        "email": user.email,
-                        "userId": user.uid
-                    })
-                }
-                fetch('/user', options)
-                    .then(res => res.json())
-                    .then(value => console.log(value.message))
-                    .catch(err => console.log(err));
-
+                user.sendEmailVerification();
+                storeUserDetails(user, name)
+                    .catch(err => console.log(err.message));
             })
             .catch(error => {
                 let errorCode = error.code;
@@ -103,17 +97,30 @@ signoutButton.addEventListener("click", e => {
 
 auth.onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        if(firebaseUser.displayName)
+        if (firebaseUser.displayName)
             document.getElementById("loggedinMessageSpan").textContent = "Welcome back, " + firebaseUser.displayName + "!";
         else {
             document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
         }
         openLoggedinWindow();
-        syncNotes(document.getElementById("syncButton"));
+        //  Assign a noteId to the note if its new on login.
+        let currentNote = getLocalStorageNote();
+        if (!currentNote.noteId) {
+            currentNote.noteId = "note-" + uuidv4();
+        }
+        setLocalStorageNote(currentNote);
+        setLocalStorageUser(firebaseUser);  //  Will store displayName only from second login.
+        //  Sync notes after login.
+        syncNotes(syncButton)
+            .then(() => fetchNotes());
     }
     else {
+        setLocalStorageUser(firebaseUser);
+        //  Users current note will be open even after signout. Feature or Bug?
+        setLocalStorageNote(defaultNote);
+        loadNoteToWindow(defaultNote);
         fetchNotes();
-        document.getElementById("loggedinMessageSpan").textContent = "Successfully signed out!";
+        document.getElementById("loggedinMessageSpan").textContent = "You are now signed out!";
         setTimeout(() => openLoginWindow(), 1000);
     }
 });

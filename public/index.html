@@ -14,7 +14,7 @@
 <body onload="loadingFade()">
     <div id="loading-screen">
         <div id="loader-brand">
-            <img src="./assets/LogoLoading.gif" id="loader-logo" alt="loading gif" width="300" height="100">
+            <img src="./assets/LogoLoading300x100.gif" id="loader-logo" alt="loading gif" width="300" height="100">
             <br>
             <p id="loader-text">A markdown note taking app for programmers!</p>
         </div>
@@ -26,14 +26,14 @@
             </div>
             <div class="navbar-content">
                 <ul class="navbar-items navbar-left">
-                    <li><button onclick="openNotesList(this)" class="navbar-button"><i class="far fa-folder"></i></button></li>
-                    <li><button onclick="createNewNote(this)" class="navbar-button"><i class="fa fa-plus"></i></button></li>
+                    <li><button onclick="openNotesList()" class="navbar-button"><i class="far fa-folder"></i></button></li>
+                    <li><button onclick="createNewNote()" class="navbar-button"><i class="fa fa-plus"></i></button></li>
                     <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11">Welcome Note</textarea></li>
                 </ul>
                 <ul class="navbar-items navbar-right">
                     <li><button onclick="syncNotes(this)" class="navbar-button" id="syncButton"><i class="fa fa-sync-alt"></i></button></li>
                     <li><button onclick="switchTheme(this)" class="navbar-button"><i class="far fa-moon"></i></button></li>
-                    <li><button onclick="userLoginSignup(this)" class="navbar-button"><i class="far fa-user"></i></button></li>
+                    <li><button onclick="userLoginSignup()" class="navbar-button"><i class="far fa-user"></i></button></li>
                 </ul>
             </div>
         </nav>
@@ -115,12 +115,16 @@
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="main.js"></script>
-    <script src="userAuth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/renderMd.js"></script>
+    <script src="js/userAuth.js"></script>
+    <script src="js/notes.js"></script>
+    <script src="js/exportMd.js"></script>
 </body>
 </html>

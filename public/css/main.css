@@ -224,11 +224,15 @@ a:hover {
     border-radius: 5px;
 }
 
-
-@media screen and (max-height: 550px) {
-    .navbar-button {
-        padding: 0 0.4rem;
-        font-size: 1em;
+@media screen and (max-width: 550px) {
+    .navbar {
+        padding: 1rem;
+    }
+    .navbar-header {
+        display: none;
+    }
+    .note-name-box {
+        max-width: 120px;
     }
 }
 
@@ -442,7 +446,10 @@ img.avatar {
 }
 
 @media screen and (max-width: 1024px) {
-    .login-window, .signup-window {
+    .login-window,
+    .signup-window,
+    .loggedin-window,
+    .notes-list-window {
         width: 70%;
     }
 }
