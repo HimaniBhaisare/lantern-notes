@@ -30,9 +30,9 @@
                     <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11">Welcome Note</textarea></li>
                 </ul>
                 <ul class="navbar-items navbar-right">
-                    <li><button onclick="syncNotes(this)" class="navbar-button" id="syncButton"><i class="fa fa-sync-alt"></i></button></li>
-                    <li><button onclick="switchTheme(this)" class="navbar-button"><i class="far fa-moon"></i></button></li>
-                    <li><button onclick="userLoginSignup()" class="navbar-button"><i class="far fa-user"></i></button></li>
+                    <li><button onclick="syncNotes(this)" class="navbar-button" id="syncButton" title="Sync Notes"><i class="fa fa-sync-alt"></i></button></li>
+                    <li><button onclick="switchTheme(this)" class="navbar-button" title="Switch theme"><i class="far fa-moon"></i></button></li>
+                    <li><button onclick="userLoginSignup()" class="navbar-button" title="Login/Signup"><i class="far fa-user"></i></button></li>
                 </ul>
             </div>
         </nav>
@@ -105,10 +105,10 @@
         <div class="main-content">
             <textarea class="text-editor" id="textEditor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
             <div class="quick-toolbar">
-                <button onclick="toggleEditMode(this)" class="quick-button editMode-button"><i class="fas fa-edit"></i></button>
-                <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button"><i class="fas fa-columns"></i></button>
-                <button onclick="toggleReadMode(this)" class="quick-button readMode-button"><i class="far fa-eye"></i></button>
-                <button onclick="downloadHtml()" class="quick-button downloadHtml-button" ><i class="fa fa-download"></i></button>
+                <button onclick="toggleEditMode(this)" class="quick-button editMode-button" title="Edit Mode"><i class="fas fa-edit"></i></button>
+                <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button" title="Split Windows"><i class="fas fa-columns"></i></button>
+                <button onclick="toggleReadMode(this)" class="quick-button readMode-button" title="Read Mode"><i class="far fa-eye"></i></button>
+                <button onclick="downloadHtml()" class="quick-button downloadHtml-button" title="Download HTML"><i class="fa fa-download"></i></button>
             </div>
             <div class="preview" id="preview"></div>
         </div>
