@@ -1,5 +1,6 @@
 const socket = io();
 
+const loadingScreen = document.getElementById('loadingScreen')
 const textEditor = document.getElementById('textEditor');
 const preview = document.getElementById('preview');
 const modalContainer = document.getElementById("modalContainer");
@@ -14,10 +15,10 @@ const loginButton = document.getElementById("loginButton");
 const signupButton = document.getElementById("signupButton");
 const signoutButton = document.getElementById("signoutButton");
 
-//`Hide loading screen after 2 secs
+// Hide loading screen after 2 secs
 function loadingFade() {
     setTimeout(() => {
-        $("#loading-screen").fadeOut(0);
+        loadingScreen.style.display = "none";
     }, 1000);
 }
 
