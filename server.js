@@ -18,6 +18,10 @@ io.on('connection', (socket) => {
         socket.join(userId);
         socket.to(userId).emit('userSession', userSession);
     });
+
+    socket.on('collabSession', (collabSession) => {
+        socket.broadcast.emit('collabSession', collabSession);
+    });
 });
 
 //  Firestore setup

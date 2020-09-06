@@ -31,8 +31,21 @@ textEditor.addEventListener('keydown', e => {
 });
 
 textEditor.addEventListener('keyup', e => {
-    renderPreview(e.target.value);
+    let mdText = e.target.value;
+    renderPreview(mdText);
+
+    socket.emit('collabSession', { "mdText" : mdText });
+
     let currentNote = getLocalStorageNote();
-    currentNote.content = e.target.value;
+    currentNote.content = mdText;
     setLocalStorageNote(currentNote);
 });
+
+socket.on('collabSession', (session) => {
+    textEditor.value = session.mdText;
+    renderPreview(session.mdText);
+
+    let currentNote = getLocalStorageNote();
+    currentNote.content = session.mdText;
+    setLocalStorageNote(currentNote);
+})
