@@ -263,14 +263,30 @@ a:hover {
 }
 
 @media screen and (max-width: 320px) {
+    .navbar-button {
+        font-size: 1.1em;
+    }
     .note-name-box {
-        max-width: 80px;
+        padding-left: 0.5rem;
+        font-size: 1.1em;
+        max-width: 70px;
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .navbar-button {
+        padding-right: 0.1rem;
+        padding-left: 0.1rem;
+    }
+    .note-name-box {
+        margin-left: 0.5rem;
     }
 }
 
 @media screen and (max-height: 720px) {
     .navbar {
-        padding: 2vh;
+        padding-top: 2vh;
+        padding-bottom: 2vh;
     }
     .note-name-box {
         padding-top: 1.25vh;
