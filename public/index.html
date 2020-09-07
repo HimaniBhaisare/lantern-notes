@@ -47,9 +47,9 @@
                 </ul>
             </div>
             <!-- Login window -->
-            <div class="login-window animate-modal" id="loginWindow" style="display: none;">
+            <div class="auth-window animate-modal" id="loginWindow" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
-                    <span id="loginError"></span>
+                    <span class="auth-error" id="loginError"></span>
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
                 <div class="form-content">
@@ -57,8 +57,8 @@
                     <input id="loginEmail" type="email" name="login-email" placeholder="Enter Email" autofocus>
                     <label for="login-password">Password</label>
                     <input id="loginPassword" type="password" name="login-password" placeholder="Enter Password">
-                    <span id="forgotPassSpan"><a href="#" id="forgotPassword">Forgot password?</a></span>
-                    <button id="loginButton">Login</button>
+                    <span id="forgotPassSpan"><a href="#" onclick="openFpWindow()" id="forgotPassword">Forgot password?</a></span>
+                    <button class="auth-button" id="loginButton">Login</button>
                     <span id="createAccSpan">New user? <a href="#" onclick="openSignupWindow()" id="createAccount">Create an account</a></span>
                 </div>
                 <div style="padding: 0.5rem; text-align: center;">
@@ -68,10 +68,22 @@
                 </div>
                 <div style="padding: 2rem;"></div>
             </div>
-            <!-- Signup window -->
-            <div class="signup-window animate-modal" id="signupWindow" style="display: none;">
+            <!-- Password reset window -->
+            <div class="auth-window animate-modal" id="fpWindow" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
-                    <span id="signupError"></span>
+                    <span class="auth-error" id="fpError"></span>
+                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <div class="form-content">
+                    <label for="fp-email">Email</label>
+                    <input id="fpEmail" type="email" name="fp-email" placeholder="Enter email">
+                    <button class="auth-button" id="fpButton">Send password reset link</button>
+                </div>
+            </div>
+            <!-- Signup window -->
+            <div class="auth-window animate-modal" id="signupWindow" style="display: none;">
+                <div style="padding: 0.25rem 0.5rem;">
+                    <span class="auth-error" id="signupError"></span>
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
                 <div class="form-content">
@@ -83,21 +95,21 @@
                     <input id="signupPassword" type="password" name="signup-password" placeholder="Enter password">
                     <label for="signup-cnfPassword">Confirm Password</label>
                     <input id="signupCnfPassword" type="password" name="signup-cnfPassword" placeholder="Re-type password">
-                    <button id="signupButton">Sign up</button>
+                    <button class="auth-button" id="signupButton">Sign up</button>
                     <span id="loginLinkSpan">Already a user? <a href="#" onclick="openLoginWindow()" id="loginLink">Login here</a></span>
                 </div>
             </div>
             <!-- Logged in window -->
-            <div class="loggedin-window animate-modal" id="loggedinWindow" style="display: none;">
+            <div class="auth-window animate-modal" id="loggedinWindow" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
                 <div class="dp-container">
                     <img src="assets/userAvatar.png" alt="display picture" class="avatar">
                 </div>
-                <div class="loggedin-window-content">
+                <div class="form-content">
                     <span id="loggedinMessageSpan"></span>
-                    <button id="signoutButton">Sign out</button>
+                    <button class="auth-button" id="signoutButton">Sign out</button>
                 </div>
             </div>
         </div>

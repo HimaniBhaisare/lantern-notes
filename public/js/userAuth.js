@@ -14,7 +14,6 @@ const auth = firebase.auth();
 loginButton.addEventListener("click", e => {
     let email = document.getElementById("loginEmail").value;
     let password = document.getElementById("loginPassword").value;
-    let loginError = document.getElementById("loginError");
 
     auth.signInWithEmailAndPassword(email, password)
         .catch(error => {
@@ -33,6 +32,28 @@ loginButton.addEventListener("click", e => {
             }
             else {
                 loginError.textContent = "*An error occured. Try again later!";
+            }
+        });
+});
+
+fpButton.addEventListener("click", e => {
+    let email = document.getElementById("fpEmail").value;
+
+    auth.sendPasswordResetEmail(email)
+        .then(() => {
+            modalContainer.style.display = "none";
+            alert("Check your email for password reset link!");
+        })
+        .catch(error => {
+            let errorCode = error.code;
+            if (errorCode == 'auth/invalid-email') {
+                fpError.textContent = "*Enter a valid email id";
+            }
+            else if (errorCode == 'auth/user-not-found') {
+                fpError.textContent = "*No user found with this email."
+            }
+            else {
+                fpError.textContent = "*An error occured. Try again later!";
             }
         });
 });
@@ -58,7 +79,6 @@ signupButton.addEventListener("click", e => {
     let email = document.getElementById("signupEmail").value;
     let password = document.getElementById("signupPassword").value;
     let cnfPassword = document.getElementById("signupCnfPassword").value;
-    let signupError = document.getElementById("signupError");
 
     if (password != cnfPassword) {
         signupError.textContent = "*Passwords do not match!";

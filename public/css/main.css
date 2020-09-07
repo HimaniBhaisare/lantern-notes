@@ -294,9 +294,7 @@ a:hover {
     text-align: center;
 }
 
-.login-window,
-.signup-window,
-.loggedin-window {
+.auth-window {
     flex-direction: column;
     position: absolute;
     width: 30%;
@@ -311,7 +309,7 @@ a:hover {
     color: var(--auth-window-text-color);
 }
 
-#loginError, #signupError {
+.auth-error {
     font-size: 0.8em;
     color: #fc637d;
 }
@@ -333,8 +331,7 @@ a:hover {
     cursor: pointer;
 }
 
-.form-content,
-.loggedin-window-content {
+.form-content {
     padding: 0.5rem;
     font-size: 0.8em;
     font-family: Helvetica;
@@ -394,9 +391,8 @@ input[type=email], input[type=password], input[type=text] {
     color: var(--auth-window-link-hover);
 }
 
-#loginButton, #loginButton:hover, #loginButton:focus, #loginButton:visited,
-#signupButton, #signupButton:hover, #signupButton:focus, #signupButton:visited,
-#signoutButton, #signoutButton:hover, #signoutButton:focus, #signoutButton:visited {
+.auth-button, .auth-button:hover,
+.auth-button:focus, .auth-button:visited {
     width: 100%;
     padding: 0.75rem;
     border: none;
@@ -409,9 +405,7 @@ input[type=email], input[type=password], input[type=text] {
     color: #110116;
 }
 
-#loginButton:active,
-#signupButton:active,
-#signoutButton:active {
+.auth-button:active {
     background-color: var(--auth-window-button-active);
 }
 
@@ -447,9 +441,7 @@ img.avatar {
 }
 
 @media screen and (max-width: 1024px) {
-    .login-window,
-    .signup-window,
-    .loggedin-window,
+    .auth-window,
     .notes-list-window {
         width: 70%;
     }
