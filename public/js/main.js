@@ -4,6 +4,7 @@ const loadingScreen = document.getElementById('loadingScreen')
 const textEditor = document.getElementById('textEditor');
 const preview = document.getElementById('preview');
 const modalContainer = document.getElementById("modalContainer");
+const collabWindow = document.getElementById("collabWindow");
 const loginWindow = document.getElementById("loginWindow");
 const signupWindow = document.getElementById("signupWindow");
 const fpWindow = document.getElementById("fpWindow");
@@ -16,9 +17,11 @@ const loginButton = document.getElementById("loginButton");
 const fpButton = document.getElementById("fpButton");
 const signupButton = document.getElementById("signupButton");
 const signoutButton = document.getElementById("signoutButton");
+const copyButton = document.getElementById("copyButton");
 const loginError = document.getElementById("loginError");
 const signupError = document.getElementById("signupError");
 const fpError = document.getElementById("fpError");
+const sessionIdspan = document.getElementById("sessionIdSpan");
 
 // Hide loading screen after 2 secs
 function loadingFade() {
@@ -49,50 +52,30 @@ function openModalContainer() {
 function userLoginSignup() {
     openModalContainer();
     if (getLocalStorageUser())
-        openLoggedinWindow();
+        openWindow("loggedinWindow");
     else
-        openLoginWindow();
+        openWindow("loginWindow");
 }
 
-function openLoggedinWindow() {
-    notesListWindow.style.display = "none";
-    signupWindow.style.display = "none";
-    loginWindow.style.display = "none";
-    fpWindow.style.display = "none";
-    loggedinWindow.style.display = "flex";
-}
-
-function openLoginWindow() {
-    notesListWindow.style.display = "none";
-    loggedinWindow.style.display = "none";
-    signupWindow.style.display = "none";
-    fpWindow.style.display = "none";
-    loginWindow.style.display = "flex";
-}
-
-function openSignupWindow() {
-    notesListWindow.style.display = "none";
-    loggedinWindow.style.display = "none";
-    loginWindow.style.display = "none";
-    fpWindow.style.display = "none";
-    signupWindow.style.display = "flex";
-}
-
-function openFpWindow() {
-    notesListWindow.style.display = "none";
-    loggedinWindow.style.display = "none";
-    signupWindow.style.display = "none";
-    loginWindow.style.display = "none";
-    fpWindow.style.display = "flex";
+const windowList = [collabWindow, loginWindow, signupWindow,
+    fpWindow, loggedinWindow, notesListWindow];
+function openWindow(id) {
+    windowList.forEach(window => {
+        window.id === id ? window.style.display = "flex" : window.style.display = "none";
+    });
 }
 
 function openNotesList() {
     openModalContainer();
-    loggedinWindow.style.display = "none";
-    loginWindow.style.display = "none";
-    fpWindow.style.display = "none";
-    signupWindow.style.display = "none";
-    notesListWindow.style.display = "flex";
+    openWindow("notesListWindow");
+}
+
+function collab() {
+    let currentUser = getLocalStorageUser();
+    if (currentUser && currentUser.emailVerified) {
+        openModalContainer();
+        openWindow("collabWindow");
+    }
 }
 
 // Switch view buttons

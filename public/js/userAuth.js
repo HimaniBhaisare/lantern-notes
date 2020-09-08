@@ -122,7 +122,7 @@ auth.onAuthStateChanged(firebaseUser => {
         else {
             document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
         }
-        openLoggedinWindow();
+        openWindow("loggedinWindow");
         //  Assign a noteId to the note if its new on login.
         let currentNote = getLocalStorageNote();
         if (!currentNote.noteId) {
@@ -141,6 +141,6 @@ auth.onAuthStateChanged(firebaseUser => {
         loadNoteToWindow(defaultNote);
         fetchNotes();
         document.getElementById("loggedinMessageSpan").textContent = "You are now signed out!";
-        setTimeout(() => openLoginWindow(), 1000);
+        setTimeout(() => openWindow("loginWindow"), 1000);
     }
 });
