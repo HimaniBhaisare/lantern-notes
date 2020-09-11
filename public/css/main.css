@@ -227,95 +227,6 @@ a:hover {
     border-radius: 5px;
 }
 
-@media screen and (max-width: 720px) {
-    .navbar-header {
-        display: none;
-    }
-    .navbar-button {
-        padding: 0.625rem 0.45rem;
-    }
-    .note-name-box {
-        max-width: 120px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .navbar-button {
-        padding: 0.625rem 0.25rem;
-    }
-    .note-name-box {
-        max-width: 110px;
-    }
-}
-
-@media screen and (max-width: 360px) {
-    .navbar {
-        padding-right:0.5rem;
-        padding-left: 0.5rem;
-    }
-    .navbar-button {
-        padding-right: 0.2rem;
-        padding-left: 0.2rem;
-    }
-    .note-name-box {
-        max-width: 100px;
-    }
-}
-
-@media screen and (max-width: 320px) {
-    .navbar-button {
-        font-size: 1.1em;
-    }
-    .note-name-box {
-        padding-left: 0.5rem;
-        font-size: 1.1em;
-        max-width: 70px;
-    }
-}
-
-@media screen and (max-width: 280px) {
-    .navbar-button {
-        padding-right: 0.1rem;
-        padding-left: 0.1rem;
-    }
-    .note-name-box {
-        margin-left: 0.5rem;
-    }
-}
-
-@media screen and (max-height: 720px) {
-    .navbar {
-        padding-top: 2vh;
-        padding-bottom: 2vh;
-    }
-    .note-name-box {
-        padding-top: 1.25vh;
-        padding-bottom: 1.25vh;
-    }
-    .navbar-button {
-        padding-top: 1.25vh;
-        padding-bottom: 1.25vh;
-    }
-}
-
-@media screen and (max-height: 480px) {
-    .note-name-box {
-        font-size: 1em;
-    }
-    .navbar-button {
-        font-size: 1em;
-    }
-}
-
-@media screen and (max-height: 360px) {
-    .note-name-box {
-        font-size: 0.8em;
-    }
-    .navbar-button {
-        font-size: 0.8em;
-    }
-}
-
 /* Modal Login/Signup page */
 .modal-container {
     position: fixed;
@@ -391,7 +302,7 @@ a:hover {
     border: 1px solid #fff;
     font-size: 1.25em;
     padding: 0.75rem;
-    margin: 0.35rem 0;
+    margin: 0.35rem 0 0.75rem 0;
     box-sizing: border-box;
     background-color: #000000d5;
 }
@@ -400,8 +311,7 @@ a:hover {
     height: 6.5px;
 }
 
-.copy-button,
-.genId-button {
+.collab-button {
     width: 100%;
     padding: 0.75rem;
     border: none;
@@ -415,8 +325,7 @@ a:hover {
     opacity: 90%;
 }
 
-.copy-button:active,
-.genId-button:active {
+.collab-button:active {
     background-color: var(--auth-window-button-active);
 }
 
@@ -536,7 +445,17 @@ input[type=email], input[type=password], input[type=text] {
 }
 
 .form-divider {
+    color: #808080;
     display: inline-block;
+    margin: 0px 5px;
+}
+
+.form-divider-line {
+    border-color: #808080;
+    display: inline-block;
+    width: 40%;
+    margin: 0;
+    margin-bottom: 3px;
 }
 
 .dp-container {
@@ -566,25 +485,12 @@ img.avatar {
     to {transform: scale(1)}
 }
 
-@media screen and (max-width: 1024px) {
-    .auth-window,
-    .notes-list-window {
-        width: 70%;
-    }
-}
-
 .main-content {
     padding: 0.5rem;
     padding-bottom: 0.575rem;
     display: flex;
     height: 90%;
     box-sizing: border-box;
-}
-
-@media screen and (min-height: 720px) {
-    .main-content {
-        height: calc(90% + (10% - 75px));
-    }
 }
 
 .text-editor {
@@ -681,6 +587,119 @@ img.avatar {
 
 body::-webkit-scrollbar-track {
     background: var( --scroll-track);
+}
+
+
+@media screen and (max-width: 1024px) {
+    .auth-window,
+    .notes-list-window,
+    .collab-window {
+        width: 70%;
+        max-height: 60%;
+        overflow: auto;
+    }
+}
+
+@media screen and (min-height: 720px) {
+    .main-content {
+        height: calc(90% + (10% - 75px));
+    }
+    .modal-container {
+        top: calc(10% - (10% - 75px));
+        height: calc(90% + (10% - 75px));
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .navbar-header {
+        display: none;
+    }
+    .navbar-button {
+        padding: 0.625rem 0.45rem;
+    }
+    .note-name-box {
+        max-width: 120px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar-button {
+        padding: 0.625rem 0.25rem;
+    }
+    .note-name-box {
+        max-width: 110px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .navbar {
+        padding-right:0.5rem;
+        padding-left: 0.5rem;
+    }
+    .navbar-button {
+        padding-right: 0.2rem;
+        padding-left: 0.2rem;
+    }
+    .note-name-box {
+        max-width: 100px;
+    }
+    .form-divider-line {
+        width: 35%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .navbar-button {
+        font-size: 1.1em;
+    }
+    .note-name-box {
+        padding-left: 0.5rem;
+        font-size: 1.1em;
+        max-width: 70px;
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .navbar-button {
+        padding-right: 0.1rem;
+        padding-left: 0.1rem;
+    }
+    .note-name-box {
+        margin-left: 0.5rem;
+    }
+}
+
+@media screen and (max-height: 720px) {
+    .navbar {
+        padding-top: 2vh;
+        padding-bottom: 2vh;
+    }
+    .note-name-box {
+        padding-top: 1.25vh;
+        padding-bottom: 1.25vh;
+    }
+    .navbar-button {
+        padding-top: 1.25vh;
+        padding-bottom: 1.25vh;
+    }
+}
+
+@media screen and (max-height: 480px) {
+    .note-name-box {
+        font-size: 1em;
+    }
+    .navbar-button {
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-height: 360px) {
+    .note-name-box {
+        font-size: 0.8em;
+    }
+    .navbar-button {
+        font-size: 0.8em;
+    }
 }
 
 

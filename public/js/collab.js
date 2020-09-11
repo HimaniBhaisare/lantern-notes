@@ -18,3 +18,8 @@ function copySessionId(btn) {
 
     btn.textContent = "Copied!";
 }
+
+function joinSession() {
+    const sessionId = document.getElementById('collabJoinId').value;
+    alert(sessionId);
+}
