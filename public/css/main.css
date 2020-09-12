@@ -45,6 +45,7 @@ body {
     --th-background: #b7b4b8;
     --tr-hover-color: #d5d2d6;
     --hr-color: #000000;
+    --hljs-text: #202020;
     --hljs-background: #e3dfe6;
 
 }
@@ -84,6 +85,7 @@ body.dark-theme {
     --th-background:#1f1f1f;
     --tr-hover-color:#616161;
     --hr-color:white;
+    --hljs-text: rgb(192, 192, 192);
     --hljs-background:#1d1d1d;
 }
 
@@ -775,13 +777,14 @@ hr {
     padding: 10px;
     border-radius: 5px;
     border: none;
-    background-color:var( --hljs-background);
+    color: var(--hljs-text);
+    background-color: var( --hljs-background);
     font-size: 1.125em;
     line-height: 1.5;
     overflow-x: auto;
     white-space: pre;
 }
 
-.hljs::-webkit-scrollbar-thumb {
-    visibility: hidden;
+.hljs::-webkit-scrollbar {
+    height: 6px;
 }
