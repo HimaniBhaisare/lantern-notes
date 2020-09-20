@@ -36,6 +36,15 @@ loginButton.addEventListener("click", e => {
         });
 });
 
+function showPassword() {
+    if(loginPassword.type == "password") {
+        loginPassword.type = "text";
+    }
+    else {
+        loginPassword.type = "password";
+    }
+}
+
 fpButton.addEventListener("click", e => {
     let email = document.getElementById("fpEmail").value;
 
@@ -112,7 +121,16 @@ signupButton.addEventListener("click", e => {
 });
 
 signoutButton.addEventListener("click", e => {
-    auth.signOut();
+    if(getLocalStorageSession().active)
+    {
+        if(confirm("Logging out will stop the collaborative session. Continue?"))
+        {
+            stopSession();
+            auth.signOut();
+        }
+    }
+    else
+        auth.signOut();
 });
 
 auth.onAuthStateChanged(firebaseUser => {

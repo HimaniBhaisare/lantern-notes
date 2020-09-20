@@ -411,10 +411,16 @@ input[type=email], input[type=password], input[type=text] {
     opacity: 100%;
 }
 
+#showPassSpan {
+    display: block;
+    float: left;
+    line-height: 1.65em;
+}
+
 #forgotPassSpan {
-    display: inline-block;
-    width: 100%;
-    text-align: right;
+    display: block;
+    float: right;
+    line-height: 1.65em;
 }
 
 #createAccSpan {
