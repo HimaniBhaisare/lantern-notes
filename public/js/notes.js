@@ -160,7 +160,7 @@ async function fetchNotes() {
             delButton.setAttribute("class", "fa fa-trash del-button");
 
             noteListItem.addEventListener("mouseover", () => delButton.style.color = "#ffffff");
-            noteListItem.addEventListener("mouseout", () => delButton.style.color = "#797979");
+            noteListItem.addEventListener("mouseout", () => delButton.style.color = "#d4d4d4");
 
             noteListItem.appendChild(notesListItemText);
             noteListItem.appendChild(delButton);
