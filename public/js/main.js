@@ -23,11 +23,8 @@ const signupError = document.getElementById("signupError");
 const fpError = document.getElementById("fpError");
 const sessionIdspan = document.getElementById("sessionIdSpan");
 
-
 window.addEventListener('beforeunload', function (e) {
-    // Cancel the event
-    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-    // Chrome requires returnValue to be set
+    e.preventDefault();
     e.returnValue = '';
 });
 
@@ -38,11 +35,26 @@ function loadingFade() {
     }, 1000);
 }
 
+let theme = window.localStorage.getItem("darkmode");
+if(theme && theme == "true") {
+    let btn = document.getElementById("themeSelector");
+    let icon = btn.querySelector('i');
+    icon.classList.toggle("fa-moon");
+    icon.classList.toggle("fa-sun");
+    document.body.classList.toggle("dark-theme");
+}
+
 function switchTheme(btn) {
     let icon = btn.querySelector('i');
     icon.classList.toggle("fa-moon");
     icon.classList.toggle("fa-sun");
     document.body.classList.toggle("dark-theme");
+
+    let theme = window.localStorage.getItem("darkmode");
+    if(!theme || theme == "false")
+        window.localStorage.setItem("darkmode", "true");
+    else
+        window.localStorage.setItem("darkmode", "false");
 }
 
 function openModalContainer() {
