@@ -65,10 +65,10 @@ async function syncNotes(btn) {
         icon.classList.toggle("fa-spin");
     }
     else if (currentUser && !currentUser.emailVerified) {
-        alert("Verify email to sync notes to your account.")
+        alert("Verify email to sync notes to your account.");
     }
     else if (!currentUser) {
-        alert("Login first to sync notes!")
+        alert("Login first to sync notes!");
     }
 }
 
@@ -86,6 +86,15 @@ noteNameBox.addEventListener('focusout', e => {
     if (e.target.value != currentNote.noteName) {
         currentNote.noteName = e.target.value;
         setLocalStorageNote(currentNote);
+
+        //  Update in collabs
+        let currentSession = getLocalStorageSession();
+        if(currentSession.sessionId && currentSession.active) {
+            currentSession.noteName = currentNote.noteName;
+            setLocalStorageSession(currentSession);
+            socket.emit('collabSession', currentSession);
+        }
+
         //  Sync the name change
         syncNotes(syncButton)
             .then(() => fetchNotes());

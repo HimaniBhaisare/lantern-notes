@@ -123,11 +123,13 @@ auth.onAuthStateChanged(firebaseUser => {
             document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
         }
         openWindow("loggedinWindow");
+        
         //  Assign a noteId to the note if its new on login.
         let currentNote = getLocalStorageNote();
         if (!currentNote.noteId) {
             currentNote.noteId = "note-" + uuidv4();
         }
+
         setLocalStorageNote(currentNote);
         setLocalStorageUser(firebaseUser);  //  Will store displayName only from second login.
         //  Sync notes after login.
@@ -135,9 +137,9 @@ auth.onAuthStateChanged(firebaseUser => {
             .then(() => fetchNotes());
     }
     else {
-        setLocalStorageUser(firebaseUser);
         //  Users current note will be open even after signout. Feature or Bug?
         setLocalStorageNote(defaultNote);
+        setLocalStorageUser(firebaseUser);
         loadNoteToWindow(defaultNote);
         fetchNotes();
         document.getElementById("loggedinMessageSpan").textContent = "You are now signed out!";

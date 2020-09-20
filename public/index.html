@@ -52,17 +52,21 @@
                 <div style="padding: 0.25rem 0.5rem;">
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
-                <div class="collab-content">
+                <div class="collab-content" id="startNewSession">
+                    <button onclick="startNewSession()" id="startSessionButton" class="collab-button">Start a collab session <i class="fa fa-plus-circle fa-fw"></i></button>
+                </div>
+                <div class="collab-content" id="startSession" style="display: none;">
                     <span id="sessionIdSpan" class="sessionid-span">Session ID</span>
                     <button onclick="copySessionId(this)" id="copyButton" class="collab-button">Copy to clipboard <i class="fa fa-clipboard fa-fw"></i></button>
-                    <button onclick="generateSessionId(this)" class="collab-button">Reset session ID <i class="fa fa-redo fa-fw"></i></button>
+                    <button onclick="generateSessionId(this)" class="collab-button">Generate new session ID <i class="fa fa-redo fa-fw"></i></button>
+                    <button onclick="stopSession()" class="collab-button">End session <i class="fa fa-ban fa-fw"></i></button>
                 </div>
-                <div style="padding: 0.5rem; text-align: center;">
+                <div id="collabDivider" style="padding: 0.5rem; text-align: center;">
                     <hr class="form-divider-line">
                     <span class="form-divider">(or)</span>
                     <hr class="form-divider-line">
                 </div>
-                <div class="collab-content">
+                <div class="collab-content" id="collabJoin">
                     <label for="collab-joinId">Join</label>
                     <input id="collabJoinId" type="text" name="collab-joinId" placeholder="Enter join ID">
                     <button onclick="joinSession()" id="collabJoinButton" class="collab-button">Join session <i class="fa fa-sign-in-alt fa-fw"></i></button>

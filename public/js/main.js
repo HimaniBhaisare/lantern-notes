@@ -76,6 +76,12 @@ function collab() {
         openModalContainer();
         openWindow("collabWindow");
     }
+    else if (currentUser && !currentUser.emailVerified) {
+        alert("Verify email to collaborate with others!");
+    }
+    else if (!currentUser) {
+        alert("Login first to collaborate with others!");
+    }
 }
 
 // Switch view buttons

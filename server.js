@@ -19,8 +19,10 @@ io.on('connection', (socket) => {
         socket.to(userId).emit('userSession', userSession);
     });
 
-    socket.on('collabSession', (collabSession) => {
-        socket.broadcast.emit('collabSession', collabSession);
+    socket.on('collabSession', (currentSession) => {
+        let sessionId = currentSession.sessionId;
+        socket.join(sessionId);
+        socket.to(sessionId).emit('collabSession', currentSession);
     });
 });
 
