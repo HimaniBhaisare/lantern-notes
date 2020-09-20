@@ -40,14 +40,19 @@ function startNewSession() {
     let currentNote = getLocalStorageNote();
     let sessionId = makeId(6);
     sessionIdspan.textContent = sessionId;
+    let userInfo = {
+        uid : currentUser.uid,
+        name : currentUser.displayName
+    };
     currentSession = {
         "sessionId" : sessionId,
         "adminId" : currentUser.uid,
-        "userList" : [currentUser.uid],
+        "userList" : [userInfo],
         "noteName" : currentNote.noteName,
         "content" : currentNote.content,
         "active" : true
     };
+
     copySessionId(document.getElementById("copyButton"));
     setLocalStorageSession(currentSession);
     socket.emit('collabSession', currentSession);
@@ -70,10 +75,8 @@ function stopSession() {
 }
 
 function generateSessionId() {
-    if(confirm("Generating new token will end the existing session. Continue?")) {
-        stopSession();
-        startNewSession();
-    }
+    stopSession();
+    startNewSession();
 }
 
 function copySessionId(btn) {
@@ -107,7 +110,11 @@ function joinSession() {
     };
     currentSession.sessionId = sessionId;
     currentSession.active = true;
-    currentSession.userList.push(currentUser.uid);
+    let userInfo = {
+        uid : currentUser.uid,
+        name : currentUser.displayName
+    };
+    currentSession.userList.push(userInfo);
     createNewNote()
         .then(() => {
             let currentNote = getLocalStorageNote();

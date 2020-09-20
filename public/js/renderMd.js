@@ -54,6 +54,8 @@ socket.on('collabSession', (session) => {
             currentSession.userList.push(session.userList[0]);
             socket.emit('collabSession', currentSession);
             setLocalStorageSession(currentSession);
+
+            alert(session.userList[0].name + " has joined!")
         }
         else {
             let currentNote = getLocalStorageNote();
