@@ -10,7 +10,8 @@ const defaultSession = {
 let localSession = getLocalStorageSession();
 if(localSession) {
     sessionIdspan.textContent = localSession.sessionId;
-    if(localSession.adminId == getLocalStorageUser().uid) {
+    let currentUser = getLocalStorageUser();
+    if(currentUser && localSession.adminId == currentUser.uid) {
         document.getElementById('startSession').style.display = "block";
         document.getElementById('startNewSession').style.display = "none";
         document.getElementById('collabDivider').style.display = "none";
