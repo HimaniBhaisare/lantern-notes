@@ -151,7 +151,20 @@ async function fetchNotes() {
         keys.forEach(key => {
             let noteListItem = document.createElement("li");
             noteListItem.setAttribute("class", "notes-list-item");
-            noteListItem.textContent = notes[key].noteName;
+
+            let notesListItemText = document.createElement("span");
+            notesListItemText.setAttribute("class", "notes-list-item-text");
+            notesListItemText.textContent = notes[key].noteName;
+
+            let delButton = document.createElement("i");
+            delButton.setAttribute("class", "fa fa-trash del-button");
+
+            noteListItem.addEventListener("mouseover", () => delButton.style.color = "#ffffff");
+            noteListItem.addEventListener("mouseout", () => delButton.style.color = "#797979");
+
+            noteListItem.appendChild(notesListItemText);
+            noteListItem.appendChild(delButton);
+
             let note = notes[key];
             note.noteId = key;  //  The note.data() recieved from server does not contain noteId attribute
             noteListItem.addEventListener("click", () => switchNotes(note));

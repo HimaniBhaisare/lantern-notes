@@ -53,8 +53,8 @@ body {
 body.dark-theme {
     --link-active: #afe4d2;
     --link-hover : #c6ecdf;
-    --loading-bkg: #212122;
-    --loading-text: #ffffff;
+    --loading-bkg: #fffaff;  /* #212122 */
+    --loading-text: #000000; /* #ffffff */
     --nav-button-color: white;
     --nav-button-active: #2e2e2e;
     --modal-container: #3d3d3d50;
@@ -277,17 +277,37 @@ a:hover {
 
 .notes-list-item {
     width: 100%;
+    height: fit-content;
     display: inline-block;
     font-size: 1.125em;
-    padding: 0.75rem;
+    padding: 0.25rem;
     margin: 0.35rem 0;
     box-sizing: border-box;
     background-color: #000000c7;
+    color: #d4d4d4;
     cursor: pointer;
 }
 
 .notes-list-item:hover {
     background-color: #1a1a1ac7;
+    color: #ffffff;
+}
+
+.notes-list-item-text {
+    display: inline-block;
+    padding: 0.5rem;
+}
+
+.del-button {
+    float: right;
+    padding: 0.5rem;
+    padding-left: 0.55rem;
+    font-size: 1.125em;
+    border-radius: 50%;
+}
+
+.del-button:hover {
+    background: rgb(43, 43, 43);
 }
 
 .empty-list-span {
