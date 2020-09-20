@@ -38,7 +38,7 @@ function startNewSession() {
     // Generate collab session id and store
     let currentUser = getLocalStorageUser();
     let currentNote = getLocalStorageNote();
-    let sessionId = "session-" + uuidv4();
+    let sessionId = makeId(6);
     sessionIdspan.textContent = sessionId;
     currentSession = {
         "sessionId" : sessionId,
@@ -54,22 +54,26 @@ function startNewSession() {
 }
 
 function stopSession() {
-    document.getElementById('startSession').style.display = "none";
-    document.getElementById('startNewSession').style.display = "block";
-    document.getElementById('collabDivider').style.display = "block";
-    document.getElementById('collabJoin').style.display = "block";
+    if(confirm("Are you sure you want to end this session?")) {
+        document.getElementById('startSession').style.display = "none";
+        document.getElementById('startNewSession').style.display = "block";
+        document.getElementById('collabDivider').style.display = "block";
+        document.getElementById('collabJoin').style.display = "block";
 
-    let currentSession = getLocalStorageSession();
-    if(getLocalStorageUser().uid == currentSession.adminId) {
-        currentSession.active = false;
-        socket.emit("collabSession", currentSession);
-        setLocalStorageSession(defaultSession);
+        let currentSession = getLocalStorageSession();
+        if(getLocalStorageUser().uid == currentSession.adminId) {
+            currentSession.active = false;
+            socket.emit("collabSession", currentSession);
+            setLocalStorageSession(defaultSession);
+        }
     }
 }
 
 function generateSessionId() {
-    stopSession();
-    startNewSession();
+    if(confirm("Generating new token will end the existing session. Continue?")) {
+        stopSession();
+        startNewSession();
+    }
 }
 
 function copySessionId(btn) {
@@ -114,4 +118,13 @@ function joinSession() {
             setLocalStorageSession(currentSession);
             socket.emit('collabSession', currentSession);
         });
+}
+
+function makeId(length) {
+    let result           = '';
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
 }
