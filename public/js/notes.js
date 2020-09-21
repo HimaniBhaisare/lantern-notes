@@ -19,7 +19,7 @@ if(!sortListBy)
 else {
     let sortBtn = document.getElementById("sortAlpha");
     if(sortListBy.direction == "desc") {
-        sortBtn.setAttribute("class", "fa fa-fw fa-sort-alpha-down-alt sort-button")
+        sortBtn.setAttribute("class", "fa fa-fw fa-sort-alpha-down-alt sort-button");
     }
 }
 
@@ -75,6 +75,7 @@ async function syncNotes(btn) {
         socket.emit('userSession', userSession);
 
         icon.classList.toggle("fa-spin");
+        savedFlag = true;
     }
     else if (currentUser && !currentUser.emailVerified) {
         alert("Verify email to sync notes to your account.");
@@ -175,8 +176,7 @@ async function deleteNote(noteToDelete) {
 }
 
 async function switchNotes(note) {
-    let currentNote = getLocalStorageNote();
-    if(currentNote.content != defaultNote.content || currentNote.noteName != defaultNote.noteName) {
+    if(!savedFlag) {
         //  Sync the current note before switching
         await syncNotes(syncButton);
     }

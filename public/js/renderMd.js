@@ -10,6 +10,8 @@ const converter = new showdown.Converter({
     literalMidWordUnderscores: true
 });
 
+let savedFlag = true;
+
 function renderPreview(mdText) {
     const html = converter.makeHtml(mdText);
     preview.innerHTML = html;
@@ -44,6 +46,7 @@ textEditor.addEventListener('keyup', e => {
     let currentNote = getLocalStorageNote();
     currentNote.content = mdText;
     setLocalStorageNote(currentNote);
+    savedFlag = false;
 });
 
 socket.on('collabSession', (session) => {
