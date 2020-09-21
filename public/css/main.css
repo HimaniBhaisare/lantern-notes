@@ -35,6 +35,7 @@ body {
     --quick-button-hover: #dbdbdb;
     --quick-unselected-buttons:#808080;
     --quick-selected-button:#a972c9;
+    --text-selection: #ebbbe7;
     --scroll-thumb: #969595;
     --scroll-preview-thumb: #7c7c7c;
     --scroll-preview-thumb-hover: #999898;
@@ -75,6 +76,7 @@ body.dark-theme {
     --quick-button-hover: #3d3d3d;
     --quick-unselected-buttons:#808080;
     --quick-selected-button:#a972c9;
+    --text-selection: #ebbbe7;
     --scroll-thumb: #525252;
     --scroll-preview-thumb: #525252;
     --scroll-preview-thumb-hover: #575757;
@@ -197,7 +199,7 @@ a:hover {
     padding: 0.625rem;
     margin-left: 0.75rem;
     height: 100%;
-    background: #0000005b;
+    background: #e6bcff2e;
     border: none;
     border-radius: 0.3rem;
     outline: none;
@@ -213,11 +215,19 @@ a:hover {
 }
 
 .note-name-box:hover {
-    background: #0000008b;
+    background: #e6bcff1c;
 }
 
 .note-name-box:focus {
     background: #474747;
+}
+
+.note-name-box::selection {
+    background: #ebbbe7;
+}
+
+.note-name-box::-moz-selection {
+    background: #ebbbe7;
 }
 
 .note-name-box::-webkit-scrollbar {
@@ -596,6 +606,14 @@ img.avatar {
     font-size: 1.1em;
     color: var(--quick-unselected-buttons);
     padding: 4px 6.45px 4px 6px;
+}
+
+::-moz-selection {
+    background: var(--text-selection);
+}
+  
+::selection {
+    background: var(--text-selection);
 }
 
 ::-webkit-scrollbar {

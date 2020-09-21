@@ -25,12 +25,12 @@
             </div>
             <div class="navbar-content">
                 <ul class="navbar-items navbar-left">
-                    <li><button onclick="openNotesList()" class="navbar-button"><i class="far fa-folder fa-fw"></i></button></li>
-                    <li><button onclick="createNewNote()" class="navbar-button"><i class="fa fa-plus fa-fw"></i></button></li>
-                    <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11">Welcome Note</textarea></li>
+                    <li><button onclick="openNotesList()" class="navbar-button" title="View notes"><i class="far fa-folder fa-fw"></i></button></li>
+                    <li><button onclick="createNewNote()" class="navbar-button" title="Create new note"><i class="fa fa-plus fa-fw"></i></button></li>
+                    <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11" title="Change note name">Welcome Note</textarea></li>
                 </ul>
                 <ul class="navbar-items navbar-right">
-                    <li><button onclick="syncNotes(this)" id="syncButton" class="navbar-button" title="Sync Notes"><i class="fa fa-sync-alt fa-fw"></i></button></li>
+                    <li><button onclick="syncNotes(this)" id="syncButton" class="navbar-button" title="Sync notes"><i class="fa fa-sync-alt fa-fw"></i></button></li>
                     <li><button onclick="collab()" class="navbar-button" title="Collaborate"><i class="fa fa-vector-square fa-fw"></i></button></li>
                     <li><button onclick="switchTheme(this)" id="themeSelector" class="navbar-button" title="Switch theme"><i class="far fa-moon fa-fw"></i></button></li>
                     <li><button onclick="userLoginSignup()" class="navbar-button" title="Login/Signup"><i class="far fa-user fa-fw"></i></button></li>

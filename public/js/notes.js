@@ -76,6 +76,7 @@ async function syncNotes(btn) {
 
 noteNameBox.addEventListener('focusin', e => {
     //  Show scrollbar if inside the box
+    e.target.select();
     e.target.style.overflowX = "auto";
 });
 
