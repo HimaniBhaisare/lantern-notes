@@ -5,6 +5,8 @@ const defaultNote = {
     "content": textEditor.textContent
 };
 
+let fetchedNotes = [];
+
 let localNote = getLocalStorageNote();
 if (localNote)
     loadNoteToWindow(localNote);
@@ -124,27 +126,27 @@ async function createNewNote() {
     }
 }
 
-async function deleteNote(noteToDelete, deleteList) {
-    if(deleteList.length == 1) {
+async function deleteNote(noteToDelete) {
+    if(fetchedNotes.length == 1) {
         modalContainer.style.display = "none";
         await createNewNote();
-        deleteList.push(getLocalStorageNote());
+        fetchedNotes.push(getLocalStorageNote());
     }
     
     let currentNote = getLocalStorageNote();
     let currentUser = getLocalStorageUser();
 
     if(currentNote.noteId == noteToDelete.noteId) {
-        for(i = 0; i < deleteList.length; i++) {
-            if(deleteList[i].noteId == noteToDelete.noteId) {
+        for(i = 0; i < fetchedNotes.length; i++) {
+            if(fetchedNotes[i].noteId == noteToDelete.noteId) {
                 if(i == 0) {
-                    await switchNotes(deleteList[i+1]);
+                    await switchNotes(fetchedNotes[i+1]);
                 }
-                else if(i == deleteList.length - 1) {
-                    await switchNotes(deleteList[i-1]);
+                else if(i == fetchedNotes.length - 1) {
+                    await switchNotes(fetchedNotes[i-1]);
                 }
                 else {
-                    await switchNotes(deleteList[i+1]);
+                    await switchNotes(fetchedNotes[i+1]);
                 }
             }
         }
@@ -162,8 +164,11 @@ async function deleteNote(noteToDelete, deleteList) {
 }
 
 async function switchNotes(note) {
-    //  Sync the current note before switching
-    await syncNotes(syncButton);
+    let currentNote = getLocalStorageNote();
+    if(currentNote.content != defaultNote.content || currentNote.noteName != defaultNote.noteName) {
+        //  Sync the current note before switching
+        await syncNotes(syncButton);
+    }
     modalContainer.style.display = "none";
     loadNoteToWindow(note);
     setLocalStorageNote(note);
@@ -185,7 +190,7 @@ async function fetchNotes() {
         let res = await fetch('/notesList', options);
         let notes = await res.json();
         let keys = Object.keys(notes);
-        let deleteList = [];
+        fetchedNotes = [];
         keys.forEach(key => {
             let noteListItem = document.createElement("li");
             
@@ -212,10 +217,10 @@ async function fetchNotes() {
             noteListItem.addEventListener("click", () => switchNotes(note));
             notesListContent.appendChild(noteListItem);
 
-            deleteList.push(note);
+            fetchedNotes.push(note);
             delButton.addEventListener("click", (e) => {
                 e.stopPropagation();
-                deleteNote(note, deleteList)
+                deleteNote(note)
             });
         });
     }

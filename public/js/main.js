@@ -86,6 +86,10 @@ function openWindow(id) {
 }
 
 function openNotesList() {
+    if(getLocalStorageSession().active) {
+        alert("You cannot access other files in a collaborative session.");
+        return;
+    }
     openModalContainer();
     openWindow("notesListWindow");
 }

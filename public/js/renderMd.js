@@ -69,6 +69,7 @@ socket.on('collabSession', (session) => {
     else {
         alert("Owner has ended the session!");
         //  will have to delete the current note and open the new collab window
+        deleteNote(getLocalStorageNote());
         setLocalStorageSession(defaultSession);
     }
 });

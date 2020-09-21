@@ -17,7 +17,7 @@ if(localSession) {
         document.getElementById('collabDivider').style.display = "none";
         document.getElementById('collabJoin').style.display = "none";
     }
-    socket.emit('collabSession', localSession);
+    // socket.emit('collabSession', localSession);
 }
 else
     setLocalStorageSession(defaultSession);
