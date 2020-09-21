@@ -150,9 +150,15 @@ auth.onAuthStateChanged(firebaseUser => {
 
         setLocalStorageNote(currentNote);
         setLocalStorageUser(firebaseUser);  //  Will store displayName only from second login.
-        //  Sync notes after login.
-        syncNotes(syncButton)
-            .then(() => fetchNotes());
+        
+        if(currentNote.content != defaultNote.content || currentNote.noteName != defaultNote.noteName) {
+        //  Sync notes after login if edited.
+            syncNotes(syncButton)
+                .then(() => fetchNotes());
+        }
+        else {
+            fetchNotes();
+        }
     }
     else {
         //  Users current note will be open even after signout. Feature or Bug?
