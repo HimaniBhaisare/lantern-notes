@@ -293,6 +293,10 @@ a:hover {
     color: #ffffff;
 }
 
+.current-note {
+    border: 2px solid #500c4c;
+}
+
 .notes-list-item-text {
     display: inline-block;
     padding: 0.5rem;

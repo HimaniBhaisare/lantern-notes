@@ -165,9 +165,9 @@ async function switchNotes(note) {
     //  Sync the current note before switching
     await syncNotes(syncButton);
     modalContainer.style.display = "none";
-    await fetchNotes();
     loadNoteToWindow(note);
     setLocalStorageNote(note);
+    await fetchNotes();
 }
 
 async function fetchNotes() {
@@ -188,7 +188,11 @@ async function fetchNotes() {
         let deleteList = [];
         keys.forEach(key => {
             let noteListItem = document.createElement("li");
-            noteListItem.setAttribute("class", "notes-list-item");
+            
+            if(key == getLocalStorageNote().noteId)
+                noteListItem.setAttribute("class", "notes-list-item current-note");
+            else
+                noteListItem.setAttribute("class", "notes-list-item");
 
             let notesListItemText = document.createElement("span");
             notesListItemText.setAttribute("class", "notes-list-item-text");
