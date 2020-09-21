@@ -180,7 +180,11 @@ async function fetchNotes() {
     let currentUser = getLocalStorageUser();
     notesListContent.innerHTML = '';
 
+    let loader = document.getElementById("notesListLoader");
+    
     if (currentUser && currentUser.emailVerified) {
+        loader.style.display = "block";
+        
         let options = {
             method: 'POST',
             headers: {
@@ -224,6 +228,7 @@ async function fetchNotes() {
                 deleteNote(note)
             });
         });
+        loader.style.display = "none";
     }
     else {
         //  Notes list when not logged in or verified.

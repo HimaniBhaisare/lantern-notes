@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css" id="syntax-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
     <link rel="stylesheet" href="./css/main.css" type="text/css" media="screen" id="theme-css">
+    <link rel="stylesheet" href="./css/loadingDots.css" type="text/css" media="screen" id="theme-css">
 </head>
 
 <body onload="loadingFade()">
@@ -43,6 +44,14 @@
             <div id="notesListWindow" class="notes-list-window animate-modal" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                </div>
+                <div class="browser-screen-loading-content" id="notesListLoader" style="display: none;">
+                    <div class="loading-dots dark-gray">
+                      <i></i>
+                      <i></i>
+                      <i></i>
+                      <i></i>
+                    </div>
                 </div>
                 <ul id="notesListContent" class="notes-list-content">
                 </ul>
