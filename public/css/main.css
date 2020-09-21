@@ -600,6 +600,7 @@ img.avatar {
 
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -663,6 +664,9 @@ body::-webkit-scrollbar-track {
     .note-name-box {
         max-width: 110px;
     }
+    #loaderText {
+        font-size: 1em;
+    }
 }
 
 @media screen and (max-width: 360px) {
@@ -679,6 +683,9 @@ body::-webkit-scrollbar-track {
     }
     .form-divider-line {
         width: 35%;
+    }
+    #loaderText {
+        font-size: 0.9em;
     }
 }
 
