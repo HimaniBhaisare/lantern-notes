@@ -285,6 +285,17 @@ a:hover {
     background: #5b5b5b;
 }
 
+.sort-button {
+    padding: 0.25rem;
+    font-size: 0.85em;
+    border-radius: 10%;
+    cursor: pointer;
+}
+
+.sort-button:hover {
+    background: rgb(58, 58, 58);
+}
+
 .notes-list-item {
     width: 100%;
     height: fit-content;
@@ -318,6 +329,7 @@ a:hover {
     padding-left: 0.55rem;
     font-size: 1.125em;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .del-button:hover {
@@ -392,6 +404,7 @@ a:hover {
     color: var(--auth-window-close);
     right: 25px;
     top: 0;
+    padding: 0.25rem;
     margin-left: 10px;
     font-size: 1.5em;
     font-weight: bold;

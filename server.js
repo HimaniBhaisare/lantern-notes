@@ -79,7 +79,7 @@ app.post('/users', (req, res) => {
 app.post('/notesList', (req, res) => {
     let notes = {};
     db.collection('users').doc(req.body.userId)
-        .collection('notes').get()
+        .collection('notes').orderBy(req.body.orderBy.sortBy, req.body.orderBy.direction).get()
         .then(snapshot => {
             snapshot.forEach(note => {
                 notes[note.id] = note.data();

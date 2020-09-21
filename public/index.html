@@ -42,7 +42,8 @@
         <div class="modal-container" id="modalContainer" style="display: none;">
             <!-- Notes list -->
             <div id="notesListWindow" class="notes-list-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
+                <div style="padding: 0.25rem 0.5rem 0.5rem 0.5rem;">
+                    <i id="sortAlpha" class="fa fa-fw fa-sort-alpha-down sort-button" onclick="sortByFn(this)"></i>
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
                 <div class="browser-screen-loading-content" id="notesListLoader" style="display: none;">

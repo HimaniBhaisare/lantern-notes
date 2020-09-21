@@ -13,6 +13,16 @@ if (localNote)
 else
     setLocalStorageNote(defaultNote);
 
+let sortListBy = JSON.parse(window.localStorage.getItem("sortBy"));
+if(!sortListBy)
+    window.localStorage.setItem("sortBy", JSON.stringify({ "sortBy" : "noteName", "direction" : "asc" }));
+else {
+    let sortBtn = document.getElementById("sortAlpha");
+    if(sortListBy.direction == "desc") {
+        sortBtn.setAttribute("class", "fa fa-fw fa-sort-alpha-down-alt sort-button")
+    }
+}
+
 socket.on('userSession', (session) => {
     let currentNote = getLocalStorageNote();
     if(currentNote.noteId == session.note.noteId)
@@ -176,6 +186,18 @@ async function switchNotes(note) {
     await fetchNotes();
 }
 
+async function sortByFn(btn) {
+    btn.classList.toggle("fa-sort-alpha-down");
+    btn.classList.toggle("fa-sort-alpha-down-alt");
+
+    if(JSON.parse(window.localStorage.getItem("sortBy")).direction == "asc")
+        window.localStorage.setItem("sortBy", JSON.stringify({ "sortBy" : "noteName", "direction" : "desc" }));
+    else
+        window.localStorage.setItem("sortBy", JSON.stringify({ "sortBy" : "noteName", "direction" : "asc" }));
+
+    await fetchNotes();
+}
+
 async function fetchNotes() {
     let currentUser = getLocalStorageUser();
     notesListContent.innerHTML = '';
@@ -190,7 +212,10 @@ async function fetchNotes() {
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify({ userId: currentUser.uid })
+            body: JSON.stringify({
+                userId: currentUser.uid,
+                orderBy: JSON.parse(window.localStorage.getItem("sortBy"))
+            })
         }
         let res = await fetch('/notesList', options);
         let notes = await res.json();
@@ -229,6 +254,8 @@ async function fetchNotes() {
             });
         });
         loader.style.display = "none";
+
+        document.getElementById("sortAlpha").style.display = "inline-block";
     }
     else {
         //  Notes list when not logged in or verified.
@@ -241,6 +268,8 @@ async function fetchNotes() {
             emptyListSpan.textContent = "Login to view your notes";
         }
         notesListContent.appendChild(emptyListSpan);
+
+        document.getElementById("sortAlpha").style.display = "none";
     }
 }
 
