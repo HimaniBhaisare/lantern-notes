@@ -63,6 +63,13 @@ app.post('/notes', (req, res) => {
         .catch(err => console.log(err));
 });
 
+app.post('/deleteNote', (req, res) => {
+    db.collection('users').doc(req.body.userId)
+        .collection('notes').doc(req.body.noteId).delete()
+        .then(() => res.json({ message: "Note deleted" }))
+        .catch(err => console.log(err));
+});
+
 app.post('/users', (req, res) => {
     updateUserProfile(req.body)
         .then(() => res.json({ message: "profile updated" }))

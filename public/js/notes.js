@@ -124,6 +124,43 @@ async function createNewNote() {
     }
 }
 
+async function deleteNote(noteToDelete, deleteList) {
+    if(deleteList.length == 1) {
+        modalContainer.style.display = "none";
+        await createNewNote();
+        deleteList.push(getLocalStorageNote());
+    }
+    
+    let currentNote = getLocalStorageNote();
+    let currentUser = getLocalStorageUser();
+
+    if(currentNote.noteId == noteToDelete.noteId) {
+        for(i = 0; i < deleteList.length; i++) {
+            if(deleteList[i].noteId == noteToDelete.noteId) {
+                if(i == 0) {
+                    await switchNotes(deleteList[i+1]);
+                }
+                else if(i == deleteList.length - 1) {
+                    await switchNotes(deleteList[i-1]);
+                }
+                else {
+                    await switchNotes(deleteList[i+1]);
+                }
+            }
+        }
+    }
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ userId: currentUser.uid, noteId: noteToDelete.noteId })
+    }
+    await fetch('/deleteNote', options);
+    await fetchNotes();
+}
+
 async function switchNotes(note) {
     //  Sync the current note before switching
     await syncNotes(syncButton);
@@ -148,6 +185,7 @@ async function fetchNotes() {
         let res = await fetch('/notesList', options);
         let notes = await res.json();
         let keys = Object.keys(notes);
+        let deleteList = [];
         keys.forEach(key => {
             let noteListItem = document.createElement("li");
             noteListItem.setAttribute("class", "notes-list-item");
@@ -169,6 +207,12 @@ async function fetchNotes() {
             note.noteId = key;  //  The note.data() recieved from server does not contain noteId attribute
             noteListItem.addEventListener("click", () => switchNotes(note));
             notesListContent.appendChild(noteListItem);
+
+            deleteList.push(note);
+            delButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                deleteNote(note, deleteList)
+            });
         });
     }
     else {
