@@ -58,7 +58,8 @@ socket.on('collabSession', (session) => {
             socket.emit('collabSession', currentSession);
             setLocalStorageSession(currentSession);
 
-            alert(session.userList[0].name + " has joined!")
+            if(session.message)
+                alert(session.message);
         }
         else {
             let currentNote = getLocalStorageNote();
@@ -67,12 +68,25 @@ socket.on('collabSession', (session) => {
             loadNoteToWindow(currentNote);
             setLocalStorageNote(currentNote);
             setLocalStorageSession(session);
+
+            if(session.message)
+                alert(session.message);
         }
     }
     else {
-        alert("Owner has ended the session!");
+        if(session.message)
+                alert(session.message);
+
         //  will have to delete the current note and open the new collab window
-        deleteNote(getLocalStorageNote());
-        setLocalStorageSession(defaultSession);
+        if(!session.adminId) {
+            document.getElementById('startSession').style.display = "none";
+            document.getElementById('startNewSession').style.display = "block";
+            document.getElementById('collabDivider').style.display = "block";
+            document.getElementById('collabJoin').style.display = "block";
+            document.getElementById('collabJoined').style.display = "none";
+
+            deleteNote(getLocalStorageNote());
+            setLocalStorageSession(defaultSession);
+        }
     }
 });

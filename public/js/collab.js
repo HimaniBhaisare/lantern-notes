@@ -4,20 +4,39 @@ const defaultSession = {
     "userList" : [],
     "noteName" : "Collab note",
     "content" : "Waiting for owner to start collaboration...",
-    "active" : false
+    "active" : false,
+    "action" : null,
+    "message" : null
 };
 
 let localSession = getLocalStorageSession();
 if(localSession) {
-    sessionIdspan.textContent = localSession.sessionId;
-    let currentUser = getLocalStorageUser();
-    if(currentUser && localSession.adminId == currentUser.uid) {
-        document.getElementById('startSession').style.display = "block";
-        document.getElementById('startNewSession').style.display = "none";
-        document.getElementById('collabDivider').style.display = "none";
-        document.getElementById('collabJoin').style.display = "none";
+    if(localSession.sessionId) {
+        sessionIdspan.textContent = localSession.sessionId;
+        let currentUser = getLocalStorageUser();
+        if(currentUser && localSession.adminId == currentUser.uid) {
+            document.getElementById('startSession').style.display = "block";
+            document.getElementById('startNewSession').style.display = "none";
+            document.getElementById('collabDivider').style.display = "none";
+            document.getElementById('collabJoin').style.display = "none";
+            document.getElementById('collabJoined').style.display = "none";
+        }
+        else {
+            document.getElementById('collabJoined').style.display = "block";
+            document.getElementById('startSession').style.display = "none";
+            document.getElementById('startNewSession').style.display = "none";
+            document.getElementById('collabDivider').style.display = "none";
+            document.getElementById('collabJoin').style.display = "none";
+        }
+        socket.emit('collabSession', localSession);
     }
-    // socket.emit('collabSession', localSession);
+    else {
+        document.getElementById('startSession').style.display = "none";
+        document.getElementById('startNewSession').style.display = "block";
+        document.getElementById('collabDivider').style.display = "block";
+        document.getElementById('collabJoin').style.display = "block";
+        document.getElementById('collabJoined').style.display = "none";
+    }
 }
 else
     setLocalStorageSession(defaultSession);
@@ -35,6 +54,7 @@ function startNewSession() {
     document.getElementById('startNewSession').style.display = "none";
     document.getElementById('collabDivider').style.display = "none";
     document.getElementById('collabJoin').style.display = "none";
+    document.getElementById('collabJoined').style.display = "none";
 
     // Generate collab session id and store
     let currentUser = getLocalStorageUser();
@@ -51,7 +71,9 @@ function startNewSession() {
         "userList" : [userInfo],
         "noteName" : currentNote.noteName,
         "content" : currentNote.content,
-        "active" : true
+        "active" : true,
+        "action" : "subscribe",
+        "message" : null
     };
 
     copySessionId(document.getElementById("copyButton"));
@@ -65,10 +87,14 @@ function stopSession() {
         document.getElementById('startNewSession').style.display = "block";
         document.getElementById('collabDivider').style.display = "block";
         document.getElementById('collabJoin').style.display = "block";
+        document.getElementById('collabJoined').style.display = "none";
 
         let currentSession = getLocalStorageSession();
         if(getLocalStorageUser().uid == currentSession.adminId) {
+            currentSession.adminId = null;
             currentSession.active = false;
+            currentSession.action = "unsubscribe";
+            currentSession.message = getLocalStorageUser().displayName + " has stopped the collaborative session";
             socket.emit("collabSession", currentSession);
             setLocalStorageSession(defaultSession);
         }
@@ -107,10 +133,14 @@ function joinSession() {
         "userList" : [],
         "noteName" : "Collab note",
         "content" : "Waiting for owner to start collaboration...",
-        "active" : false
+        "active" : false,
+        "action" : null,
+        "message" : null
     };
     currentSession.sessionId = sessionId;
     currentSession.active = true;
+    currentSession.action = "subscribe";
+    currentSession.message = currentUser.displayName + " has joined the session!";
     let userInfo = {
         uid : currentUser.uid,
         name : currentUser.displayName
@@ -125,7 +155,34 @@ function joinSession() {
             setLocalStorageNote(currentNote);
             setLocalStorageSession(currentSession);
             socket.emit('collabSession', currentSession);
+
+            document.getElementById('startSession').style.display = "none";
+            document.getElementById('startNewSession').style.display = "none";
+            document.getElementById('collabDivider').style.display = "none";
+            document.getElementById('collabJoin').style.display = "none";
+            document.getElementById('collabJoined').style.display = "block";
         });
+}
+
+function leaveSession() {
+    if(confirm("Are you sure you want to leave this session?")) {
+        document.getElementById('startSession').style.display = "none";
+        document.getElementById('startNewSession').style.display = "block";
+        document.getElementById('collabDivider').style.display = "block";
+        document.getElementById('collabJoin').style.display = "block";
+        document.getElementById('collabJoined').style.display = "none";
+
+
+        let currentSession = getLocalStorageSession();
+        currentSession.active = false;
+        currentSession.action = "unsubscribe";
+        currentSession.message = getLocalStorageUser().displayName + " has left the session.";
+        socket.emit("collabSession", currentSession);
+
+        deleteNote(getLocalStorageNote());
+        setLocalStorageSession(defaultSession);
+        //  modify to send emit a message about user leaving the session later.
+    }
 }
 
 function makeId(length) {

@@ -60,6 +60,7 @@
             <!-- Collab window -->
             <div id="collabWindow" class="collab-window animate-modal" style="display: none;">
                 <div style="padding: 0.25rem 0.5rem;">
+                    <span style="font-family: 'Segoe UI';">• Beta <i class="fa fa-fw fa-flask"></i> •</span>
                     <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
                 </div>
                 <div class="collab-content" id="startNewSession">
@@ -78,8 +79,12 @@
                 </div>
                 <div class="collab-content" id="collabJoin">
                     <label for="collab-joinId">Join</label>
-                    <input id="collabJoinId" type="text" name="collab-joinId" placeholder="Enter join ID">
+                    <input id="collabJoinId" onfocus="this.select()" type="text" name="collab-joinId" placeholder="Enter join ID">
                     <button onclick="joinSession()" id="collabJoinButton" class="collab-button">Join session <i class="fa fa-sign-in-alt fa-fw"></i></button>
+                </div>
+                <div class="collab-content" id="collabJoined" style="display: none;">
+                    <span id="joinedMessageSpan">You've joined the session!</span>
+                    <button onclick="leaveSession()" id="collabLeaveButton" class="collab-button">Leave session <i class="fa fa-sign-out-alt fa-fw"></i></button>
                 </div>
             </div>
             <!-- Login window -->

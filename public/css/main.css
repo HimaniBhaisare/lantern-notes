@@ -361,6 +361,10 @@ a:hover {
     height: 6.5px;
 }
 
+#collabJoinId {
+    letter-spacing: 0.25em;
+}
+
 .collab-button {
     width: 100%;
     padding: 0.75rem;
@@ -379,10 +383,19 @@ a:hover {
     background-color: var(--auth-window-button-active);
 }
 
+#joinedMessageSpan {
+    display: inline-block;
+    text-align: center;
+    font-size: 1.2em;
+    width: 100%;
+    margin: 1rem 0;
+}
+
 .auth-window {
     flex-direction: column;
     position: absolute;
     width: 30%;
+    max-height: 60%;
     height: fit-content;
     top: 0;
     bottom: 0;

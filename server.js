@@ -6,7 +6,7 @@ const socket = require('socket.io');
 //  Express setup
 const app = express();
 const port = process.env.PORT || 5000;
-const server = app.listen(port, () => console.log(`Listening at localhost:${port}`));
+const server = app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
 app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
 
@@ -21,8 +21,14 @@ io.on('connection', (socket) => {
 
     socket.on('collabSession', (currentSession) => {
         let sessionId = currentSession.sessionId;
-        socket.join(sessionId);
-        socket.to(sessionId).emit('collabSession', currentSession);
+        if(currentSession.action == "subscribe") {
+            socket.join(sessionId);
+            socket.to(sessionId).emit('collabSession', currentSession);
+        }
+        else if(currentSession.action == "unsubscribe") {
+            socket.to(sessionId).emit('collabSession', currentSession);
+            socket.leave(sessionId)
+        }
     });
 });
 

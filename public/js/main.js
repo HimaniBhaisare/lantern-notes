@@ -87,7 +87,7 @@ function openWindow(id) {
 
 function openNotesList() {
     if(getLocalStorageSession().active) {
-        alert("You cannot access other files in a collaborative session.");
+        alert("You cannot access other notes in a collaborative session.");
         return;
     }
     openModalContainer();

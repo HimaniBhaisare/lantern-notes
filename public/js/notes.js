@@ -116,6 +116,11 @@ noteNameBox.addEventListener('focusout', e => {
 });
 
 async function createNewNote() {
+    if(getLocalStorageSession().active) {
+        alert("You cannot create new notes during a collaborative session.");
+        return;
+    }
+
     let currentUser = getLocalStorageUser();
     if (currentUser && currentUser.emailVerified) {
         //  Sync the current note before creating a new note.
