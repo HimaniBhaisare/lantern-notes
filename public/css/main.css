@@ -647,6 +647,10 @@ img.avatar {
     height: 8px;
 }
 
+::-webkit-scrollbar-corner {
+    background: #00000000;
+}
+
 ::-webkit-scrollbar-thumb {
     background: var(--scroll-thumb);
     border-radius: 5px;
