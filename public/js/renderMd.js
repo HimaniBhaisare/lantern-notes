@@ -11,6 +11,7 @@ const converter = new showdown.Converter({
 });
 
 let savedFlag = true;
+let syncTimer = null;
 
 function renderPreview(mdText) {
     const html = converter.makeHtml(mdText);
@@ -47,6 +48,13 @@ textEditor.addEventListener('keyup', e => {
     currentNote.content = mdText;
     setLocalStorageNote(currentNote);
     savedFlag = false;
+
+    // Sync every 1.5 secs after an edit
+    if(syncTimer) {
+        clearTimeout(syncTimer);
+        syncTimer = null;
+    }
+    syncTimer = setTimeout(() => syncNotes(syncButton), 1500);
 });
 
 socket.on('collabSession', (session) => {
