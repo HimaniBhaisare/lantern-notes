@@ -7,8 +7,8 @@ https://lantern-notes.herokuapp.com
 
 ### Desktop browser
 
-<img src="./resources/ssChrome.png" width="480px">
-<img src="./resources/ssChrome2.png" width="480px">
+<img src="./resources/ssChrome.png" width="720px">
+<img src="./resources/ssChrome2.png" width="720px">
 
 ### Smartphone browser
 
