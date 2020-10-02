@@ -3,9 +3,16 @@
 
 https://lantern-notes.herokuapp.com
 
-![Lantern app screenshot desktop](./resources/ssChrome.png)
-![Lantern app screenshot desktop](./resources/ssChrome2.png)
-![Lantern app screenshot desktop](./resources/ssPhone.png)
+## Screenshots
+
+### Desktop browser
+
+<img src="./resources/ssChrome.png" width="480px">
+<img src="./resources/ssChrome2.png" width="480px">
+
+### Smartphone browser
+
+<img src="./resources/ssPhone.jpg" height="480px">
 
 ## Releases
 
