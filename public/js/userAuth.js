@@ -135,9 +135,13 @@ signoutButton.addEventListener("click", e => {
 
 auth.onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
-        if (firebaseUser.displayName)
+        if (firebaseUser.displayName) {
             document.getElementById("loggedinMessageSpan").textContent = "Welcome back, " + firebaseUser.displayName + "!";
+            if(firebaseUser.displayName[0].toUpperCase().match(/[A-Z]/i))
+                document.getElementById("avatar").setAttribute("src", `assets/profilePictures/${firebaseUser.displayName[0].toUpperCase()}.png`);
+        }
         else {
+            document.getElementById("avatar").setAttribute("src", `assets/profilePictures/userAvatar.png`);
             document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
         }
         openWindow("loggedinWindow");

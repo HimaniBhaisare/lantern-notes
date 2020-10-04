@@ -534,7 +534,7 @@ input[type=email], input[type=password], input[type=text] {
     margin: 0;
 }
 
-img.avatar {
+#avatar {
     width: 40%;
     border-radius: 50%;
 }
