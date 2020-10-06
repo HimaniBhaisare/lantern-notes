@@ -66,8 +66,10 @@ socket.on('collabSession', (session) => {
             socket.emit('collabSession', currentSession);
             setLocalStorageSession(currentSession);
 
-            if(session.message)
-                alert(session.message);
+            if(session.message) {
+                const alert = new Alert();
+                alert.display(session.message);
+            }
         }
         else {
             let currentNote = getLocalStorageNote();
@@ -77,13 +79,17 @@ socket.on('collabSession', (session) => {
             setLocalStorageNote(currentNote);
             setLocalStorageSession(session);
 
-            if(session.message)
-                alert(session.message);
+            if(session.message) {
+                const alert = new Alert();
+                alert.display(session.message);
+            }
         }
     }
     else {
-        if(session.message)
-                alert(session.message);
+        if(session.message) {
+            const alert = new Alert();
+            alert.display(session.message);
+        }
 
         //  will have to delete the current note and open the new collab window
         if(!session.adminId) {

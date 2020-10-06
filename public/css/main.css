@@ -195,6 +195,34 @@ a:hover {
     background-color: var(--nav-button-active);
 }
 
+#alertDiv {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    bottom: 0;
+    right: 0;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert {
+    width: fit-content;
+    padding: 20px;
+    background-color: #554158;
+    color: #ffffff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.9em;
+    opacity: 1;
+    transition: opacity 0.6s;
+    box-shadow: 0 0 10px #231c25;
+    margin-top: 0.5rem;
+}
+
+.alert-message {
+    padding: 4px;
+}
+
 .note-name-box {
     padding: 0.625rem;
     margin-left: 0.75rem;
@@ -774,6 +802,10 @@ body::-webkit-scrollbar-track {
     }
     #loaderText {
         font-size: 0.9em;
+    }
+
+    .alert {
+        max-width: 78%;
     }
 }
 

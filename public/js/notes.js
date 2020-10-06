@@ -78,10 +78,12 @@ async function syncNotes(btn) {
         savedFlag = true;
     }
     else if (currentUser && !currentUser.emailVerified) {
-        alert("Verify email to sync notes to your account.");
+        const alert = new Alert();
+        alert.display("Verify email to sync notes to your account.");
     }
     else if (!currentUser) {
-        alert("Login first to sync notes!");
+        const alert = new Alert();
+        alert.display("Login first to sync notes!");
     }
 }
 
@@ -117,7 +119,8 @@ noteNameBox.addEventListener('focusout', e => {
 
 async function createNewNote() {
     if(getLocalStorageSession().active) {
-        alert("You cannot create new notes during a collaborative session.");
+        const alert = new Alert();
+        alert.display("You cannot create new notes during a collaborative session.");
         return;
     }
 
@@ -136,10 +139,12 @@ async function createNewNote() {
         await fetchNotes();
     }
     else if (currentUser && !currentUser.emailVerified) {
-        alert("Verify email to create new notes!");
+        const alert = new Alert();
+        alert.display("Verify email to create new notes!");
     }
     else if (!currentUser) {
-        alert("Login first to create new notes!");
+        const alert = new Alert();
+        alert.display("Login first to create new notes!");
     }
 }
 

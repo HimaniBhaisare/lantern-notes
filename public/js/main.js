@@ -87,7 +87,8 @@ function openWindow(id) {
 
 function openNotesList() {
     if(getLocalStorageSession().active) {
-        alert("You cannot access other notes in a collaborative session.");
+        const alert = new Alert();
+        alert.display("You cannot access other notes in a collaborative session!");
         return;
     }
     openModalContainer();
@@ -101,10 +102,12 @@ function collab() {
         openWindow("collabWindow");
     }
     else if (currentUser && !currentUser.emailVerified) {
-        alert("Verify email to collaborate with others!");
+        const alert = new Alert();
+        alert.display("Verify email to collaborate with others!");
     }
     else if (!currentUser) {
-        alert("Login first to collaborate with others!");
+        const alert = new Alert();
+        alert.display("Login to collaborate with others!");
     }
 }
 

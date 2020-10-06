@@ -51,7 +51,8 @@ fpButton.addEventListener("click", e => {
     auth.sendPasswordResetEmail(email)
         .then(() => {
             modalContainer.style.display = "none";
-            alert("Check your email for password reset link!");
+            const alert = new Alert();
+            alert.display("Check your email for password reset link!");
         })
         .catch(error => {
             let errorCode = error.code;
