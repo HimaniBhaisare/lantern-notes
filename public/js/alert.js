@@ -9,7 +9,10 @@ class Alert {
         this.closeAlert.innerHTML = "&times;";
         this.closeAlert.onclick = () => {
             this.alertBox.style.opacity = "0";
-            setTimeout(() => this.alertBox.style.display = "none", 600);
+            setTimeout(() => {
+                this.alertBox.style.display = "none"
+                this.alertBox.remove();
+            }, 600);
         }
         this.alertBox.append(this.alertMessage);
         this.alertBox.append(this.closeAlert);
@@ -22,7 +25,18 @@ class Alert {
         this.alertBox.style.display = "block";
         setTimeout(() => {
             this.alertBox.style.opacity = "0";
-            setTimeout(() => this.alertBox.style.display = "none", 600);
+            setTimeout(() => {
+                this.alertBox.style.display = "none";
+                this.alertBox.remove();
+            }, 600);
         }, 3000);
+    }
+
+    clearDiv() {
+        const alertDiv = document.getElementById('alertDiv');
+        alertDiv.querySelectorAll(".alert").forEach(element => {
+            if(element.style.display === "none")
+                element.remove();
+        })
     }
 }

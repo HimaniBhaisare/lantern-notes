@@ -219,10 +219,6 @@ a:hover {
     margin-top: 0.5rem;
 }
 
-.alert-message {
-    padding: 4px;
-}
-
 .note-name-box {
     padding: 0.625rem;
     margin-left: 0.75rem;
@@ -733,6 +729,12 @@ body::-webkit-scrollbar-track {
     }
 }
 
+@media screen and (max-width: 640px) {
+    .alert {
+        max-width: 80%;
+    }
+}
+
 @media screen and (max-width: 480px) {
     /* start of reordering and horizontally aligning editor and preview */
     .main-content {
@@ -802,10 +804,6 @@ body::-webkit-scrollbar-track {
     }
     #loaderText {
         font-size: 0.9em;
-    }
-
-    .alert {
-        max-width: 78%;
     }
 }
 

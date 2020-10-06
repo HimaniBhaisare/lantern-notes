@@ -79,7 +79,7 @@ async function syncNotes(btn) {
     }
     else if (currentUser && !currentUser.emailVerified) {
         const alert = new Alert();
-        alert.display("Verify email to sync notes to your account.");
+        alert.display("Verify email to sync notes to your account!");
     }
     else if (!currentUser) {
         const alert = new Alert();
@@ -120,7 +120,7 @@ noteNameBox.addEventListener('focusout', e => {
 async function createNewNote() {
     if(getLocalStorageSession().active) {
         const alert = new Alert();
-        alert.display("You cannot create new notes during a collaborative session.");
+        alert.display("You cannot create new notes during a collaborative session!");
         return;
     }
 
