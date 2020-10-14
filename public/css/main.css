@@ -886,7 +886,7 @@ tr:hover {
 }
 
 /* Text formattings */
-p {
+p, li {
     line-height: 1.8;
     font-size: 0.875em;
 }
