@@ -619,7 +619,6 @@ input[type=email], input[type=password], input[type=text] {
     flex-shrink: 0;
     padding: 5px;
     background: var(--quick-toolbar-color);
-    border-right: solid 1px var(--text-editor-color);
 }
 
 .quick-button {
