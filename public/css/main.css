@@ -27,11 +27,11 @@ body {
     --auth-window-link-hover: #a972c9;
     --auth-window-button: #ffc8fc;
     --auth-window-button-active: #ebbbe7;
-    --text-editor-color: #fffaff;
+    --text-editor-color: #efebf0;
     --text-editor-text: #524f4f;
-    --preview-color: #efebf0;
+    --preview-color: #fffaff;
     --preview-text-color: #292929;
-    --quick-toolbar-color: #efebf0;
+    --quick-toolbar-color: #fffaff;
     --quick-button-hover: #dbdbdb;
     --quick-unselected-buttons:#808080;
     --quick-selected-button:#a972c9;
