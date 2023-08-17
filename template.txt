@@ -1,0 +1,155 @@
+# Heading 1
+
+---
+
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+
+---
+
+### Text formattings
+
+**bold**
+*italic*
+~~strikethrough~~
+<u>underline</u>
+
+---
+
+### Lists
+
+- **Bullet lists**
+	- Sub list
+
+
+1. **Numbered list**
+	1. Sub list
+
+---
+
+### Check lists
+
+- [ ] Take the  dog  out for  a stroll
+- [x] Grocery shopping
+
+---
+
+### Code blocks
+
+HTML code
+```html
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+
+</body>
+</html>
+```
+
+Javascript code
+```js
+var foo = 'bar';
+console.log(foo);
+```
+
+C++ code
+```cpp
+#include<bits/stdlib.h>
+using namespace std;
+
+int main()
+{
+	cout<<"Hello world!"<<endl; // Print Hello World
+	return 0;
+}
+
+```
+
+---
+
+### Highlited text block
+
+```md
+Your text here
+```
+
+---
+
+### Tables
+
+|Name  |Roll no.   |Marks   |Grade |
+|:-----|:---------:|:------:|-----:|
+|Scott |15         |77      |B+    |
+|Jim   |18         |92      |A+    |
+|Pam   |16         |89      |A     |
+|Kevin |25         |80      |A     |
+
+<br>
+
+---
+
+### Links
+
+**Simple display**
+www.google.com
+xyz@gmail.com
+
+**With angular brackets**
+<www.google.com>
+<xyz@gmail.com>
+
+**With display text**
+[Link to google](https://www.google.com/)
+[mail me](mailto:xyz@gmail.com)
+
+**Store the link somewhere else and reference it**
+[Link to google][1]
+
+[1]: https://www.google.com/
+
+**Implicit reference to stored link**
+[google][]
+
+[google]: https://www.google.com/
+---
+
+### Direct clickable github mention using '@'
+
+@iiit-pune
+
+---
+
+### Display Images
+
+**Implicit link to image**
+
+![The office](https://i.insider.com/5c1a777e01c0ea045233a495?width=600&format=jpeg&auto=webp "Optional Title")
+
+
+**Reference stored link to image**
+
+![The office s2][2]
+
+[2]: https://hips.hearstapps.com/digitalspyuk.cdnds.net/18/18/1525450183-screen-shot-2018-05-04-at-170833.png?crop=0.666xw:1.00xh;0.223xw,0&resize=480:* "Optional Title"
+
+**Resize images**
+
+Appending '=WidthxHeight' to the end of link
+
+for example,
+
+=175x100
+
+![Michael Scott](https://img1.looper.com/img/gallery/the-entire-story-of-the-office-finally-explained/intro-1565722485.jpg =175x100)
+
+=350x200
+
+![Michael Scott](https://img1.looper.com/img/gallery/the-entire-story-of-the-office-finally-explained/intro-1565722485.jpg =350x200)
+
+---
