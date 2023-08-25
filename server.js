@@ -36,9 +36,12 @@ io.on('connection', (socket) => {
 admin.initializeApp({
     credential: admin.credential.cert(
         JSON.parse(Buffer.from(process.env.GOOGLE_FIREBASE_AUTH, 'base64').toString('utf-8'))
-    )
+    ),
 });
 const db = admin.firestore();
+admin.firestore().settings({
+    ignoreUndefinedProperties: true,
+});
 
 async function updateNotes(userId, note) {
     let folderRef = db.collection('users').doc(userId)
@@ -50,7 +53,9 @@ async function updateNotes(userId, note) {
         .collection('notes').doc(note.noteId);
     await notesRef.set({
         "noteName": note.noteName,
-        "content": note.content,
+        "mdContent": note.mdContent,
+        "blockContent": note.blockContent,
+        "noteType": note.noteType,
         "folderId": note.folderId
     });
 }

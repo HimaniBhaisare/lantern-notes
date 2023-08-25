@@ -1,19 +1,8 @@
-const defaultSession = {
-    "sessionId" : null,
-    "adminId" : null,
-    "userList" : [],
-    "noteName" : "Collab note",
-    "content" : "Waiting for owner to start collaboration...",
-    "active" : false,
-    "action" : null,
-    "message" : null
-};
-
-let localSession = getLocalStorageSession();
+let localSession = getLocalSession();
 if(localSession) {
     if(localSession.sessionId) {
         sessionIdspan.textContent = localSession.sessionId;
-        let currentUser = getLocalStorageUser();
+        let currentUser = getLocalUser();
         if(currentUser && localSession.adminId == currentUser.uid) {
             document.getElementById('startSession').style.display = "block";
             document.getElementById('startNewSession').style.display = "none";
@@ -39,13 +28,13 @@ if(localSession) {
     }
 }
 else
-    setLocalStorageSession(defaultSession);
+    setLocalSession(defaultSession);
 
-function setLocalStorageSession(session) {
+function setLocalSession(session) {
     window.localStorage.setItem("session", JSON.stringify(session));
 }
 
-function getLocalStorageSession() {
+function getLocalSession() {
     return JSON.parse(window.localStorage.getItem("session"));
 }
 
@@ -57,8 +46,8 @@ function startNewSession() {
     document.getElementById('collabJoined').style.display = "none";
 
     // Generate collab session id and store
-    let currentUser = getLocalStorageUser();
-    let currentNote = getLocalStorageNote();
+    let currentUser = getLocalUser();
+    let currentNote = getLocalNote();
     let sessionId = makeId(6);
     sessionIdspan.textContent = sessionId;
     let userInfo = {
@@ -70,14 +59,16 @@ function startNewSession() {
         "adminId" : currentUser.uid,
         "userList" : [userInfo],
         "noteName" : currentNote.noteName,
-        "content" : currentNote.content,
+        "mdContent" : currentNote.mdContent,
+        "blockContent" : currentNote.blockContent,
+        "noteType" : currentNote.noteType,
         "active" : true,
         "action" : "subscribe",
         "message" : null
     };
 
     copySessionId(document.getElementById("copyButton"));
-    setLocalStorageSession(currentSession);
+    setLocalSession(currentSession);
     socket.emit('collabSession', currentSession);
 }
 
@@ -89,14 +80,14 @@ function stopSession() {
         document.getElementById('collabJoin').style.display = "block";
         document.getElementById('collabJoined').style.display = "none";
 
-        let currentSession = getLocalStorageSession();
-        if(getLocalStorageUser().uid == currentSession.adminId) {
+        let currentSession = getLocalSession();
+        if(getLocalUser().uid == currentSession.adminId) {
             currentSession.adminId = null;
             currentSession.active = false;
             currentSession.action = "unsubscribe";
-            currentSession.message = getLocalStorageUser().displayName + " has stopped the collaborative session";
+            currentSession.message = getLocalUser().displayName + " has stopped the collaborative session";
             socket.emit("collabSession", currentSession);
-            setLocalStorageSession(defaultSession);
+            setLocalSession(defaultSession);
         }
     }
 }
@@ -124,15 +115,17 @@ function copySessionId(btn) {
     }, 3000);
 }
 
-function joinSession() {
+async function joinSession() {
     let sessionId = document.getElementById('collabJoinId').value;
-    let currentUser = getLocalStorageUser();
+    let currentUser = getLocalUser();
     let currentSession = {
         "sessionId" : null,
         "adminId" : null,
         "userList" : [],
         "noteName" : "Collab note",
-        "content" : "Waiting for owner to start collaboration...",
+        "mdContent" : "Waiting for owner to start collaboration...",
+        "blockContent" : "placeholder",
+        "noteType": editorMode,
         "active" : false,
         "action" : null,
         "message" : null
@@ -146,22 +139,22 @@ function joinSession() {
         name : currentUser.displayName
     };
     currentSession.userList.push(userInfo);
-    createNewNote()
-        .then(() => {
-            let currentNote = getLocalStorageNote();
-            currentNote.noteName  = currentSession.noteName = "Collab note";
-            currentNote.content = currentSession.content = "Waiting for owner to start the session...";
-            loadNoteToWindow(currentNote);
-            setLocalStorageNote(currentNote);
-            setLocalStorageSession(currentSession);
-            socket.emit('collabSession', currentSession);
+    await createNewNote()
+    let currentNote = getLocalNote();
+    currentNote.noteName  = currentSession.noteName = "Collab note";
+    currentNote.mdContent = currentSession.mdContent = "Waiting for owner to start the session...";
+    currentNote.blockContent = currentSession.blockContent = "placeholder";
+    currentNote.noteType = currentSession.noteType = editorMode;
+    await loadNoteToWindow(currentNote);
+    setLocalNote(currentNote);
+    setLocalSession(currentSession);
+    socket.emit('collabSession', currentSession);
 
-            document.getElementById('startSession').style.display = "none";
-            document.getElementById('startNewSession').style.display = "none";
-            document.getElementById('collabDivider').style.display = "none";
-            document.getElementById('collabJoin').style.display = "none";
-            document.getElementById('collabJoined').style.display = "block";
-        });
+    document.getElementById('startSession').style.display = "none";
+    document.getElementById('startNewSession').style.display = "none";
+    document.getElementById('collabDivider').style.display = "none";
+    document.getElementById('collabJoin').style.display = "none";
+    document.getElementById('collabJoined').style.display = "block";
 }
 
 function leaveSession() {
@@ -173,14 +166,14 @@ function leaveSession() {
         document.getElementById('collabJoined').style.display = "none";
 
 
-        let currentSession = getLocalStorageSession();
+        let currentSession = getLocalSession();
         currentSession.active = false;
         currentSession.action = "unsubscribe";
-        currentSession.message = getLocalStorageUser().displayName + " has left the session.";
+        currentSession.message = getLocalUser().displayName + " has left the session.";
         socket.emit("collabSession", currentSession);
 
-        deleteNote(getLocalStorageNote());
-        setLocalStorageSession(defaultSession);
+        deleteNote(getLocalNote());
+        setLocalSession(defaultSession);
         //  modify to send emit a message about user leaving the session later.
     }
 }

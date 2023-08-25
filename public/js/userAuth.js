@@ -50,7 +50,7 @@ fpButton.addEventListener("click", e => {
 
     auth.sendPasswordResetEmail(email)
         .then(() => {
-            modalContainer.style.display = "none";
+            closeWindow('fpWindow');
             const alert = new Alert();
             alert.display("Check your email for password reset link!");
         })
@@ -122,7 +122,7 @@ signupButton.addEventListener("click", e => {
 });
 
 signoutButton.addEventListener("click", e => {
-    if(getLocalStorageSession().active)
+    if(getLocalSession().active)
     {
         if(confirm("Logging out will stop the collaborative session. Continue?"))
         {
@@ -134,29 +134,43 @@ signoutButton.addEventListener("click", e => {
         auth.signOut();
 });
 
-auth.onAuthStateChanged(firebaseUser => {
+auth.onAuthStateChanged(async firebaseUser => {
     if (firebaseUser) {
         if (firebaseUser.displayName) {
             document.getElementById("loggedinMessageSpan").textContent = "Welcome back, " + firebaseUser.displayName + "!";
-            if(firebaseUser.displayName[0].toUpperCase().match(/[A-Z]/i))
-                document.getElementById("avatar").setAttribute("src", `assets/profilePictures/${firebaseUser.displayName[0].toUpperCase()}.png`);
+            if(firebaseUser.displayName[0].toUpperCase().match(/[A-Z]/i)) {
+                let imageUrl = `assets/profilePictures/${firebaseUser.displayName[0].toUpperCase()}.png`;
+                let profileButtonIcon = document.createElement('img');
+                document.getElementById("avatar").setAttribute("src", imageUrl);
+                profileButtonIcon.setAttribute("src", imageUrl);
+                document.getElementById("profileButton").firstChild.replaceWith(profileButtonIcon);
+                document.getElementById("profileButton").classList.add('profile-icon-active');
+            }
         }
         else {
+            let profileButtonIcon = document.createElement('i');
+            profileButtonIcon.classList = 'far fa-user fa-fw'; 
+            document.getElementById("profileButton").firstChild.replaceWith(profileButtonIcon);
+            document.getElementById("profileButton").classList.remove('profile-icon-active');
             document.getElementById("avatar").setAttribute("src", `assets/profilePictures/userAvatar.png`);
             document.getElementById("loggedinMessageSpan").textContent = "You are now logged in!";
         }
-        openWindow("loggedinWindow");
+
+        // avoid opening modal on refresh
+        if (!getLocalUser() || firebaseUser.uid != getLocalUser().uid) {
+            openWindow("loggedinWindow");
+        }
         
         //  Assign a noteId to the note if its new on login.
-        let currentNote = getLocalStorageNote();
+        let currentNote = getLocalNote();
         if (!currentNote.noteId) {
             currentNote.noteId = "note-" + uuidv4();
         }
 
-        setLocalStorageNote(currentNote);
-        setLocalStorageUser(firebaseUser);  //  Will store displayName only from second login.
+        setLocalNote(currentNote);
+        setLocalUser(firebaseUser);  //  Will store displayName only from second login.
         
-        if(currentNote.content != defaultNote.content || currentNote.noteName != defaultNote.noteName) {
+        if(currentNote.mdContent != defaultNote.mdContent || currentNote.blockContent != defaultNote.blockContent || currentNote.noteName != defaultNote.noteName) {
         //  Sync notes after login if edited.
             syncNotes(syncButton)
                 .then(() => fetchNotes());
@@ -166,11 +180,18 @@ auth.onAuthStateChanged(firebaseUser => {
         }
     }
     else {
-        //  Users current note will be open even after signout. Feature or Bug?
-        setLocalStorageNote(defaultNote);
-        setLocalStorageUser(firebaseUser);
-        loadNoteToWindow(defaultNote);
+        let currentNote = getLocalNote();
+        if (currentNote && currentNote.noteId) {
+            //  Users current note will be open even after signout. Feature or Bug?
+            setLocalNote(defaultNote);
+            setLocalUser(firebaseUser);
+            await loadNoteToWindow(defaultNote);
+        }
         fetchNotes();
+        let profileButtonIcon = document.createElement('i');
+        profileButtonIcon.classList = 'far fa-user fa-fw'; 
+        document.getElementById("profileButton").firstChild.replaceWith(profileButtonIcon);
+        document.getElementById("profileButton").classList.remove('profile-icon-active');
         document.getElementById("loggedinMessageSpan").textContent = "You are now signed out!";
         setTimeout(() => openWindow("loginWindow"), 1000);
     }

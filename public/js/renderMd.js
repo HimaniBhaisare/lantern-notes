@@ -22,31 +22,32 @@ function renderPreview(mdText) {
 }
 
 //  Handling tab key press
-textEditor.addEventListener('keydown', e => {
-    if (e.keyCode == 9 || e.key == 9 || e.keyIdentifier == 9 || e.code == 9) {
+mdEditor.addEventListener('keydown', e => {
+    if (e.keyCode == 9 || e.key == "Tab" || e.keyIdentifier == 9 || e.code == "Tab") {
         let mdText = e.target.value;
-        let start = textEditor.selectionStart;
-        let end = textEditor.selectionEnd;
+        let start = mdEditor.selectionStart;
+        let end = mdEditor.selectionEnd;
         e.target.value = mdText.substring(0, start) + "\t" + mdText.substring(end);
-        textEditor.selectionStart = textEditor.selectionEnd = start + 1;
+        mdEditor.selectionStart = mdEditor.selectionEnd = start + 1;
         e.preventDefault();
     }
 });
 
-textEditor.addEventListener('keyup', e => {
+mdEditor.addEventListener('keyup', async e => {
     let mdText = e.target.value;
     renderPreview(mdText);
 
-    let currentSession = getLocalStorageSession();
+    let currentSession = getLocalSession();
     if(currentSession.active) {
-        currentSession.content = mdText;
-        setLocalStorageSession(currentSession);
+        currentSession.mdContent = mdText;
+        setLocalSession(currentSession);
         socket.emit('collabSession', currentSession);
     }
 
-    let currentNote = getLocalStorageNote();
-    currentNote.content = mdText;
-    setLocalStorageNote(currentNote);
+    let currentNote = getLocalNote();
+    currentNote.mdContent = mdText;
+    // currentNote.noteType = editorMode;
+    setLocalNote(currentNote);
     savedFlag = false;
 
     // Sync every 1.5 secs after an edit
@@ -57,14 +58,14 @@ textEditor.addEventListener('keyup', e => {
     syncTimer = setTimeout(() => syncNotes(syncButton), 1500);
 });
 
-socket.on('collabSession', (session) => {
+socket.on('collabSession', async (session) => {
     if(session.active) {
         // if new collaborator is joining, connect them.
         if(!session.adminId) {
-            let currentSession = getLocalStorageSession();
+            let currentSession = getLocalSession();
             currentSession.userList.push(session.userList[0]);
             socket.emit('collabSession', currentSession);
-            setLocalStorageSession(currentSession);
+            setLocalSession(currentSession);
 
             if(session.message) {
                 const alert = new Alert();
@@ -72,12 +73,14 @@ socket.on('collabSession', (session) => {
             }
         }
         else {
-            let currentNote = getLocalStorageNote();
+            let currentNote = getLocalNote();
             currentNote.noteName = session.noteName;
-            currentNote.content = session.content;
-            loadNoteToWindow(currentNote);
-            setLocalStorageNote(currentNote);
-            setLocalStorageSession(session);
+            currentNote.mdContent = session.mdContent;
+            currentNote.blockContent = session.blockContent;
+            currentNote.noteType = session.noteType;
+            await loadNoteToWindow(currentNote);
+            setLocalNote(currentNote);
+            setLocalSession(session);
 
             if(session.message) {
                 const alert = new Alert();
@@ -99,8 +102,8 @@ socket.on('collabSession', (session) => {
             document.getElementById('collabJoin').style.display = "block";
             document.getElementById('collabJoined').style.display = "none";
 
-            deleteNote(getLocalStorageNote());
-            setLocalStorageSession(defaultSession);
+            deleteNote(getLocalNote());
+            setLocalSession(defaultSession);
         }
     }
 });

@@ -5,46 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lantern - Markdown notes</title>
     <link rel="icon" href="./assets/favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moirai+One&family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/atom-one-light.min.css" id="syntax-theme">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/main.css" type="text/css" media="screen" id="theme-css">
     <link rel="stylesheet" href="./css/loadingDots.css" type="text/css" media="screen" id="theme-css">
+    <link rel="stylesheet" href="./css/main.css" type="text/css" media="screen" id="theme-css">
 </head>
 
 <body onload="loadingFade()">
     <div id="loadingScreen">
         <div id="loaderBrand">
-            <img src="./assets/LogoLoadingAlt2-min.png" id="loader-logo" alt="loading gif" width="360" height="120">
+            <img src="./assets/LogoLoadingAlt2-min.png" id="loader-logo" alt="loading gif">
             <br>
-            <p id="loaderText">A markdown editor for modern note-taking!</p>
+            <p id="loaderText">Jump in to modern note-taking!</p>
         </div>
     </div>
     <div id="mainPage">
         <nav class="navbar">
             <div class="navbar-header">
-                <a href="#"><img src="./assets/brandLogo.png" alt="Lantern.io logo" id="lanternLogo" width="150" height="35"/></a>
+                <a href="#">
+                    <img src="./assets/brandLogo.png" alt="Lantern.io logo" id="lanternLogo" width="150" height="35"/>
+                </a>
             </div>
             <div class="navbar-content">
                 <ul class="navbar-items navbar-left">
+                    <!-- <li><button onclick="switchModeTo(editorMode === 'NOTE' ? 'MD' : 'NOTE')" class="navbar-button" title="Switch note mode" id="switchModeButton"><i class="fas fa-pen-square fa-fw"></i></button></li> -->
                     <li><button onclick="openNotesList()" class="navbar-button" title="View notes"><i class="far fa-folder fa-fw"></i></button></li>
                     <li><button onclick="createNewNote()" class="navbar-button" title="Create new note"><i class="fa fa-plus fa-fw"></i></button></li>
-                    <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11" title="Change note name">Welcome Note</textarea></li>
+                    <li><textarea name="Note name" class="note-name-box" id="noteNameBox" placeholder="Enter note name" cols="11" rows="1" title="Change note name">New Note</textarea></li>
                 </ul>
                 <ul class="navbar-items navbar-right">
-                    <li><button onclick="syncNotes(this)" id="syncButton" class="navbar-button" title="Sync notes"><i class="fa fa-sync-alt fa-fw"></i></button></li>
+                    <li><button onclick="syncNotes(this, false)" id="syncButton" class="navbar-button" title="Sync notes"><i class="fa fa-sync-alt fa-fw"></i></button></li>
                     <li><button onclick="collab()" class="navbar-button" title="Collaborate"><i class="fa fa-vector-square fa-fw"></i></button></li>
                     <li><button onclick="switchTheme(this)" id="themeSelector" class="navbar-button" title="Switch theme"><i class="far fa-moon fa-fw"></i></button></li>
-                    <li><button onclick="userLoginSignup()" class="navbar-button" title="Login/Signup"><i class="far fa-user fa-fw"></i></button></li>
+                    <li><button onclick="userLoginSignup()" id="profileButton" class="navbar-button" title="Login/Signup"><i class="far fa-user fa-fw"></i></button></li>
                 </ul>
             </div>
         </nav>
         <!-- Login/Signup modal window -->
         <div class="modal-container" id="modalContainer" style="display: none;">
+        <!-- <div class="modal-container" id="modalContainer" style="display: none;"> -->
             <!-- Notes list -->
-            <div id="notesListWindow" class="notes-list-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem 0.5rem 0.5rem;">
+            <div id="notesListWindow" class="ui-window notes-list-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
+                    <span class="window-title">Notes</span>
                     <i id="sortAlpha" class="fa fa-fw fa-sort-alpha-down sort-button" onclick="sortByFn(this)"></i>
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                    <span onclick="closeWindow('notesListWindow')" class="close" title="Close">&times;</span>
                 </div>
                 <div class="browser-screen-loading-content" id="notesListLoader" style="display: none;">
                     <div class="loading-dots dark-gray">
@@ -58,19 +66,19 @@
                 </ul>
             </div>
             <!-- Collab window -->
-            <div id="collabWindow" class="collab-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
+            <div id="collabWindow" class="ui-window collab-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
                     <span style="font-family: 'Segoe UI';">• Experimental <i class="fa fa-fw fa-flask"></i> •</span>
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+                    <span onclick="closeWindow('collabWindow')" class="close" title="Close">&times;</span>
                 </div>
                 <div class="collab-content" id="startNewSession">
-                    <button onclick="startNewSession()" id="startSessionButton" class="collab-button">Start a collab session <i class="fa fa-plus-circle fa-fw"></i></button>
+                    <button onclick="startNewSession()" id="startSessionButton" class="ui-button">Start a collab session <i class="fa fa-plus-circle fa-fw"></i></button>
                 </div>
                 <div class="collab-content" id="startSession" style="display: none;">
                     <span id="sessionIdSpan" class="sessionid-span">Session ID</span>
-                    <button onclick="copySessionId(this)" id="copyButton" class="collab-button">Copy to clipboard <i class="fa fa-clipboard fa-fw"></i></button>
-                    <button onclick="generateSessionId(this)" class="collab-button">Generate new session ID <i class="fa fa-redo fa-fw"></i></button>
-                    <button onclick="stopSession()" class="collab-button">End session <i class="fa fa-ban fa-fw"></i></button>
+                    <button onclick="copySessionId(this)" id="copyButton" class="ui-button">Copy to clipboard <i class="fa fa-clipboard fa-fw"></i></button>
+                    <button onclick="generateSessionId(this)" class="ui-button">Generate new session ID <i class="fa fa-redo fa-fw"></i></button>
+                    <button onclick="stopSession()" class="ui-button">End session <i class="fa fa-ban fa-fw"></i></button>
                 </div>
                 <div id="collabDivider" style="padding: 0.5rem; text-align: center;">
                     <hr class="form-divider-line">
@@ -78,87 +86,92 @@
                     <hr class="form-divider-line">
                 </div>
                 <div class="collab-content" id="collabJoin">
-                    <label for="collab-joinId">Join</label>
+                    <label class="ui-input-label" for="collab-joinId">Join</label>
                     <input id="collabJoinId" onfocus="this.select()" type="text" name="collab-joinId" placeholder="Enter join ID">
-                    <button onclick="joinSession()" id="collabJoinButton" class="collab-button">Join session <i class="fa fa-sign-in-alt fa-fw"></i></button>
+                    <button onclick="joinSession()" id="collabJoinButton" class="ui-button">Join session <i class="fa fa-sign-in-alt fa-fw"></i></button>
                 </div>
                 <div class="collab-content" id="collabJoined" style="display: none;">
                     <span id="joinedMessageSpan">You've joined the session!</span>
-                    <button onclick="leaveSession()" id="collabLeaveButton" class="collab-button">Leave session <i class="fa fa-sign-out-alt fa-fw"></i></button>
+                    <button onclick="leaveSession()" id="collabLeaveButton" class="ui-button">Leave session <i class="fa fa-sign-out-alt fa-fw"></i></button>
                 </div>
             </div>
             <!-- Login window -->
-            <div id="loginWindow" class="auth-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
-                    <span id="loginError" class="auth-error"></span>
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+            <div id="loginWindow" class="ui-window auth-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
+                    <span class="window-title">Login</span>
+                    <span onclick="closeWindow('loginWindow')" class="close" title="Close">&times;</span>
                 </div>
+                <span id="loginError" class="window-error"></span>
                 <div class="form-content">
-                    <label for="login-email">Email</label>
+                    <label class="ui-input-label" for="login-email">Email</label>
                     <input id="loginEmail" type="email" name="login-email" placeholder="Enter Email" autofocus>
-                    <label for="login-password">Password</label>
+                    <label class="ui-input-label" for="login-password">Password</label>
                     <input id="loginPassword" type="password" name="login-password" placeholder="Enter Password">
-                    <input type="checkbox" onclick="showPassword()" style="float: left;"><span id="showPassSpan">  Show password</span>
-                    <span id="forgotPassSpan"><a href="#" onclick="openWindow('fpWindow')" id="forgotPassword">Forgot password?</a></span>
-                    <button id="loginButton" class="auth-button">Login</button>
-                    <span id="createAccSpan">New user? <a href="#" onclick="openWindow('signupWindow')" id="createAccount">Create an account</a></span>
+                    <input type="checkbox" onclick="showPassword()" style="float: left;" id="showPassCheckbox"><span id="showPassSpan">Show password</span>
+                    <span id="forgotPassSpan"><a href="#" onclick="openWindow('fpWindow')" id="forgotPassword" class="window-link">Forgot password?</a></span>
+                    <button id="loginButton" class="ui-button">Login</button>
+                    <span id="createAccSpan">New user? <a href="#" onclick="openWindow('signupWindow')" id="createAccount" class="window-link">Create an account</a></span>
                 </div>
-                <div style="padding: 0.5rem; text-align: center;">
+                <!-- <div style="padding: 0.5rem; text-align: center;">
                     <hr class="form-divider-line">
                     <span class="form-divider">(or)</span>
                     <hr class="form-divider-line">
                 </div>
-                <div style="padding: 2rem;"></div>
+                <div style="padding: 2rem;"></div> -->
             </div>
             <!-- Password reset window -->
-            <div id="fpWindow" class="auth-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
-                    <span id="fpError" class="auth-error"></span>
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+            <div id="fpWindow" class="ui-window auth-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
+                    <span class="window-title">Change password</span>
+                    <span onclick="closeWindow('fpWindow')" class="close" title="Close">&times;</span>
                 </div>
+                <span id="fpError" class="window-error"></span>
                 <div class="form-content">
-                    <label for="fp-email">Email</label>
+                    <label class="ui-input-label" for="fp-email">Email</label>
                     <input id="fpEmail" type="email" name="fp-email" placeholder="Enter email">
-                    <button id="fpButton" class="auth-button">Send password reset link</button>
+                    <button id="fpButton" class="ui-button">Send password reset link</button>
                 </div>
             </div>
             <!-- Signup window -->
-            <div id="signupWindow" class="auth-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
-                    <span id="signupError" class="auth-error"></span>
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+            <div id="signupWindow" class="ui-window auth-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
+                    <span class="window-title">Sign up</span>
+                    <span onclick="closeWindow('signupWindow')" class="close" title="Close">&times;</span>
                 </div>
+                <span id="signupError" class="window-error"></span>
                 <div class="form-content">
-                    <label for="signup-displayname">Display name</label>
+                    <label class="ui-input-label" for="signup-displayname">Display name</label>
                     <input id="signupDisplayname" type="text" name="signup-displayname" placeholder="Enter display name" autofocus>
-                    <label for="signup-email">Email</label>
+                    <label class="ui-input-label" for="signup-email">Email</label>
                     <input id="signupEmail" type="email" name="signup-email" placeholder="Enter email">
-                    <label for="signup-password">Password</label>
+                    <label class="ui-input-label" for="signup-password">Password</label>
                     <input id="signupPassword" type="password" name="signup-password" placeholder="Enter password">
-                    <label for="signup-cnfPassword">Confirm Password</label>
+                    <label class="ui-input-label" for="signup-cnfPassword">Confirm Password</label>
                     <input id="signupCnfPassword" type="password" name="signup-cnfPassword" placeholder="Re-type password">
-                    <button id="signupButton" class="auth-button">Sign up</button>
-                    <span id="loginLinkSpan">Already a user? <a href="#" onclick="openWindow('loginWindow')" id="loginLink">Login here</a></span>
+                    <button id="signupButton" class="ui-button">Sign up</button>
+                    <span id="loginLinkSpan">Already a user? <a href="#" onclick="openWindow('loginWindow')" id="loginLink" class="window-link">Login here</a></span>
                 </div>
             </div>
             <!-- Logged in window -->
-            <div id="loggedinWindow" class="auth-window animate-modal" style="display: none;">
-                <div style="padding: 0.25rem 0.5rem;">
-                    <span onclick="document.getElementById('modalContainer').style.display='none'" class="close" title="Close">&times;</span>
+            <div id="loggedinWindow" class="ui-window auth-window animate-modal" style="display: none;">
+                <div class="window-titlebar">
+                    <span class="window-title">Profile</span>
+                    <span onclick="closeWindow('loggedinWindow')" class="close" title="Close">&times;</span>
                 </div>
                 <div class="dp-container">
                     <img src="assets/profilePictures/userAvatar.png" alt="display picture" id="avatar">
                 </div>
                 <div class="form-content">
                     <span id="loggedinMessageSpan"></span>
-                    <button id="signoutButton" class="auth-button">Sign out</button>
+                    <button id="signoutButton" class="ui-button">Sign out</button>
                 </div>
             </div>
         </div>
-        <!-- Text editor/Preview Section -->
-        <div class="main-content">
-            <textarea id="textEditor" class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create your Markdown</textarea>
+        <!-- Md editor/Preview Section -->
+        <div class="main-content markdown" id="mdSection" style="display: none;">
+            <textarea id="mdEditor" class="text-editor" spellcheck="false" autocomplete="off" autofocus># Create a markdown</textarea>
             <div class="quick-toolbar">
+                <button onclick="switchModeTo('NOTE', false)" class="quick-button switchEditor-button" title="Switch to block editor"><i class="fas fa-stream"></i></button>
                 <button onclick="toggleEditMode(this)" class="quick-button editMode-button" title="Edit Mode"><i class="fas fa-edit"></i></button>
                 <button onclick="toggleSplitMode(this)" class="quick-button splitMode-button" title="Split Windows"><i class="fas fa-columns"></i></button>
                 <button onclick="toggleReadMode(this)" class="quick-button readMode-button" title="Read Mode"><i class="far fa-eye"></i></button>
@@ -166,17 +179,42 @@
             </div>
             <div class="preview" id="preview"></div>
         </div>
+
+        <!-- Text editor -->
+        <div class="main-content notes" id="noteSection" style="display: flex;">
+            <!-- <textarea id="noteEditor" class="text-editor" spellcheck="false" autocomplete="off" autofocus>Create your Note</textarea> -->
+            <div id="noteEditor" class="text-editor"></div>
+            <div class="quick-toolbar">
+                <button onclick="switchModeTo('MD', false)" class="quick-button switchEditor-button" title="Switch to markdown"><i class="fab fa-markdown"></i></button>
+                <button onclick="downloadHtml()" class="quick-button downloadHtml-button" title="Download HTML"><i class="fa fa-download"></i></button>
+            </div>
+        </div>
     
         <div id="alertDiv"></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/editorjs-break-line"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="js/alert.js"></script>
+    <script src="js/renderBlock.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/note-converter.js"></script>
     <script src="js/renderMd.js"></script>
     <script src="js/userAuth.js"></script>
     <script src="js/notes.js"></script>

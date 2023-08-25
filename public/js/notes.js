@@ -1,17 +1,13 @@
-const defaultNote = {
-    "noteId": null,
-    "folderId": "folder-0099a9be-11e0-4429-afc3-ef50e3a43668",
-    "noteName": noteNameBox.textContent,
-    "content": textEditor.textContent
-};
-
 let fetchedNotes = [];
 
-let localNote = getLocalStorageNote();
-if (localNote)
+let localNote = getLocalNote();
+if (localNote) {
     loadNoteToWindow(localNote);
-else
-    setLocalStorageNote(defaultNote);
+}
+else {
+    localNote = defaultNote;
+    setLocalNote(defaultNote);
+}
 
 let sortListBy = JSON.parse(window.localStorage.getItem("sortBy"));
 if(!sortListBy)
@@ -23,42 +19,60 @@ else {
     }
 }
 
-socket.on('userSession', (session) => {
-    let currentNote = getLocalStorageNote();
+socket.on('userSession', async (session) => {
+    let currentNote = getLocalNote();
     if(currentNote.noteId == session.note.noteId)
-        loadNoteToWindow(session.note);
+        await loadNoteToWindow(session.note);
     fetchNotes();
 });
 
-function loadNoteToWindow(note) {
+async function loadNoteToWindow(note) {
     noteNameBox.value = note.noteName;
-    textEditor.value = note.content;
-    renderPreview(note.content);
+    if (!note.noteType) { // For old markdowns
+        switchModeTo('MD');
+    } else if (editorMode != note.noteType) {
+        switchModeTo(note.noteType);
+    }
+    
+    await blockEditor.isReady;
+    blockEditor.clear();
+    if (note.content && !note.mdContent) {
+        note.mdContent = note.content;
+    }
+    if (!note.blockContent) {
+        note.blockContent = await mdToNote(note.mdContent)
+    } else if (note.blockContent != 'placeholder') {
+        await blockEditor.blocks.render(note.blockContent);
+    }
+
+    mdEditor.value = note.mdContent;
+    renderPreview(note.mdContent);
+    setLocalNote(note);
 }
 
-function getLocalStorageNote() {
+function getLocalNote() {
     return JSON.parse(window.localStorage.getItem("currentNote"));
 }
 
-function setLocalStorageNote(note) {
+function setLocalNote(note) {
     window.localStorage.setItem("currentNote", JSON.stringify(note));
 }
 
-function getLocalStorageUser() {
+function getLocalUser() {
     return JSON.parse(window.localStorage.getItem("currentUser"));
 }
 
-function setLocalStorageUser(user) {
+function setLocalUser(user) {
     window.localStorage.setItem("currentUser", JSON.stringify(user));
 }
 
-async function syncNotes(btn) {
-    let currentUser = getLocalStorageUser();
+async function syncNotes(btn, isAutoTrigger = true) {
+    let currentUser = getLocalUser();
     if (currentUser && currentUser.emailVerified) {
         let icon = btn.querySelector('i');
         icon.classList.toggle("fa-spin");
         //  Update the db
-        let currentNote = getLocalStorageNote();
+        let currentNote = getLocalNote();
         const options = {
             method: 'POST',
             headers: {
@@ -81,7 +95,7 @@ async function syncNotes(btn) {
         const alert = new Alert();
         alert.display("Verify email to sync notes to your account!");
     }
-    else if (!currentUser) {
+    else if (!currentUser && !isAutoTrigger) {
         const alert = new Alert();
         alert.display("Login first to sync notes!");
     }
@@ -98,16 +112,17 @@ noteNameBox.addEventListener('focusout', e => {
     e.target.style.overflowX = "hidden";
     e.target.scrollLeft = 0;
     //  Update local storage if there's a name change
-    let currentNote = getLocalStorageNote();
+    let currentNote = getLocalNote();
     if (e.target.value != currentNote.noteName) {
-        currentNote.noteName = e.target.value;
-        setLocalStorageNote(currentNote);
+        let noteName = e.target.value.slice(0, 24);
+        currentNote.noteName = noteName;
+        setLocalNote(currentNote);
 
         //  Update in collabs
-        let currentSession = getLocalStorageSession();
+        let currentSession = getLocalSession();
         if(currentSession.sessionId && currentSession.active) {
             currentSession.noteName = currentNote.noteName;
-            setLocalStorageSession(currentSession);
+            setLocalSession(currentSession);
             socket.emit('collabSession', currentSession);
         }
 
@@ -118,21 +133,21 @@ noteNameBox.addEventListener('focusout', e => {
 });
 
 async function createNewNote() {
-    if(getLocalStorageSession().active) {
+    if(getLocalSession().active) {
         const alert = new Alert();
         alert.display("You cannot create new notes during a collaborative session!");
         return;
     }
 
-    let currentUser = getLocalStorageUser();
+    let currentUser = getLocalUser();
     if (currentUser && currentUser.emailVerified) {
         //  Sync the current note before creating a new note.
         await syncNotes(syncButton);
         //  Create new note from default template and update local storage
         let newNote = defaultNote;
         newNote.noteId = "note-" + uuidv4();
-        loadNoteToWindow(newNote);
-        setLocalStorageNote(newNote);
+        await loadNoteToWindow(newNote);
+        setLocalNote(newNote);
         //  Sync the new note
         await syncNotes(syncButton);
         //  and re-fetch the notes list.
@@ -150,13 +165,13 @@ async function createNewNote() {
 
 async function deleteNote(noteToDelete) {
     if(fetchedNotes.length == 1) {
-        modalContainer.style.display = "none";
+        closeWindow('notesListWindow');
         await createNewNote();
-        fetchedNotes.push(getLocalStorageNote());
+        fetchedNotes.push(getLocalNote());
     }
     
-    let currentNote = getLocalStorageNote();
-    let currentUser = getLocalStorageUser();
+    let currentNote = getLocalNote();
+    let currentUser = getLocalUser();
 
     if(currentNote.noteId == noteToDelete.noteId) {
         for(i = 0; i < fetchedNotes.length; i++) {
@@ -190,9 +205,9 @@ async function switchNotes(note) {
         //  Sync the current note before switching
         await syncNotes(syncButton);
     }
-    modalContainer.style.display = "none";
-    loadNoteToWindow(note);
-    setLocalStorageNote(note);
+    closeWindow("notesListWindow")
+    await loadNoteToWindow(note);
+    setLocalNote(note);
     await fetchNotes();
 }
 
@@ -209,7 +224,7 @@ async function sortByFn(btn) {
 }
 
 async function fetchNotes() {
-    let currentUser = getLocalStorageUser();
+    let currentUser = getLocalUser();
     notesListContent.innerHTML = '';
 
     let loader = document.getElementById("notesListLoader");
@@ -234,7 +249,7 @@ async function fetchNotes() {
         keys.forEach(key => {
             let noteListItem = document.createElement("li");
             
-            if(key == getLocalStorageNote().noteId)
+            if(key == getLocalNote().noteId)
                 noteListItem.setAttribute("class", "notes-list-item current-note");
             else
                 noteListItem.setAttribute("class", "notes-list-item");
@@ -246,8 +261,8 @@ async function fetchNotes() {
             let delButton = document.createElement("i");
             delButton.setAttribute("class", "fa fa-trash del-button");
 
-            noteListItem.addEventListener("mouseover", () => delButton.style.color = "#ffffff");
-            noteListItem.addEventListener("mouseout", () => delButton.style.color = "#d4d4d4");
+            noteListItem.addEventListener("mouseover", () => delButton.style.color = "var(--ui-window-del-button-hover)");
+            noteListItem.addEventListener("mouseout", () => delButton.style.color = "var(--ui-window-del-button)");
 
             noteListItem.appendChild(notesListItemText);
             noteListItem.appendChild(delButton);

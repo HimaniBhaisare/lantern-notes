@@ -1,4 +1,15 @@
 function downloadHtml() {
+    let htmlString = mdToHtml();
+    let fileAsBlob = new Blob([htmlString], { type: 'text/html' });
+    let downloadLink = document.createElement("a");
+    downloadLink.download = title + ".html";
+    // This is specific to chrome. Will have to modify when backend is integrated
+    // Firefox uses window.URL.createObjectURL
+    downloadLink.href = window.webkitURL.createObjectURL(fileAsBlob);
+    downloadLink.click();
+}
+
+function mdToHtml() {
     let title = "Lantern.io note";
     hTag = preview.querySelector('h1') || preview.querySelector('h2') || preview.querySelector('h3');
     if (hTag) title = hTag.textContent;
@@ -18,12 +29,5 @@ function downloadHtml() {
     document.body.querySelectorAll('script').forEach(script => {
         htmlDoc.body.append(script);
     });
-
-    let fileAsBlob = new Blob([htmlDoc.documentElement.innerHTML], { type: 'text/html' });
-    let downloadLink = document.createElement("a");
-    downloadLink.download = title + ".html";
-    // This is specific to chrome. Will have to modify when backend is integrated
-    // Firefox uses window.URL.createObjectURL
-    downloadLink.href = window.webkitURL.createObjectURL(fileAsBlob);
-    downloadLink.click();
+    return htmlDoc.documentElement.innerHTML;
 }
