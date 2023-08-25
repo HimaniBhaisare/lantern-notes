@@ -32,11 +32,11 @@ io.on('connection', (socket) => {
     });
 });
 
+const serviceAccount = require("/etc/secrets/serviceAccountKey.json");
+
 //  Firestore setup
 admin.initializeApp({
-    credential: admin.credential.cert(
-        JSON.parse(Buffer.from(process.env.GOOGLE_FIREBASE_AUTH, 'base64').toString('utf-8'))
-    )
+    credential: admin.credential.cert(serviceAccount)
 });
 const db = admin.firestore();
 

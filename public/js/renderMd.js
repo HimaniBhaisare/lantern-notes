@@ -23,7 +23,7 @@ function renderPreview(mdText) {
 
 //  Handling tab key press
 textEditor.addEventListener('keydown', e => {
-    if (e.keyCode == 9 || e.key == 9 || e.keyIdentifier == 9 || e.code == 9) {
+    if (e.keyCode == 9 || e.key == 'Tab' || e.code == 'Tab') {
         let mdText = e.target.value;
         let start = textEditor.selectionStart;
         let end = textEditor.selectionEnd;
