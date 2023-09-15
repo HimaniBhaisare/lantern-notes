@@ -121,28 +121,27 @@ signoutButton.addEventListener('click', (e) => {
 });
 
 auth.onAuthStateChanged(async (firebaseUser) => {
+  // if (document.getElementById('profileButton').children.length == 0) {
+  //   let profileButtonIcon = document.createElement('i');
+  //   profileButtonIcon.classList = 'far fa-user fa-fw';
+  //   document.get
+  // }
+  let profileButtonIcon = document.createElement('i');
+  profileButtonIcon.classList = 'far fa-user fa-fw';
   if (firebaseUser) {
     if (firebaseUser.displayName) {
       document.getElementById('loggedinMessageSpan').textContent =
         'Welcome back, ' + firebaseUser.displayName + '!';
       if (firebaseUser.displayName[0].toUpperCase().match(/[A-Z]/i)) {
         let imageUrl = `assets/profilePictures/${firebaseUser.displayName[0].toUpperCase()}.png`;
-        let profileButtonIcon = document.createElement('img');
+        profileButtonIcon = document.createElement('img');
         document.getElementById('avatar').setAttribute('src', imageUrl);
         profileButtonIcon.setAttribute('src', imageUrl);
-        document
-          .getElementById('profileButton')
-          .firstChild.replaceWith(profileButtonIcon);
         document
           .getElementById('profileButton')
           .classList.add('profile-icon-active');
       }
     } else {
-      let profileButtonIcon = document.createElement('i');
-      profileButtonIcon.classList = 'far fa-user fa-fw';
-      document
-        .getElementById('profileButton')
-        .firstChild.replaceWith(profileButtonIcon);
       document
         .getElementById('profileButton')
         .classList.remove('profile-icon-active');
@@ -186,16 +185,18 @@ auth.onAuthStateChanged(async (firebaseUser) => {
       await loadNoteToWindow(defaultNote);
     }
     fetchNotes();
-    let profileButtonIcon = document.createElement('i');
-    profileButtonIcon.classList = 'far fa-user fa-fw';
-    document
-      .getElementById('profileButton')
-      .firstChild.replaceWith(profileButtonIcon);
     document
       .getElementById('profileButton')
       .classList.remove('profile-icon-active');
     document.getElementById('loggedinMessageSpan').textContent =
       'You are now signed out!';
     setTimeout(() => openWindow('loginWindow'), 1000);
+  }
+  if (document.getElementById('profileButton').childElementCount == 0) {
+    document.getElementById('profileButton').appendChild(profileButtonIcon);
+  } else {
+    document
+      .getElementById('profileButton')
+      .firstChild.replaceWith(profileButtonIcon);
   }
 });
