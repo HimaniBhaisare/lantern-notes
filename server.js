@@ -5,6 +5,7 @@ const socket = require('socket.io');
 
 //  Express setup
 const app = express();
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () =>
   console.log(`Listening at http://localhost:${port}`),
@@ -33,12 +34,20 @@ io.on('connection', (socket) => {
   });
 });
 
-const serviceAccount = require('/etc/secrets/serviceAccountKey.json');
+const serviceAccount =
+  NODE_ENV == 'production'
+    ? require('/etc/secrets/serviceAccountKey.json')
+    : JSON.parse(
+        Buffer.from(process.env.GOOGLE_FIREBASE_AUTH, 'base64').toString(
+          'utf-8',
+        ),
+      );
 
 //  Firestore setup
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
 const db = admin.firestore();
 admin.firestore().settings({
   ignoreUndefinedProperties: true,
